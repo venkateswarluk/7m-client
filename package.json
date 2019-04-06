@@ -1,0 +1,59 @@
+{
+  "name": "typescript-react-starter",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@types/chance": "^1.0.1",
+    "@types/es6-shim": "^0.31.37",
+    "@types/jest": "^23.1.5",
+    "@types/node": "^10.5.2",
+    "@types/react": "^16.8.12",
+    "@types/react-dom": "^16.8.3",
+    "@types/react-router": "^4.0.28",
+    "@types/react-router-dom": "^4.2.7",
+    "@types/recompose": "^0.26.1",
+    "@types/yup": "^0.24.7",
+    "axios": "^0.18.0",
+    "bulma": "^0.7.4",
+    "chance": "^1.0.16",
+    "date-fns": "^1.29.0",
+    "font-awesome": "^4.7.0",
+    "formik": "^0.11.11",
+    "husky": "^0.14.3",
+    "lint-staged": "^7.2.0",
+    "prettier": "^1.13.7",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-powerplug": "^1.0.0-rc.1",
+    "react-router-dom": "^4.3.1",
+    "react-scripts-ts": "2.16.0",
+    "recompose": "^0.27.1",
+    "rxjs": "^6.2.1",
+    "rxjs-compat": "^6.2.1",
+    "tcomb": "^3.2.27",
+    "tslint": "^5.10.0",
+    "tslint-config-prettier": "^1.13.0",
+    "tslint-immutable": "^4.6.0",
+    "tslint-react": "^3.6.0",
+    "typescript": "^2.9.2",
+    "yup": "^0.25.1"
+  },
+  "scripts": {
+    "typecheck": "tsc -p .",
+    "lint": "tslint -p tsconfig.json -c tslint.json 'src/**/*.tsx' 'src/**/*.ts'",
+    "precommit": "npm run typecheck && lint-staged",
+    "start": "react-scripts-ts start",
+    "build": "react-scripts-ts build",
+    "test": "react-scripts-ts test --env=jsdom",
+    "eject": "react-scripts-ts eject"
+  },
+  "lint-staged": {
+    "src/**/*.{ts,tsx}": [
+      "npm run lint"
+    ],
+    "src/**/*.{ts,tsx,js,jsx,json,css}": [
+      "prettier --single-quote --write",
+      "git add"
+    ]
+  }
+}

@@ -3,9 +3,9 @@ import * as ReactDOM from 'react-dom'
 
 import { register } from './registerServiceWorker'
 
-import { CityBreakInclusionsList } from './CityBreakInclusions/CityBreakInclusionList'
+import { CityBreakExclusionsList } from './CityBreakExclusions/CityBreakExclusionList'
 
-ReactDOM.render(<CityBreakInclusionsList />, document.getElementById(
+ReactDOM.render(<CityBreakExclusionsList />, document.getElementById(
   'root',
 ) as HTMLElement)
 

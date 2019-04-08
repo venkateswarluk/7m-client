@@ -89,7 +89,7 @@ export const AddActivityDetailsInnerForm = (props: any) => (
           <div className="field">
             <div className="control">
               <label className="label">Activity Phone</label>
-              <Field className="input" name="ActivityPhone" type="number" />
+              <Field className="input" name="activityPhone" type="text" />
             </div>
           </div>
 

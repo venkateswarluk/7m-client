@@ -73,7 +73,7 @@ export const EditActivityDetialsInnerForm = (props: any) => (
           <div className="field">
             <div className="control">
               <label className="label">Activity Phone</label>
-              <Field className="input" name="ActivityPhone" type="number" />
+              <Field className="input" name="activityPhone" type="number" />
             </div>
           </div>
 
@@ -105,7 +105,7 @@ export const EditActivityDetailsForm = (props: any) => {
     <div>
       <EditActivityDetialsInnerForm
         values={props.activityValues}
-        onSubmit={props.handleAddMealTypeSubmit}
+        onSubmit={props.handleEditMealTypeSubmit}
         onClose={props.handleCloseClick}
       />
     </div>

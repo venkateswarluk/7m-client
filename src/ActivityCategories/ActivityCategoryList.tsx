@@ -22,15 +22,6 @@ export interface ActivityCategory {
   readonly categoryId: number
 }
 
-const activityinitialValues: ReadonlyArray<ActivityCategory> = [
-  {
-    id: '',
-    serviceType: '',
-    categoryName: '',
-    categoryId: 0,
-  },
-]
-
 const currentActivity: ActivityCategory = {
   id: '',
   serviceType: '',
@@ -39,7 +30,9 @@ const currentActivity: ActivityCategory = {
 }
 
 export const ActivityCategoryList = () => {
-  const [activities, setActivities] = React.useState(activityinitialValues)
+  const [activities, setActivities] = React.useState<
+    ReadonlyArray<ActivityCategory>
+  >([])
   const [addActivityOpen, setAddActivityOpen] = React.useState(false)
   const [editActivityOpen, setEditActivityOpen] = React.useState(false)
   const [editActivityData, setEditActivityData] = React.useState(
@@ -142,7 +135,7 @@ export const ActivityCategoryList = () => {
         {
           <AddActivityCategoryForm
             count={activities.length}
-            handleAddMealTypeSubmit={() => handleAddActivitySubmit}
+            handleAddMealTypeSubmit={handleAddActivitySubmit}
             handleCloseClick={handleAddMealClick}
           />
         }
@@ -164,18 +157,18 @@ export const ActivityCategoryList = () => {
       </Modal>
 
       <div className="box">
-        <table className="table is-bordered is-striped is-narrow is-hoverable is-fullwidth is-responsive">
-          <thead>
-            <tr>
-              <th>ServiceType</th>
-              <th>CategoryId</th>
-              <th>Category</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {activities.length > 0 ? (
-              activities.map((activity: ActivityCategory) => (
+        {activities.length > 0 ? (
+          <table className="table is-bordered is-striped is-narrow is-hoverable is-fullwidth is-responsive">
+            <thead>
+              <tr>
+                <th>ServiceType</th>
+                <th>CategoryId</th>
+                <th>Category</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {activities.map((activity: ActivityCategory) => (
                 <tr key={activity.id}>
                   <td>{activity.serviceType}</td>
                   <td>{activity.categoryId}</td>
@@ -196,12 +189,14 @@ export const ActivityCategoryList = () => {
                     </span>
                   </td>
                 </tr>
-              ))
-            ) : (
-              <div>No Activity Category Exist</div>
-            )}
-          </tbody>
-        </table>
+              ))}
+            </tbody>
+          </table>
+        ) : (
+          <div className="has-text-info is-size-3 has-text-centered">
+            No Activity Categories Exist
+          </div>
+        )}
       </div>
     </div>
   )

@@ -49,7 +49,7 @@ export const EditActivityCategoryForm = (props: any) => {
       <EditActivityCategoryInnerForm
         values={props.activityCategories}
         count={props.count}
-        onSubmit={props.handleAddMealTypeSubmit}
+        onSubmit={props.handleEditMealTypeSubmit}
         onClose={props.handleCloseClick}
       />
     </div>

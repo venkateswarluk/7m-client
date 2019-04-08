@@ -14,7 +14,7 @@ export const EditCityBreakLocationInnerForm = (props: any) => {
         onSubmit={(values: CityBreakLocationFormValues, actions: any) => {
           const submitValues = {
             ...values,
-            cityid: props.count + 1,
+            cityId: props.count + 1,
           }
           props.onSubmit(submitValues, actions)
         }}
@@ -60,7 +60,7 @@ export const EditCityBreakLocationForm = (props: any) => {
         count={props.count}
         values={props.cityBreakLocations}
         destinations={props.destinations}
-        onSubmit={props.handleAddMealTypeSubmit}
+        onSubmit={props.handleEditMealTypeSubmit}
         onClose={props.handleCloseClick}
       />
     </div>

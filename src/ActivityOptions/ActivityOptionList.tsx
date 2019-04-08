@@ -21,16 +21,16 @@ export interface ActivityOption {
   readonly activityId: number
 }
 
-const activityOptioninitialValues: ReadonlyArray<ActivityOption> = [
-  {
-    id: '',
-    activityOptionId: 0,
-    activityId: 0,
-    typeDescription: '',
-    typeVal: '',
-    name: '',
-  },
-]
+// const activityOptioninitialValues: ReadonlyArray<ActivityOption> = [
+//   {
+//     id: '',
+//     activityOptionId: 0,
+//     activityId: 0,
+//     typeDescription: '',
+//     typeVal: '',
+//     name: '',
+//   },
+// ]
 
 const currentActivityOption: ActivityOption = {
   id: '',
@@ -42,9 +42,9 @@ const currentActivityOption: ActivityOption = {
 }
 
 export const ActivityOptionList = () => {
-  const [activityOptions, setActivityOptions] = React.useState(
-    activityOptioninitialValues,
-  )
+  const [activityOptions, setActivityOptions] = React.useState<
+    ReadonlyArray<ActivityOption>
+  >([])
   const [addActivityOpen, setAddActivityOpen] = React.useState(false)
   const [editActivityOpen, setEditActivityOpen] = React.useState(false)
   const [editActivityData, setEditActivityData] = React.useState(
@@ -129,12 +129,12 @@ export const ActivityOptionList = () => {
   return (
     <div>
       <div className="has-text-centered has-text-info is-size-3">
-        Activity Details
+        Activity Options
       </div>
       <div className="field">
         <div className="control has-text-right">
           <button className="button is-info " onClick={handleAddMealClick}>
-            Add Activity Detail
+            Add Activity Option
           </button>
         </div>
       </div>
@@ -146,7 +146,7 @@ export const ActivityOptionList = () => {
       >
         {
           <AddActivityOptionForm
-            handleAddMealTypeSubmit={() => handleAddActivitySubmit}
+            handleAddMealTypeSubmit={handleAddActivitySubmit}
             handleCloseClick={handleAddMealClick}
           />
         }
@@ -167,20 +167,20 @@ export const ActivityOptionList = () => {
       </Modal>
 
       <div className="box">
-        <table className="table is-bordered is-striped is-narrow is-hoverable is-fullwidth is-responsive">
-          <thead>
-            <tr>
-              <th>ActivityOptionId</th>
-              <th>TypeVal</th>
-              <th>TypeDescription</th>
-              <th>Name</th>
-              <th>ActivityId</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {activityOptions.length > 0 ? (
-              activityOptions.map((activity: ActivityOption) => (
+        {activityOptions.length > 0 ? (
+          <table className="table is-bordered is-striped is-narrow is-hoverable is-fullwidth is-responsive">
+            <thead>
+              <tr>
+                <th>ActivityOptionId</th>
+                <th>TypeVal</th>
+                <th>TypeDescription</th>
+                <th>Name</th>
+                <th>ActivityId</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {activityOptions.map((activity: ActivityOption) => (
                 <tr key={activity.id}>
                   <td>{activity.activityOptionId}</td>
                   <td>{activity.typeVal}</td>
@@ -204,12 +204,14 @@ export const ActivityOptionList = () => {
                     </span>
                   </td>
                 </tr>
-              ))
-            ) : (
-              <div>No Activities Exist</div>
-            )}
-          </tbody>
-        </table>
+              ))}
+            </tbody>
+          </table>
+        ) : (
+          <div className="has-text-info is-size-3 has-text-centered">
+            No Activity Options Exist
+          </div>
+        )}
       </div>
     </div>
   )

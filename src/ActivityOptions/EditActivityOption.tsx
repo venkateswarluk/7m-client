@@ -1,13 +1,13 @@
 import * as React from 'react'
 import { Field, Formik, Form } from 'formik'
-import { ActivityOption } from './ActivityOptionList'
+import { ActivityOptionForm } from './AddActivityOption'
 import { FormSchema } from './AddActivityOption'
 
 export const EditActivityOptionInnerForm = (props: any) => (
   <div>
     <Formik
       initialValues={props.values}
-      onSubmit={(values: ActivityOption, actions: any) => {
+      onSubmit={(values: ActivityOptionForm, actions: any) => {
         props.onSubmit(values, actions)
       }}
       validationSchema={FormSchema}
@@ -70,7 +70,7 @@ export const EditActivityOptionForm = (props: any) => {
     <div>
       <EditActivityOptionInnerForm
         values={props.activityOptionValues}
-        onSubmit={props.handleAddMealTypeSubmit}
+        onSubmit={props.handleEditMealTypeSubmit}
         onClose={props.handleCloseClick}
       />
     </div>

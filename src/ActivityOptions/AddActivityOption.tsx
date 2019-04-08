@@ -43,7 +43,7 @@ export const AddActivityOptionInnerForm = (props: any) => (
           <div className="field">
             <div className="control">
               <label className="label">Activity Option Id</label>
-              <Field className="input" name="activityDetailId" type="number" />
+              <Field className="input" name="activityOptionId" type="number" />
             </div>
           </div>
 

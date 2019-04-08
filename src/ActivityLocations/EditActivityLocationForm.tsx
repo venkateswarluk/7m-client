@@ -42,14 +42,14 @@ export const EditActivityLocationInnerForm = (props: any) => (
           <div className="field">
             <div className="control">
               <label className="label">State</label>
-              <Field className="input" name="searchingState" type="url" />
+              <Field className="input" name="searchingState" type="text" />
             </div>
           </div>
 
           <div className="field">
             <div className="control">
               <label className="label">Address</label>
-              <Field className="input" name="address" type="url" />
+              <Field className="input" name="address" type="text" />
             </div>
           </div>
 
@@ -89,7 +89,7 @@ export const EditActivityLocationForm = (props: any) => {
       <EditActivityLocationInnerForm
         values={props.activityLocations}
         count={props.count}
-        onSubmit={props.handleAddMealTypeSubmit}
+        onSubmit={props.handleEditMealTypeSubmit}
         onClose={props.handleCloseClick}
       />
     </div>

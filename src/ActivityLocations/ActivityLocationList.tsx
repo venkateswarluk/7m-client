@@ -29,21 +29,21 @@ export interface ActivityLocation {
   readonly latitude: string
 }
 
-const activityinitialValues: ReadonlyArray<ActivityLocation> = [
-  {
-    id: '',
-    locationId: 0,
-    countryCode: '',
-    stateCode: '',
-    city: '',
-    searchingCity: '',
-    searchingState: '',
-    location: '',
-    address: '',
-    longitude: '',
-    latitude: '',
-  },
-]
+// const activityinitialValues: ReadonlyArray<ActivityLocation> = [
+//   {
+//     id: '',
+//     locationId: 0,
+//     countryCode: '',
+//     stateCode: '',
+//     city: '',
+//     searchingCity: '',
+//     searchingState: '',
+//     location: '',
+//     address: '',
+//     longitude: '',
+//     latitude: '',
+//   },
+// ]
 
 const currentActivity: ActivityLocation = {
   id: '',
@@ -60,7 +60,9 @@ const currentActivity: ActivityLocation = {
 }
 
 export const ActivityLocationList = () => {
-  const [activities, setActivities] = React.useState(activityinitialValues)
+  const [activities, setActivities] = React.useState<
+    ReadonlyArray<ActivityLocation>
+  >([])
   const [addActivityOpen, setAddActivityOpen] = React.useState(false)
   const [editActivityOpen, setEditActivityOpen] = React.useState(false)
   const [editActivityData, setEditActivityData] = React.useState(
@@ -160,7 +162,7 @@ export const ActivityLocationList = () => {
         {
           <AddActivityLocationForm
             count={activities.length}
-            handleAddMealTypeSubmit={() => handleAddActivitySubmit}
+            handleAddMealTypeSubmit={handleAddActivitySubmit}
             handleCloseClick={handleAddMealClick}
           />
         }
@@ -182,25 +184,25 @@ export const ActivityLocationList = () => {
       </Modal>
 
       <div className="box">
-        <table className="table is-bordered is-striped is-narrow is-hoverable is-fullwidth is-responsive">
-          <thead>
-            <tr>
-              <th>LocationId</th>
-              <th>CountryCode</th>
-              <th>StateCode</th>
-              <th>City</th>
-              <th>SearchingCity</th>
-              <th>SearchingState</th>
-              <th>Location</th>
-              <th>Address</th>
-              <th>Longitude</th>
-              <th>Latitude</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {activities.length > 0 ? (
-              activities.map((activity: ActivityLocation) => (
+        {activities.length > 0 ? (
+          <table className="table is-bordered is-striped is-narrow is-hoverable is-fullwidth is-responsive">
+            <thead>
+              <tr>
+                <th>LocationId</th>
+                <th>CountryCode</th>
+                <th>StateCode</th>
+                <th>City</th>
+                <th>SearchingCity</th>
+                <th>SearchingState</th>
+                <th>Location</th>
+                <th>Address</th>
+                <th>Longitude</th>
+                <th>Latitude</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {activities.map((activity: ActivityLocation) => (
                 <tr key={activity.id}>
                   <td>{activity.locationId}</td>
                   <td>{activity.countryCode}</td>
@@ -228,12 +230,14 @@ export const ActivityLocationList = () => {
                     </span>
                   </td>
                 </tr>
-              ))
-            ) : (
-              <div>No Activities Exist</div>
-            )}
-          </tbody>
-        </table>
+              ))}
+            </tbody>
+          </table>
+        ) : (
+          <div className="has-text-info is-size-3 has-text-centered ">
+            No Activity Locations Exist
+          </div>
+        )}
       </div>
     </div>
   )

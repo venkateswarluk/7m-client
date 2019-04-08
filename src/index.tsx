@@ -3,10 +3,7 @@ import * as ReactDOM from 'react-dom'
 
 import { register } from './registerServiceWorker'
 
-import { ActivityCategoryList } from './ActivityCategories/ActivityCategoryList'
-
-ReactDOM.render(<ActivityCategoryList />, document.getElementById(
-  'root',
-) as HTMLElement)
+import { App } from './App'
+ReactDOM.render(<App />, document.getElementById('root') as HTMLElement)
 
 register()

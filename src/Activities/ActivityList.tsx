@@ -26,22 +26,6 @@ export interface Activity {
   readonly optionId: number
 }
 
-const activityinitialValues: ReadonlyArray<Activity> = [
-  {
-    id: '',
-    activityName: '',
-    description: '',
-    stars: 0,
-    thumbUrl: '',
-    minChildAge: 0,
-    maxChildAge: 0,
-    destinationId: 0,
-    activityId: 0,
-    categoryId: 0,
-    optionId: 0,
-  },
-]
-
 const currentActivity: Activity = {
   id: '',
   activityName: '',
@@ -57,7 +41,9 @@ const currentActivity: Activity = {
 }
 
 export const ActivityList = () => {
-  const [activities, setActivities] = React.useState(activityinitialValues)
+  const [activities, setActivities] = React.useState<ReadonlyArray<Activity>>(
+    [],
+  )
   const [addActivityOpen, setAddActivityOpen] = React.useState(false)
   const [editActivityOpen, setEditActivityOpen] = React.useState(false)
   const [editActivityData, setEditActivityData] = React.useState(
@@ -153,7 +139,7 @@ export const ActivityList = () => {
       >
         {
           <AddActivityForm
-            handleAddMealTypeSubmit={() => handleAddActivitySubmit}
+            handleAddMealTypeSubmit={handleAddActivitySubmit}
             handleCloseClick={handleAddMealClick}
           />
         }
@@ -174,24 +160,24 @@ export const ActivityList = () => {
       </Modal>
 
       <div className="box">
-        <table className="table is-bordered is-striped is-narrow is-hoverable is-fullwidth is-responsive">
-          <thead>
-            <tr>
-              <th>ActivityName</th>
-              <th>Stars</th>
-              <th>Description</th>
-              <th>MinChildAge</th>
-              <th>MaxChildAge</th>
-              <th>destinationId</th>
-              <th>ActivityId</th>
-              <th>OptionId</th>
-              <th>CategoryId</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {activities.length > 0 ? (
-              activities.map((activity: Activity) => (
+        {activities.length > 0 ? (
+          <table className="table is-bordered is-striped is-narrow is-hoverable is-fullwidth is-responsive">
+            <thead>
+              <tr>
+                <th>ActivityName</th>
+                <th>Stars</th>
+                <th>Description</th>
+                <th>MinChildAge</th>
+                <th>MaxChildAge</th>
+                <th>destinationId</th>
+                <th>ActivityId</th>
+                <th>OptionId</th>
+                <th>CategoryId</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {activities.map((activity: Activity) => (
                 <tr key={activity.id}>
                   <td>{activity.activityName}</td>
                   <td>{activity.stars}</td>
@@ -219,12 +205,14 @@ export const ActivityList = () => {
                     </span>
                   </td>
                 </tr>
-              ))
-            ) : (
-              <div>No Activities Exist</div>
-            )}
-          </tbody>
-        </table>
+              ))}
+            </tbody>
+          </table>
+        ) : (
+          <div className=" has-text-info is-size-3 has-text-centered">
+            No Activities Exist
+          </div>
+        )}
       </div>
     </div>
   )

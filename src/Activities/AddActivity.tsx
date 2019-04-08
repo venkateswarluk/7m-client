@@ -112,7 +112,13 @@ export const AddActivityInnerForm = (props: any) => (
     <Formik
       initialValues={activityValues}
       onSubmit={(values: ActivityForm, actions: any) => {
-        props.onSubmit(values, actions)
+        const submitValues = {
+          ...values,
+          categoryId: parseInt(values.categoryId.toString(), 10),
+          destinationId: parseInt(values.destinationId.toString(), 10),
+        }
+        console.log(JSON.stringify(submitValues))
+        props.onSubmit(submitValues, actions)
       }}
       validationSchema={ActivityFormSchema}
     >

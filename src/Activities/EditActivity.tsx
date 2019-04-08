@@ -135,7 +135,7 @@ export const EditActivityForm = (props: any) => {
     <div>
       <EditActivityInnerForm
         values={props.activityValues}
-        onSubmit={props.handleAddMealTypeSubmit}
+        onSubmit={props.handleEditMealTypeSubmit}
         onClose={props.handleCloseClick}
       />
     </div>

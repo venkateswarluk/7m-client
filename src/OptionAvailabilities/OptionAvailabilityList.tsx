@@ -30,23 +30,6 @@ export interface OptionAvailability {
   readonly toDate: string
 }
 
-const optionAvailabilityinitialValues: ReadonlyArray<OptionAvailability> = [
-  {
-    id: '',
-    optionAvailabilityId: 0,
-    maxAdults: 0,
-    maxChilds: 0,
-    maxUnits: 0,
-    adultPrice: 0.0,
-    childPrice: 0.0,
-    unitPrice: 0.0,
-    optionId: 0,
-    activityId: 0,
-    fromDate: '',
-    toDate: '',
-  },
-]
-
 const currentActivityOption: OptionAvailability = {
   id: '',
   optionAvailabilityId: 0,
@@ -63,9 +46,9 @@ const currentActivityOption: OptionAvailability = {
 }
 
 export const OptionAvailabilityList = () => {
-  const [optionAvailabilities, setOptionAvailabilities] = React.useState(
-    optionAvailabilityinitialValues,
-  )
+  const [optionAvailabilities, setOptionAvailabilities] = React.useState<
+    ReadonlyArray<OptionAvailability>
+  >([])
   const [addActivityOpen, setAddActivityOpen] = React.useState(false)
   const [editActivityOpen, setEditActivityOpen] = React.useState(false)
   const [editActivityData, setEditActivityData] = React.useState(
@@ -188,24 +171,24 @@ export const OptionAvailabilityList = () => {
       </Modal>
 
       <div className="box">
-        <table className="table is-bordered is-striped is-narrow is-hoverable is-fullwidth is-responsive">
-          <thead>
-            <tr>
-              <th>OptionAvailabilityId</th>
-              <th>MaxAdults</th>
-              <th>MaxChilds</th>
-              <th>AdultPrice</th>
-              <th>ChildPrice</th>
-              <th>FromDate</th>
-              <th>ToDate</th>
-              <th>OptionId</th>
-              <th>ActivityId</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {optionAvailabilities.length > 0 ? (
-              optionAvailabilities.map((activity: OptionAvailability) => (
+        {optionAvailabilities.length > 0 ? (
+          <table className="table is-bordered is-striped is-narrow is-hoverable is-fullwidth is-responsive">
+            <thead>
+              <tr>
+                <th>OptionAvailabilityId</th>
+                <th>MaxAdults</th>
+                <th>MaxChilds</th>
+                <th>AdultPrice</th>
+                <th>ChildPrice</th>
+                <th>FromDate</th>
+                <th>ToDate</th>
+                <th>OptionId</th>
+                <th>ActivityId</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {optionAvailabilities.map((activity: OptionAvailability) => (
                 <tr key={activity.id}>
                   <td>{activity.optionAvailabilityId}</td>
                   <td>{activity.maxAdults}</td>
@@ -232,12 +215,14 @@ export const OptionAvailabilityList = () => {
                     </span>
                   </td>
                 </tr>
-              ))
-            ) : (
-              <div>No Activities Exist</div>
-            )}
-          </tbody>
-        </table>
+              ))}
+            </tbody>
+          </table>
+        ) : (
+          <div className="has-text-info is-size-3 has-text-centered">
+            No Availabilities Exist
+          </div>
+        )}
       </div>
     </div>
   )

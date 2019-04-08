@@ -114,7 +114,7 @@ export const EditOptionAvailabilityForm = (props: any) => {
     <div>
       <EditOptionAvailabilityInnerForm
         values={props.optionAvailabilitiesValues}
-        onSubmit={props.handleAddMealTypeSubmit}
+        onSubmit={props.handleEditMealTypeSubmit}
         onClose={props.handleCloseClick}
       />
     </div>

@@ -69,7 +69,7 @@ export const EditCityBreakExclusionForm = (props: any) => {
       <EditCityBreakExclusionInnerForm
         values={props.cityBreakEclusions}
         destinations={props.destinations}
-        onSubmit={props.handleAddMealTypeSubmit}
+        onSubmit={props.handleEditMealTypeSubmit}
         onClose={props.handleCloseClick}
       />
     </div>

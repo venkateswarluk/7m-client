@@ -83,7 +83,7 @@ export const EditCityBreakDetailForm = (props: any) => {
       <EditCityBreakDateailInnerForm
         values={props.cityBreakDetails}
         destinations={props.destinations}
-        onSubmit={props.handleAddMealTypeSubmit}
+        onSubmit={props.handleEditMealTypeSubmit}
         onClose={props.handleCloseClick}
       />
     </div>

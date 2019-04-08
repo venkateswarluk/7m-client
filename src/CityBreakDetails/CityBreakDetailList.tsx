@@ -28,15 +28,15 @@ export interface OptionValues {
   readonly label: string
 }
 
-const cityBreakDetailinitialValues: ReadonlyArray<CityBreakDetails> = [
-  {
-    id: '',
-    cityId: 0,
-    days: 0,
-    dayNo: 0,
-    dayInfo: '',
-  },
-]
+// const cityBreakDetailinitialValues: ReadonlyArray<CityBreakDetails> = [
+//   {
+//     id: '',
+//     cityId: 0,
+//     days: 0,
+//     dayNo: 0,
+//     dayInfo: '',
+//   },
+// ]
 
 const currentCityBreakDetail: CityBreakDetails = {
   id: '',
@@ -47,9 +47,9 @@ const currentCityBreakDetail: CityBreakDetails = {
 }
 
 export const CityBreakDetailsList = () => {
-  const [cityBreaks, setCityBreaks] = React.useState(
-    cityBreakDetailinitialValues,
-  )
+  const [cityBreaks, setCityBreaks] = React.useState<
+    ReadonlyArray<CityBreakDetails>
+  >([])
   const [addCityBreakOpen, setAddCityBreakOpen] = React.useState(false)
   const [editCityBreakOpen, setEditCityBreakOpen] = React.useState(false)
   const [editCityBreakData, setEditCityBreakData] = React.useState(
@@ -168,7 +168,7 @@ export const CityBreakDetailsList = () => {
         {
           <AddCityBreakDetailForm
             destinations={destinations}
-            handleAddMealTypeSubmit={() => handleAddActivitySubmit}
+            handleAddMealTypeSubmit={handleAddActivitySubmit}
             handleCloseClick={handleAddMealClick}
           />
         }
@@ -190,19 +190,19 @@ export const CityBreakDetailsList = () => {
       </Modal>
 
       <div className="box">
-        <table className="table is-bordered is-striped is-narrow is-hoverable is-fullwidth is-responsive">
-          <thead>
-            <tr>
-              <th>CityId</th>
-              <th>Days</th>
-              <th>DayNo</th>
-              <th>DayInfo</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {cityBreaks.length > 0 ? (
-              cityBreaks.map((cityBreak: CityBreakDetails) => (
+        {cityBreaks.length > 0 ? (
+          <table className="table is-bordered is-striped is-narrow is-hoverable is-fullwidth is-responsive">
+            <thead>
+              <tr>
+                <th>CityId</th>
+                <th>Days</th>
+                <th>DayNo</th>
+                <th>DayInfo</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {cityBreaks.map((cityBreak: CityBreakDetails) => (
                 <tr key={cityBreak.id}>
                   <td>{cityBreak.cityId}</td>
                   <td>{cityBreak.days}</td>
@@ -224,12 +224,14 @@ export const CityBreakDetailsList = () => {
                     </span>
                   </td>
                 </tr>
-              ))
-            ) : (
-              <div>No Activities Exist</div>
-            )}
-          </tbody>
-        </table>
+              ))}
+            </tbody>
+          </table>
+        ) : (
+          <div className="has-text-info is-size-3 has-text-centered">
+            No CityBreak Details Exist
+          </div>
+        )}
       </div>
     </div>
   )

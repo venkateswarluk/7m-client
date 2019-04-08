@@ -22,18 +22,6 @@ export interface MealType {
   readonly items: ReadonlyArray<string>
 }
 
-const mealTypeinitialValues: ReadonlyArray<MealType> = [
-  {
-    id: '',
-    name: '',
-    mealType: '',
-    imageUrl: '',
-    description: '',
-    price: 0.0,
-    items: [],
-  },
-]
-
 const currentMealType: MealType = {
   id: '',
   name: '',
@@ -45,7 +33,7 @@ const currentMealType: MealType = {
 }
 
 export const MealTypeList = () => {
-  const [mealTypes, setMealTypes] = React.useState(mealTypeinitialValues)
+  const [mealTypes, setMealTypes] = React.useState<ReadonlyArray<MealType>>([])
   const [addMealOpen, setAddMealOpen] = React.useState(false)
   const [editMealOpen, setEditMealOpen] = React.useState(false)
   const [editMealTypeData, SetEditMealTypeData] = React.useState(
@@ -162,20 +150,20 @@ export const MealTypeList = () => {
       </Modal>
 
       <div className="box">
-        <table className="table is-bordered is-striped is-narrow is-hoverable is-fullwidth is-responsive">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Meal Type</th>
-              <th>Description</th>
-              <th>Price</th>
-              <th>Items</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {mealTypes.length > 0 ? (
-              mealTypes.map((mealType: MealType) => (
+        {mealTypes.length > 0 ? (
+          <table className="table is-bordered is-striped is-narrow is-hoverable is-fullwidth is-responsive">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Meal Type</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Items</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {mealTypes.map((mealType: MealType) => (
                 <tr key={mealType.id}>
                   <td>{mealType.name}</td>
                   <td>{mealType.mealType}</td>
@@ -198,12 +186,14 @@ export const MealTypeList = () => {
                     </span>
                   </td>
                 </tr>
-              ))
-            ) : (
-              <div>No Meal Types Exist</div>
-            )}
-          </tbody>
-        </table>
+              ))}
+            </tbody>
+          </table>
+        ) : (
+          <div className="has-text-info is-size-3 has-text-centered">
+            No Meal Types Exist
+          </div>
+        )}
       </div>
     </div>
   )

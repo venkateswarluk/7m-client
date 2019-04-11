@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Field, Formik, Form } from 'formik'
+import { Field, Formik, Form, FormikActions } from 'formik'
 import * as yup from 'yup'
 
 export interface OptionAvailabilityForm {
@@ -30,6 +30,14 @@ const optionAvailabilitiesValues: OptionAvailabilityForm = {
   toDate: '',
 }
 
+export interface AddFormProps {
+  handleAddSubmit(
+    values: OptionAvailabilityForm,
+    actions: FormikActions<OptionAvailabilityForm>,
+  ): void
+  handleCloseClick(): void
+}
+
 export const FormSchema: () => yup.ObjectSchema<
   OptionAvailabilityForm
 > = (): yup.ObjectSchema<OptionAvailabilityForm> =>
@@ -45,12 +53,23 @@ export const FormSchema: () => yup.ObjectSchema<
     toDate: yup.string().required('Required'),
   })
 
-export const AddOptionAvailabilityInnerForm = (props: any) => (
+export const AddOptionAvailabilityInnerForm = (props: AddFormProps) => (
   <div>
     <Formik
       initialValues={optionAvailabilitiesValues}
-      onSubmit={(values: OptionAvailabilityForm, actions: any) => {
-        props.onSubmit(values, actions)
+      onSubmit={(
+        values: OptionAvailabilityForm,
+        actions: FormikActions<OptionAvailabilityForm>,
+      ) => {
+        const submitValues = {
+          ...values,
+          adultPrice: (values.adultPrice.toString(), 10),
+          childPrice: (values.adultPrice.toString(), 10),
+          unitPrice: (values.adultPrice.toString(), 10),
+        }
+
+        console.log(JSON.stringify(submitValues))
+        props.handleAddSubmit(submitValues, actions)
       }}
       validationSchema={FormSchema}
     >
@@ -142,7 +161,7 @@ export const AddOptionAvailabilityInnerForm = (props: any) => (
           <button
             className="button is-danger"
             type="button"
-            onClick={() => props.onClose()}
+            onClick={() => props.handleCloseClick()}
           >
             Close
           </button>
@@ -152,12 +171,12 @@ export const AddOptionAvailabilityInnerForm = (props: any) => (
   </div>
 )
 
-export const AddOptionAvailabilityForm = (props: any) => {
+export const AddOptionAvailabilityForm = (props: AddFormProps) => {
   return (
     <div>
       <AddOptionAvailabilityInnerForm
-        onSubmit={props.handleAddMealTypeSubmit}
-        onClose={props.handleCloseClick}
+        handleAddSubmit={props.handleAddSubmit}
+        handleCloseClick={props.handleCloseClick}
       />
     </div>
   )

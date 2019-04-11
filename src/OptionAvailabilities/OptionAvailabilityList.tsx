@@ -1,6 +1,8 @@
 import * as React from 'react'
 import axios from 'axios'
 import 'bulma/css/bulma.css'
+import { url } from '../config'
+import { FormikActions } from 'formik'
 import {
   OptionAvailabilityForm,
   AddOptionAvailabilityForm,
@@ -56,7 +58,7 @@ export const OptionAvailabilityList = () => {
   )
 
   const fetchMealTypeData = async () => {
-    const result = await axios('http://localhost:4000/optionavailabilities')
+    const result = await axios(`${url}/optionavailabilities`)
     setOptionAvailabilities(result.data)
   }
 
@@ -66,7 +68,7 @@ export const OptionAvailabilityList = () => {
 
   const handleAddActivitySubmit = (
     values: OptionAvailabilityForm,
-    actions: any,
+    actions: FormikActions<OptionAvailabilityForm>,
   ) => {
     postOptionAvailability(values)
       .then(() => {
@@ -99,14 +101,14 @@ export const OptionAvailabilityList = () => {
 
   const handleEditActivitySubmit = async (
     values: OptionAvailability,
-    action: any,
+    actions: FormikActions<OptionAvailabilityForm>,
   ) => {
     const updateMealType = await putOptionAvailability(values)
     const meals = await getOptionsAvailabilities()
     if (updateMealType.status === 200) {
       setOptionAvailabilities(meals)
       setEditActivityOpen(!editActivityOpen)
-      action.setSubmitting(false)
+      actions.setSubmitting(false)
     }
   }
 
@@ -150,7 +152,7 @@ export const OptionAvailabilityList = () => {
       >
         {
           <AddOptionAvailabilityForm
-            handleAddMealTypeSubmit={handleAddActivitySubmit}
+            handleAddSubmit={handleAddActivitySubmit}
             handleCloseClick={handleAddMealClick}
           />
         }
@@ -163,8 +165,8 @@ export const OptionAvailabilityList = () => {
       >
         {
           <EditOptionAvailabilityForm
-            optionAvailabilitiesValues={editActivityData}
-            handleEditMealTypeSubmit={handleEditActivitySubmit}
+            currentItem={editActivityData}
+            handleEditSubmit={handleEditActivitySubmit}
             handleCloseClick={handleEditActivityCloseClick}
           />
         }

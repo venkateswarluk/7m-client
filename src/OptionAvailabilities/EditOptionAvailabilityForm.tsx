@@ -1,13 +1,29 @@
 import * as React from 'react'
-import { Field, Formik, Form } from 'formik'
+import { Field, Formik, Form, FormikActions } from 'formik'
 import { FormSchema, OptionAvailabilityForm } from './AddOptionAvailability'
 
-export const EditOptionAvailabilityInnerForm = (props: any) => (
+interface EditFormProps {
+  readonly currentItem: OptionAvailabilityForm
+  handleEditSubmit(
+    values: OptionAvailabilityForm,
+    actions: FormikActions<OptionAvailabilityForm>,
+  ): void
+  handleCloseClick(): void
+}
+
+export const EditOptionAvailabilityInnerForm = (props: EditFormProps) => (
   <div>
     <Formik
-      initialValues={props.values}
+      initialValues={props.currentItem}
       onSubmit={(values: OptionAvailabilityForm, actions: any) => {
-        props.onSubmit(values, actions)
+        const submitValues = {
+          ...values,
+          adultPrice: (values.adultPrice.toString(), 10),
+          childPrice: (values.adultPrice.toString(), 10),
+          unitPrice: (values.adultPrice.toString(), 10),
+        }
+
+        props.handleEditSubmit(submitValues, actions)
       }}
       validationSchema={FormSchema}
     >
@@ -99,7 +115,7 @@ export const EditOptionAvailabilityInnerForm = (props: any) => (
           <button
             className="button is-danger"
             type="button"
-            onClick={() => props.onClose()}
+            onClick={() => props.handleCloseClick()}
           >
             Close
           </button>
@@ -109,13 +125,13 @@ export const EditOptionAvailabilityInnerForm = (props: any) => (
   </div>
 )
 
-export const EditOptionAvailabilityForm = (props: any) => {
+export const EditOptionAvailabilityForm = (props: EditFormProps) => {
   return (
     <div>
       <EditOptionAvailabilityInnerForm
-        values={props.optionAvailabilitiesValues}
-        onSubmit={props.handleEditMealTypeSubmit}
-        onClose={props.handleCloseClick}
+        currentItem={props.currentItem}
+        handleEditSubmit={props.handleEditSubmit}
+        handleCloseClick={props.handleCloseClick}
       />
     </div>
   )

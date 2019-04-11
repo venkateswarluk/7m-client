@@ -1,6 +1,7 @@
 import * as React from 'react'
 import axios from 'axios'
 import 'bulma/css/bulma.css'
+import { FormikActions } from 'formik'
 import { AddActivityForm, ActivityForm } from './AddActivity'
 import { EditActivityForm } from './EditActivity'
 import { Modal } from '../Model'
@@ -59,7 +60,10 @@ export const ActivityList = () => {
     setAddActivityOpen(!addActivityOpen)
   }
 
-  const handleAddActivitySubmit = (values: ActivityForm, actions: any) => {
+  const handleAddActivitySubmit = (
+    values: ActivityForm,
+    actions: FormikActions<ActivityForm>,
+  ) => {
     postActivity(values)
       .then(() => {
         getActivites()
@@ -89,7 +93,10 @@ export const ActivityList = () => {
     setEditActivityOpen(!editActivityOpen)
   }
 
-  const handleEditActivitySubmit = async (values: Activity, action: any) => {
+  const handleEditActivitySubmit = async (
+    values: Activity,
+    action: FormikActions<ActivityForm>,
+  ) => {
     const updateMealType = await putActivity(values)
     const meals = await getActivites()
     if (updateMealType.status === 200) {
@@ -139,7 +146,7 @@ export const ActivityList = () => {
       >
         {
           <AddActivityForm
-            handleAddMealTypeSubmit={handleAddActivitySubmit}
+            handleAddSubmit={handleAddActivitySubmit}
             handleCloseClick={handleAddMealClick}
           />
         }
@@ -152,8 +159,8 @@ export const ActivityList = () => {
       >
         {
           <EditActivityForm
-            activityValues={editActivityData}
-            handleEditMealTypeSubmit={handleEditActivitySubmit}
+            values={editActivityData}
+            handleEditSubmit={handleEditActivitySubmit}
             handleCloseClick={handleEditActivityCloseClick}
           />
         }

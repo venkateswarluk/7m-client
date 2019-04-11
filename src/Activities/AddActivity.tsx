@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Field, Formik, Form } from 'formik'
+import { Field, Formik, Form, FormikActions } from 'formik'
 import * as yup from 'yup'
 
 export interface ActivityForm {
@@ -31,6 +31,14 @@ const activityValues: ActivityForm = {
 export interface OptionValues {
   readonly value: number | string
   readonly label: string
+}
+
+export interface AddActivityFormProps {
+  handleAddSubmit(
+    values: ActivityForm,
+    actions: FormikActions<ActivityForm>,
+  ): void
+  handleCloseClick(): void
 }
 
 export const categories: ReadonlyArray<OptionValues> = [
@@ -107,18 +115,21 @@ export const ActivityFormSchema: () => yup.ObjectSchema<
     optionId: yup.number().required(),
   })
 
-export const AddActivityInnerForm = (props: any) => (
+export const AddActivityInnerForm = (props: AddActivityFormProps) => (
   <div>
     <Formik
       initialValues={activityValues}
-      onSubmit={(values: ActivityForm, actions: any) => {
+      onSubmit={(
+        values: ActivityForm,
+        actions: FormikActions<ActivityForm>,
+      ) => {
         const submitValues = {
           ...values,
           categoryId: parseInt(values.categoryId.toString(), 10),
           destinationId: parseInt(values.destinationId.toString(), 10),
         }
-        console.log(JSON.stringify(submitValues))
-        props.onSubmit(submitValues, actions)
+
+        props.handleAddSubmit(submitValues, actions)
       }}
       validationSchema={ActivityFormSchema}
     >
@@ -217,7 +228,7 @@ export const AddActivityInnerForm = (props: any) => (
           <button
             className="button is-danger"
             type="button"
-            onClick={() => props.onClose()}
+            onClick={() => props.handleCloseClick()}
           >
             Close
           </button>
@@ -227,12 +238,12 @@ export const AddActivityInnerForm = (props: any) => (
   </div>
 )
 
-export const AddActivityForm = (props: any) => {
+export const AddActivityForm = (props: AddActivityFormProps) => {
   return (
     <div>
       <AddActivityInnerForm
-        onSubmit={props.handleAddMealTypeSubmit}
-        onClose={props.handleCloseClick}
+        handleAddSubmit={props.handleAddSubmit}
+        handleCloseClick={props.handleCloseClick}
       />
     </div>
   )

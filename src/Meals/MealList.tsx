@@ -1,6 +1,8 @@
 import * as React from 'react'
 import axios from 'axios'
 import 'bulma/css/bulma.css'
+import { url } from '../config'
+import { FormikActions } from 'formik'
 import { AddMealTypeForm, MealTypeForm } from './AddMealType'
 import { EditMealTypeForm } from './EditMealType'
 import { Modal } from '../Model'
@@ -41,7 +43,7 @@ export const MealTypeList = () => {
   )
 
   const fetchMealTypeData = async () => {
-    const result = await axios('http://localhost:4000/mealTypes')
+    const result = await axios(`${url}/mealTypes`)
     setMealTypes(result.data)
   }
 
@@ -49,7 +51,10 @@ export const MealTypeList = () => {
     setAddMealOpen(!addMealOpen)
   }
 
-  const handleAddMealTypeSubmit = (values: MealTypeForm, actions: any) => {
+  const handleAddMealTypeSubmit = (
+    values: MealTypeForm,
+    actions: FormikActions<MealTypeForm>,
+  ) => {
     postMealType(values)
       .then(() => {
         getMealTypes()
@@ -79,13 +84,16 @@ export const MealTypeList = () => {
     setEditMealOpen(!editMealOpen)
   }
 
-  const handleEditMealSubmit = async (values: MealType, action: any) => {
+  const handleEditMealSubmit = async (
+    values: MealType,
+    actions: FormikActions<MealTypeForm>,
+  ) => {
     const updateMealType = await putMealType(values)
     const meals = await getMealTypes()
     if (updateMealType.status === 200) {
       setMealTypes(meals)
       setEditMealOpen(!editMealOpen)
-      action.setSubmitting(false)
+      actions.setSubmitting(false)
     }
   }
 
@@ -129,7 +137,7 @@ export const MealTypeList = () => {
       >
         {
           <AddMealTypeForm
-            handleAddMealTypeSubmit={handleAddMealTypeSubmit}
+            handleAddSubmit={handleAddMealTypeSubmit}
             handleCloseClick={handleAddMealClick}
           />
         }
@@ -142,8 +150,8 @@ export const MealTypeList = () => {
       >
         {
           <EditMealTypeForm
-            mealTypeValues={editMealTypeData}
-            handleEditMealTypeSubmit={handleEditMealSubmit}
+            currentItem={editMealTypeData}
+            handleEditSubmit={handleEditMealSubmit}
             handleCloseClick={handleEditMealCloseClick}
           />
         }

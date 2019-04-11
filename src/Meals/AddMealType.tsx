@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Field, Formik, Form } from 'formik'
+import { Field, Formik, Form, FormikActions } from 'formik'
 import * as yup from 'yup'
 
 export interface MealTypeForm {
@@ -9,6 +9,14 @@ export interface MealTypeForm {
   readonly description: string
   readonly price: number
   readonly items: string
+}
+
+export interface AddFormProps {
+  handleAddSubmit(
+    values: MealTypeForm,
+    actions: FormikActions<MealTypeForm>,
+  ): void
+  handleCloseClick(): void
 }
 
 const mealTypeValues: MealTypeForm = {
@@ -29,12 +37,15 @@ export const MealTypeFormSchema: yup.ObjectSchema<MealTypeForm> = yup.object({
   items: yup.string(),
 })
 
-export const AddMealTypeInnerForm = (props: any) => (
+export const AddMealTypeInnerForm = (props: AddFormProps) => (
   <div>
     <Formik
       initialValues={mealTypeValues}
-      onSubmit={(values: MealTypeForm, actions: any) => {
-        props.onSubmit(values, actions)
+      onSubmit={(
+        values: MealTypeForm,
+        actions: FormikActions<MealTypeForm>,
+      ) => {
+        props.handleAddSubmit(values, actions)
       }}
       validationSchema={MealTypeFormSchema}
     >
@@ -88,7 +99,7 @@ export const AddMealTypeInnerForm = (props: any) => (
           <button
             className="button is-danger"
             type="button"
-            onClick={() => props.onClose()}
+            onClick={() => props.handleCloseClick()}
           >
             Close
           </button>
@@ -98,12 +109,12 @@ export const AddMealTypeInnerForm = (props: any) => (
   </div>
 )
 
-export const AddMealTypeForm = (props: any) => {
+export const AddMealTypeForm = (props: AddFormProps) => {
   return (
     <div>
       <AddMealTypeInnerForm
-        onSubmit={props.handleAddMealTypeSubmit}
-        onClose={props.handleCloseClick}
+        handleAddSubmit={props.handleAddSubmit}
+        handleCloseClick={props.handleCloseClick}
       />
     </div>
   )

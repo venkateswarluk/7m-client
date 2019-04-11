@@ -1,6 +1,7 @@
 import * as React from 'react'
-import { Field, Formik, Form } from 'formik'
+import { Field, Formik, Form, FormikActions } from 'formik'
 import * as yup from 'yup'
+import { MealType } from './MealList'
 
 export interface MealTypeForm {
   readonly name: string
@@ -9,6 +10,12 @@ export interface MealTypeForm {
   readonly description: string
   readonly price: number
   readonly items: string
+}
+
+interface EditFormProps {
+  readonly currentItem: MealType
+  handleEditSubmit(values: MealType, actions: FormikActions<MealTypeForm>): void
+  handleCloseClick(): void
 }
 
 export const MealTypeFormSchema: yup.ObjectSchema<MealTypeForm> = yup.object({
@@ -20,12 +27,12 @@ export const MealTypeFormSchema: yup.ObjectSchema<MealTypeForm> = yup.object({
   items: yup.string(),
 })
 
-export const EditMealTypeInnerForm = (props: any) => (
+export const EditMealTypeInnerForm = (props: EditFormProps) => (
   <div>
     <Formik
-      initialValues={props.values}
-      onSubmit={(values: MealTypeForm, actions: any) => {
-        props.onSubmit(values, actions)
+      initialValues={props.currentItem}
+      onSubmit={(values: MealType, actions: any) => {
+        props.handleEditSubmit(values, actions)
       }}
       validationSchema={MealTypeFormSchema}
     >
@@ -79,7 +86,7 @@ export const EditMealTypeInnerForm = (props: any) => (
           <button
             className="button is-danger"
             type="button"
-            onClick={() => props.onClose()}
+            onClick={() => props.handleCloseClick()}
           >
             Close
           </button>
@@ -89,13 +96,13 @@ export const EditMealTypeInnerForm = (props: any) => (
   </div>
 )
 
-export const EditMealTypeForm = (props: any) => {
+export const EditMealTypeForm = (props: EditFormProps) => {
   return (
     <div>
       <EditMealTypeInnerForm
-        values={props.mealTypeValues}
-        onSubmit={props.handleEditMealTypeSubmit}
-        onClose={props.handleCloseClick}
+        currentItem={props.currentItem}
+        handleEditSubmit={props.handleEditSubmit}
+        handleCloseClick={props.handleCloseClick}
       />
     </div>
   )

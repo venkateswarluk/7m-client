@@ -1,12 +1,13 @@
 import axios from 'axios'
+import { url } from '../config'
 
 export const getActivityCategories = async () => {
-  const res = await axios.get(`http://localhost:4000/categories`)
+  const res = await axios.get(`${url}/categories`)
   return res.data
 }
 
 export const getActivityCategoriesById = (id: string) =>
-  fetch(`http://localhost:4000/categories/${id}`, {
+  fetch(`${url}/categories/${id}`, {
     method: 'GET',
     headers: new Headers({
       'Content-Type': 'application/json',
@@ -21,7 +22,7 @@ export const getActivityCategoriesById = (id: string) =>
 export const postActivityCategory = async (values: any) => {
   const res = await axios({
     method: 'post',
-    url: `http://localhost:4000/categories`,
+    url: `${url}/categories`,
     data: {
       ...values,
     },
@@ -34,7 +35,7 @@ export const postActivityCategory = async (values: any) => {
 }
 
 export const putActivityCategory = (values: any) =>
-  fetch(`http://localhost:4000/categories/${values.id}`, {
+  fetch(`${url}/categories/${values.id}`, {
     method: 'PUT',
     headers: {
       'content-type': 'application/json',
@@ -50,5 +51,5 @@ export const putActivityCategory = (values: any) =>
 export const deleteActivityCategory = async (id: string) =>
   await axios({
     method: 'delete',
-    url: `http://localhost:4000/categories/${id}`,
+    url: `${url}/categories/${id}`,
   })

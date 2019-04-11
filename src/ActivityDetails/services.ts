@@ -1,14 +1,12 @@
 import axios from 'axios'
-// import { ActivityForm } from './AddActivity'
-// import { Activity } from './ActivityList'
-
+import { url } from '../config'
 export const getActivityDetails = async () => {
-  const res = await axios.get(`http://localhost:4000/activitydetails`)
+  const res = await axios.get(`${url}/activitydetails`)
   return res.data
 }
 
 export const getActivityDetailsById = (id: string) =>
-  fetch(`http://localhost:4000/activitydetails/${id}`, {
+  fetch(`${url}/activitydetails/${id}`, {
     method: 'GET',
     headers: new Headers({
       'Content-Type': 'application/json',
@@ -23,7 +21,7 @@ export const getActivityDetailsById = (id: string) =>
 export const postActivityDetail = async (values: any) => {
   const res = await axios({
     method: 'post',
-    url: `http://localhost:4000/activitydetails`,
+    url: `${url}/activitydetails`,
     data: {
       ...values,
     },
@@ -36,7 +34,7 @@ export const postActivityDetail = async (values: any) => {
 }
 
 export const putActivityDetail = (values: any) =>
-  fetch(`http://localhost:4000/activitydetails/${values.id}`, {
+  fetch(`${url}/activitydetails/${values.id}`, {
     method: 'PUT',
     headers: {
       'content-type': 'application/json',
@@ -52,5 +50,5 @@ export const putActivityDetail = (values: any) =>
 export const deleteActivityDetail = async (id: string) =>
   await axios({
     method: 'delete',
-    url: `http://localhost:4000/activitydetails/${id}`,
+    url: `${url}/activitydetails/${id}`,
   })

@@ -1,12 +1,13 @@
 import axios from 'axios'
+import { url } from '../config'
 
 export const getCityBreakDetails = async () => {
-  const res = await axios.get(`http://localhost:4000/citybreakdetails`)
+  const res = await axios.get(`${url}/citybreakdetails`)
   return res.data
 }
 
 export const getCityBreaksDetailsById = (id: string) =>
-  fetch(`http://localhost:4000/citybreakdetails/${id}`, {
+  fetch(`${url}/citybreakdetails/${id}`, {
     method: 'GET',
     headers: new Headers({
       'Content-Type': 'application/json',
@@ -21,7 +22,7 @@ export const getCityBreaksDetailsById = (id: string) =>
 export const postCityBreakDetail = async (values: any) => {
   const res = await axios({
     method: 'post',
-    url: `http://localhost:4000/citybreakdetails`,
+    url: `${url}/citybreakdetails`,
     data: {
       ...values,
     },
@@ -34,7 +35,7 @@ export const postCityBreakDetail = async (values: any) => {
 }
 
 export const putCityBreakDetail = (values: any) =>
-  fetch(`http://localhost:4000/citybreakdetails/${values.id}`, {
+  fetch(`${url}/citybreakdetails/${values.id}`, {
     method: 'PUT',
     headers: {
       'content-type': 'application/json',
@@ -50,5 +51,5 @@ export const putCityBreakDetail = (values: any) =>
 export const deleteCityBreakDetail = async (id: string) =>
   await axios({
     method: 'delete',
-    url: `http://localhost:4000/citybreakdetails/${id}`,
+    url: `${url}/citybreakdetails/${id}`,
   })

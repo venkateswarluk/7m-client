@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Field, Formik, Form, FormikActions } from 'formik'
+import { ErrorMessage, Field, Formik, Form, FormikActions } from 'formik'
 import * as yup from 'yup'
 import { MealType } from './MealList'
 
@@ -42,6 +42,9 @@ export const EditMealTypeInnerForm = (props: EditFormProps) => (
             <div className="control">
               <label className="label">Meal Name</label>
               <Field className="input" name="name" type="text" />
+              <div className="has-text-danger is-size-7">
+                <ErrorMessage name="name" />
+              </div>
             </div>
           </div>
 
@@ -49,6 +52,9 @@ export const EditMealTypeInnerForm = (props: EditFormProps) => (
             <div className="control">
               <label className="label">Meal Type</label>
               <Field className="input" name="mealType" type="text" />
+              <div className="has-text-danger is-size-7">
+                <ErrorMessage name="mealType" />
+              </div>
             </div>
           </div>
 
@@ -56,6 +62,9 @@ export const EditMealTypeInnerForm = (props: EditFormProps) => (
             <div className="control">
               <label className="label">Image Url</label>
               <Field className="input" name="imageUrl" type="text" />
+              <div className="has-text-danger is-size-7">
+                <ErrorMessage name="imageUrl" />
+              </div>
             </div>
           </div>
 
@@ -63,6 +72,9 @@ export const EditMealTypeInnerForm = (props: EditFormProps) => (
             <div className="control">
               <label className="label">Description</label>
               <Field className="input" name="description" type="text" />
+              <div className="has-text-danger is-size-7">
+                <ErrorMessage name="description" />
+              </div>
             </div>
           </div>
 
@@ -70,6 +82,9 @@ export const EditMealTypeInnerForm = (props: EditFormProps) => (
             <div className="control">
               <label className="label">Price</label>
               <Field className="input" name="price" type="number" />
+              <div className="has-text-danger is-size-7">
+                <ErrorMessage name="price" />
+              </div>
             </div>
           </div>
 
@@ -77,6 +92,9 @@ export const EditMealTypeInnerForm = (props: EditFormProps) => (
             <div className="control">
               <label className="label">Items</label>
               <Field className="input" name="items" type="text" />
+              <div className="has-text-danger is-size-7">
+                <ErrorMessage name="items" />
+              </div>
             </div>
           </div>
 

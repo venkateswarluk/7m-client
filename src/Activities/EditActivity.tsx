@@ -2,6 +2,7 @@ import * as React from 'react'
 import { ErrorMessage, Field, Formik, Form, FormikActions } from 'formik'
 import { ActivityFormSchema, destinations, categories } from './AddActivity'
 import { CFIntegerField } from '../CFIntegerField'
+import { EditFormProps } from '../types'
 
 export interface ActivityForm {
   readonly id?: string
@@ -17,16 +18,7 @@ export interface ActivityForm {
   readonly optionId: number
 }
 
-interface EditFormProps {
-  readonly values: ActivityForm
-  handleEditSubmit(
-    values: ActivityForm,
-    actions: FormikActions<ActivityForm>,
-  ): void
-  handleCloseClick(): void
-}
-
-export const EditActivityInnerForm = (props: EditFormProps) => (
+export const EditActivityInnerForm = (props: EditFormProps<ActivityForm>) => (
   <div>
     <Formik
       initialValues={props.values}
@@ -168,7 +160,7 @@ export const EditActivityInnerForm = (props: EditFormProps) => (
   </div>
 )
 
-export const EditActivityForm = (props: EditFormProps) => {
+export const EditActivityForm = (props: EditFormProps<ActivityForm>) => {
   return (
     <div>
       <EditActivityInnerForm

@@ -1,18 +1,20 @@
 import * as React from 'react'
 import axios from 'axios'
 import 'bulma/css/bulma.css'
-import { url } from '../config'
 import { FormikActions } from 'formik'
 import { AddMealTypeForm, MealTypeForm } from './AddMealType'
 import { EditMealTypeForm } from './EditMealType'
 import { Modal } from '../Model'
+
 import {
-  getMealTypes,
-  getMealTypeById,
-  postMealType,
-  putMealType,
-  deleteMealType,
-} from './services'
+  getAllItems,
+  getItemById,
+  postItem,
+  putItem,
+  deleteItem,
+} from '../services'
+
+const url = `http://localhost:4000/mealtypes`
 
 export interface MealType {
   readonly id: string
@@ -43,7 +45,7 @@ export const MealTypeList = () => {
   )
 
   const fetchMealTypeData = async () => {
-    const result = await axios(`${url}/mealTypes`)
+    const result = await axios(`${url}`)
     setMealTypes(result.data)
   }
 
@@ -55,9 +57,9 @@ export const MealTypeList = () => {
     values: MealTypeForm,
     actions: FormikActions<MealTypeForm>,
   ) => {
-    postMealType(values)
+    postItem(url, values)
       .then(() => {
-        getMealTypes()
+        getAllItems(url)
           .then(res => {
             setMealTypes(res)
             setAddMealOpen(!addMealOpen)
@@ -73,7 +75,7 @@ export const MealTypeList = () => {
   }
 
   const handleEditMealClick = async (id: string) => {
-    const res = await getMealTypeById(id)
+    const res = await getItemById(url, id)
     if (res) {
       SetEditMealTypeData(res)
       setEditMealOpen(!editMealOpen)
@@ -88,8 +90,8 @@ export const MealTypeList = () => {
     values: MealType,
     actions: FormikActions<MealType>,
   ) => {
-    const updateMealType = await putMealType(values)
-    const meals = await getMealTypes()
+    const updateMealType = await putItem(url, values)
+    const meals = await getAllItems(url)
     if (updateMealType.status === 200) {
       setMealTypes(meals)
       setEditMealOpen(!editMealOpen)
@@ -98,9 +100,9 @@ export const MealTypeList = () => {
   }
 
   const handleDeleteMealSubmit = (id: string) => {
-    deleteMealType(id)
+    deleteItem(url, id)
       .then(() => {
-        getMealTypes()
+        getAllItems(url)
           .then(res => {
             setMealTypes(res)
           })

@@ -6,12 +6,14 @@ import { AddActivityForm, ActivityForm } from './AddActivity'
 import { EditActivityForm } from './EditActivity'
 import { Modal } from '../Model'
 import {
-  getActivites,
-  getActivityById,
-  postActivity,
-  putActivity,
-  deleteActivity,
-} from './services'
+  getAllItems,
+  getItemById,
+  postItem,
+  putItem,
+  deleteItem,
+} from '../services'
+
+const url = `http://localhost:4000/activities`
 
 export interface Activity {
   readonly id: string
@@ -64,25 +66,25 @@ export const ActivityList = () => {
     values: ActivityForm,
     actions: FormikActions<ActivityForm>,
   ) => {
-    postActivity(values)
+    postItem(url, values)
       .then(() => {
-        getActivites()
-          .then(res => {
+        getAllItems(url)
+          .then((res: any) => {
             setActivities(res)
             setAddActivityOpen(!addActivityOpen)
             actions.setSubmitting(false)
           })
-          .catch(err => {
+          .catch((err: string) => {
             throw Error(err)
           })
       })
       .catch(err => {
-        throw Error(err)
+        return Error(err)
       })
   }
 
   const handleEditActivityClick = async (id: string) => {
-    const res = await getActivityById(id)
+    const res = await getItemById(url, id)
     if (res) {
       setEditActivityData(res)
       setEditActivityOpen(!editActivityOpen)
@@ -97,8 +99,8 @@ export const ActivityList = () => {
     values: Activity,
     action: FormikActions<ActivityForm>,
   ) => {
-    const updateMealType = await putActivity(values)
-    const meals = await getActivites()
+    const updateMealType = await putItem(url, values)
+    const meals = await getAllItems(url)
     if (updateMealType.status === 200) {
       setActivities(meals)
       setEditActivityOpen(!editActivityOpen)
@@ -107,13 +109,13 @@ export const ActivityList = () => {
   }
 
   const handleDeleteActivitySubmit = (id: string) => {
-    deleteActivity(id)
+    deleteItem(url, id)
       .then(() => {
-        getActivites()
-          .then(res => {
+        getAllItems(url)
+          .then((res: any) => {
             setActivities(res)
           })
-          .catch(err => {
+          .catch((err: string) => {
             throw Error(err)
           })
       })

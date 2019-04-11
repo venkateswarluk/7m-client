@@ -1,13 +1,14 @@
 import axios from 'axios'
 import { OptionAvailabilityForm } from './AddOptionAvailability'
+import { url } from '../config'
 
 export const getOptionsAvailabilities = async () => {
-  const res = await axios.get(`http://localhost:4000/optionavailabilities`)
+  const res = await axios.get(`${url}/optionavailabilities`)
   return res.data
 }
 
 export const getOptionAvailabilityById = (id: string) =>
-  fetch(`http://localhost:4000/optionavailabilities/${id}`, {
+  fetch(`${url}/optionavailabilities/${id}`, {
     method: 'GET',
     headers: new Headers({
       'Content-Type': 'application/json',
@@ -24,7 +25,7 @@ export const postOptionAvailability = async (
 ) => {
   const res = await axios({
     method: 'post',
-    url: `http://localhost:4000/optionavailabilities`,
+    url: `${url}/optionavailabilities`,
     data: {
       ...values,
     },
@@ -37,7 +38,7 @@ export const postOptionAvailability = async (
 }
 
 export const putOptionAvailability = (values: any) =>
-  fetch(`http://localhost:4000/optionavailabilities/${values.id}`, {
+  fetch(`${url}/optionavailabilities/${values.id}`, {
     method: 'PUT',
     headers: {
       'content-type': 'application/json',
@@ -53,5 +54,5 @@ export const putOptionAvailability = (values: any) =>
 export const deleteOptionAvailability = async (id: string) =>
   await axios({
     method: 'delete',
-    url: `http://localhost:4000/optionavailabilities/${id}`,
+    url: `${url}/optionavailabilities/${id}`,
   })

@@ -1,6 +1,8 @@
 import * as React from 'react'
 import axios from 'axios'
 import 'bulma/css/bulma.css'
+import { FormikActions } from 'formik'
+import { url } from '../config'
 import {
   AddActivityLocationForm,
   ActivityForm,
@@ -29,22 +31,6 @@ export interface ActivityLocation {
   readonly latitude: string
 }
 
-// const activityinitialValues: ReadonlyArray<ActivityLocation> = [
-//   {
-//     id: '',
-//     locationId: 0,
-//     countryCode: '',
-//     stateCode: '',
-//     city: '',
-//     searchingCity: '',
-//     searchingState: '',
-//     location: '',
-//     address: '',
-//     longitude: '',
-//     latitude: '',
-//   },
-// ]
-
 const currentActivity: ActivityLocation = {
   id: '',
   locationId: 0,
@@ -70,7 +56,7 @@ export const ActivityLocationList = () => {
   )
 
   const fetchMealTypeData = async () => {
-    const result = await axios('http://localhost:4000/activityLocations')
+    const result = await axios(`${url}/activityLocations`)
     setActivities(result.data)
   }
 
@@ -78,7 +64,10 @@ export const ActivityLocationList = () => {
     setAddActivityOpen(!addActivityOpen)
   }
 
-  const handleAddActivitySubmit = (values: ActivityForm, actions: any) => {
+  const handleAddActivitySubmit = (
+    values: ActivityForm,
+    actions: FormikActions<ActivityForm>,
+  ) => {
     postActivityLocation(values)
       .then(() => {
         getActivityLocations()
@@ -110,7 +99,7 @@ export const ActivityLocationList = () => {
 
   const handleEditActivitySubmit = async (
     values: ActivityLocation,
-    action: any,
+    action: FormikActions<ActivityLocation>,
   ) => {
     const updateMealType = await putActivityLocation(values)
     const meals = await getActivityLocations()
@@ -162,7 +151,7 @@ export const ActivityLocationList = () => {
         {
           <AddActivityLocationForm
             count={activities.length}
-            handleAddMealTypeSubmit={handleAddActivitySubmit}
+            handleAddSubmit={handleAddActivitySubmit}
             handleCloseClick={handleAddMealClick}
           />
         }
@@ -176,8 +165,8 @@ export const ActivityLocationList = () => {
         {
           <EditActivityLocationForm
             count={activities.length}
-            activityLocations={editActivityData}
-            handleEditMealTypeSubmit={handleEditActivitySubmit}
+            currentItem={editActivityData}
+            handleEditSubmit={handleEditActivitySubmit}
             handleCloseClick={handleEditActivityCloseClick}
           />
         }

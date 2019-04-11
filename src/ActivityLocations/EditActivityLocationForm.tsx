@@ -1,11 +1,21 @@
 import * as React from 'react'
-import { Field, Formik, Form } from 'formik'
+import { Field, Formik, Form, FormikActions } from 'formik'
 import { ActivityForm } from './AddActivityLocationForm'
 
-export const EditActivityLocationInnerForm = (props: any) => (
+interface EditFormProps {
+  readonly currentItem: ActivityForm
+  readonly count: number
+  handleEditSubmit(
+    values: ActivityForm,
+    actions: FormikActions<ActivityForm>,
+  ): void
+  handleCloseClick(): void
+}
+
+export const EditActivityLocationInnerForm = (props: EditFormProps) => (
   <div>
     <Formik
-      initialValues={props.values}
+      initialValues={props.currentItem}
       onSubmit={(values: ActivityForm, actions: any) => {
         const submitValues = {
           ...values,
@@ -13,7 +23,7 @@ export const EditActivityLocationInnerForm = (props: any) => (
           searchingCity: values.city,
           location: values.city,
         }
-        props.onSubmit(submitValues, actions)
+        props.handleEditSubmit(submitValues, actions)
       }}
     >
       <div>
@@ -73,7 +83,7 @@ export const EditActivityLocationInnerForm = (props: any) => (
           <button
             className="button is-danger"
             type="button"
-            onClick={() => props.onClose()}
+            onClick={() => props.handleCloseClick()}
           >
             Close
           </button>
@@ -83,14 +93,14 @@ export const EditActivityLocationInnerForm = (props: any) => (
   </div>
 )
 
-export const EditActivityLocationForm = (props: any) => {
+export const EditActivityLocationForm = (props: EditFormProps) => {
   return (
     <div>
       <EditActivityLocationInnerForm
-        values={props.activityLocations}
+        currentItem={props.currentItem}
         count={props.count}
-        onSubmit={props.handleEditMealTypeSubmit}
-        onClose={props.handleCloseClick}
+        handleEditSubmit={props.handleEditSubmit}
+        handleCloseClick={props.handleCloseClick}
       />
     </div>
   )

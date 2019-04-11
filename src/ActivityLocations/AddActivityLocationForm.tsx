@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Field, Formik, Form } from 'formik'
+import { Field, Formik, Form, FormikActions } from 'formik'
 
 export interface ActivityForm {
   readonly locationId: number
@@ -27,18 +27,30 @@ const activityValues: ActivityForm = {
   latitude: '',
 }
 
-export const AddActivityLocationInnerForm = (props: any) => (
+export interface AddFormProps {
+  readonly count: number
+  handleAddSubmit(
+    values: ActivityForm,
+    actions: FormikActions<ActivityForm>,
+  ): void
+  handleCloseClick(): void
+}
+
+export const AddActivityLocationInnerForm = (props: AddFormProps) => (
   <div>
     <Formik
       initialValues={activityValues}
-      onSubmit={(values: ActivityForm, actions: any) => {
+      onSubmit={(
+        values: ActivityForm,
+        actions: FormikActions<ActivityForm>,
+      ) => {
         const submitValues = {
           ...values,
           locationId: props.count + 1,
           searchingCity: values.city,
           location: values.city,
         }
-        props.onSubmit(submitValues, actions)
+        props.handleAddSubmit(submitValues, actions)
       }}
     >
       <div>
@@ -98,7 +110,7 @@ export const AddActivityLocationInnerForm = (props: any) => (
           <button
             className="button is-danger"
             type="button"
-            onClick={() => props.onClose()}
+            onClick={() => props.handleCloseClick()}
           >
             Close
           </button>
@@ -108,13 +120,13 @@ export const AddActivityLocationInnerForm = (props: any) => (
   </div>
 )
 
-export const AddActivityLocationForm = (props: any) => {
+export const AddActivityLocationForm = (props: AddFormProps) => {
   return (
     <div>
       <AddActivityLocationInnerForm
         count={props.count}
-        onSubmit={props.handleAddMealTypeSubmit}
-        onClose={props.handleCloseClick}
+        handleAddSubmit={props.handleAddSubmit}
+        handleCloseClick={props.handleCloseClick}
       />
     </div>
   )

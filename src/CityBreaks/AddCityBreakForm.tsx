@@ -1,10 +1,10 @@
 import * as React from 'react'
-import { Field, Formik, Form } from 'formik'
+import { ErrorMessage, Field, Formik, Form, FormikActions } from 'formik'
 import * as yup from 'yup'
+import { OptionValues } from './CityBreakList'
 
 export interface CityBreakFormValues {
   readonly cityId: number
-  readonly city: string
   readonly days: number
   readonly description: string
   readonly price: number
@@ -13,9 +13,17 @@ export interface CityBreakFormValues {
   readonly starRating: number
 }
 
+export interface AddFormProps {
+  readonly destinations: ReadonlyArray<OptionValues>
+  handleAddSubmit(
+    values: CityBreakFormValues,
+    actions: FormikActions<CityBreakFormValues>,
+  ): void
+  handleCloseClick(): void
+}
+
 const activityValues: CityBreakFormValues = {
   cityId: 0,
-  city: '',
   days: 0,
   description: '',
   price: 0.0,
@@ -29,52 +37,77 @@ export const FormSchema: () => yup.ObjectSchema<
 > = (): yup.ObjectSchema<CityBreakFormValues> =>
   yup.object({
     cityId: yup.number().required('Select City'),
-    city: yup.string().required(' City Required'),
     days: yup.number().required('days Required'),
     description: yup.string().required('Description required'),
     price: yup.number().required('Price required'),
-    imageUrl: yup.string().required('MealType required'),
-    phone: yup.string().required('MealType required'),
-    starRating: yup.number().required('MealType required'),
+    imageUrl: yup.string().required('Image required'),
+    phone: yup.string().required('Phone required'),
+    starRating: yup.number().required('StarRating required'),
   })
-export const AddCityBreakInnerForm = (props: any) => {
+export const AddCityBreakInnerForm = (props: AddFormProps) => {
   return (
     <div>
       <Formik
         initialValues={activityValues}
-        onSubmit={(values: CityBreakFormValues, actions: any) => {
+        onSubmit={(
+          values: CityBreakFormValues,
+          actions: FormikActions<CityBreakFormValues>,
+        ) => {
+          const city = props.destinations.find(
+            x => x.value.toString() === values.cityId.toString(),
+          )
+
           const submitValues = {
             ...values,
-            city: props.destinations.find(
-              (x: any) => x.value === values.cityId,
-            ),
+            city: city ? city.label : '',
+            cityId: parseInt(values.cityId.toString(), 10),
           }
-          props.onSubmit(submitValues, actions)
+
+          props.handleAddSubmit(submitValues, actions)
         }}
         validationSchema={FormSchema}
       >
         <div>
           <Form>
+            {JSON.stringify(props.destinations)}
             <div className="field">
               <div className="control">
                 <label className="label">City</label>
                 <div className="select">
                   <Field name="cityId" component="select">
                     <option>Select City</option>
-                    {props.destinations.map((d: any) => (
-                      <option key={d.value} value={d.value}>
-                        {d.label}
-                      </option>
-                    ))}
+                    {props.destinations.map(d => {
+                      return (
+                        <option key={d.value} value={d.value}>
+                          {d.label}
+                        </option>
+                      )
+                    })}
                   </Field>
+                  <div>
+                    <ErrorMessage name="cityId" />
+                  </div>
                 </div>
               </div>
             </div>
+
+            {/* <div className="field">
+              <div className="control">
+                <label className="label">City </label>
+                <Field className="input" name="city" type="text" />
+                <div>
+                  <ErrorMessage name="city" />
+                </div>
+              </div>
+            </div> */}
 
             <div className="field">
               <div className="control">
                 <label className="label">Days </label>
                 <Field className="input" name="days" type="number" />
+                <div>
+                  <ErrorMessage name="days" />
+                </div>
               </div>
             </div>
 
@@ -82,6 +115,9 @@ export const AddCityBreakInnerForm = (props: any) => {
               <div className="control">
                 <label className="label">Description</label>
                 <Field className="input" name="description" type="text" />
+                <div>
+                  <ErrorMessage name="description" />
+                </div>
               </div>
             </div>
 
@@ -89,6 +125,9 @@ export const AddCityBreakInnerForm = (props: any) => {
               <div className="control">
                 <label className="label">Price</label>
                 <Field className="input" name="price" type="number" />
+                <div>
+                  <ErrorMessage name="price" />
+                </div>
               </div>
             </div>
 
@@ -96,6 +135,9 @@ export const AddCityBreakInnerForm = (props: any) => {
               <div className="control">
                 <label className="label">ImageUrl</label>
                 <Field className="input" name="imageUrl" type="url" />
+                <div>
+                  <ErrorMessage name="imageUrl" />
+                </div>
               </div>
             </div>
 
@@ -103,6 +145,9 @@ export const AddCityBreakInnerForm = (props: any) => {
               <div className="control">
                 <label className="label">Phone</label>
                 <Field className="input" name="phone" type="text" />
+                <div>
+                  <ErrorMessage name="phone" />
+                </div>
               </div>
             </div>
 
@@ -110,6 +155,9 @@ export const AddCityBreakInnerForm = (props: any) => {
               <div className="control">
                 <label className="label">StarRating</label>
                 <Field className="input" name="starRating" type="number" />
+                <div>
+                  <ErrorMessage name="starRating" />
+                </div>
               </div>
             </div>
 
@@ -119,7 +167,7 @@ export const AddCityBreakInnerForm = (props: any) => {
             <button
               className="button is-danger"
               type="button"
-              onClick={() => props.onClose()}
+              onClick={() => props.handleCloseClick()}
             >
               Close
             </button>
@@ -130,13 +178,13 @@ export const AddCityBreakInnerForm = (props: any) => {
   )
 }
 
-export const AddCityBreakForm = (props: any) => {
+export const AddCityBreakForm = (props: AddFormProps) => {
   return (
     <div>
       <AddCityBreakInnerForm
         destinations={props.destinations}
-        onSubmit={props.handleAddMealTypeSubmit}
-        onClose={props.handleCloseClick}
+        handleAddSubmit={props.handleAddSubmit}
+        handleCloseClick={props.handleCloseClick}
       />
     </div>
   )

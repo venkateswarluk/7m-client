@@ -1,17 +1,38 @@
 import * as React from 'react'
-import { Field, Formik, Form } from 'formik'
+import { Field, Formik, Form, FormikActions } from 'formik'
 import { CityBreakFormValues, FormSchema } from './AddCityBreakForm'
+import { OptionValues } from 'src/CityBreakDetails/CityBreakDetailList'
 
-export const EditCityBreakInnerForm = (props: any) => (
+export interface EditFormProps {
+  readonly currentItem: CityBreakFormValues
+  readonly destinations: ReadonlyArray<OptionValues>
+  handleEditSubmit(
+    values: CityBreakFormValues,
+    actions: FormikActions<CityBreakFormValues>,
+  ): void
+  handleCloseClick(): void
+}
+
+export const EditCityBreakInnerForm = (props: EditFormProps) => (
   <div>
     <Formik
-      initialValues={props.values}
-      onSubmit={(values: CityBreakFormValues, actions: any) => {
+      initialValues={props.currentItem}
+      onSubmit={(
+        values: CityBreakFormValues,
+        actions: FormikActions<CityBreakFormValues>,
+      ) => {
+        const city = props.destinations.find(
+          (x: OptionValues) => x.value === values.cityId,
+        )
+
         const submitValues = {
           ...values,
-          city: props.destinations.find((x: any) => x.value === values.cityId),
+          city: city ? city.label : '',
+          cityId: parseInt(values.cityId.toString(), 10),
+          starRating: parseInt(values.starRating.toString(), 10),
         }
-        props.onSubmit(submitValues, actions)
+
+        props.handleEditSubmit(submitValues, actions)
       }}
       validationSchema={FormSchema}
     >
@@ -81,7 +102,7 @@ export const EditCityBreakInnerForm = (props: any) => (
           <button
             className="button is-danger"
             type="button"
-            onClick={() => props.onClose()}
+            onClick={() => props.handleCloseClick()}
           >
             Close
           </button>
@@ -91,14 +112,14 @@ export const EditCityBreakInnerForm = (props: any) => (
   </div>
 )
 
-export const EditCityBreakForm = (props: any) => {
+export const EditCityBreakForm = (props: EditFormProps) => {
   return (
     <div>
       <EditCityBreakInnerForm
         destinations={props.destinations}
-        values={props.editCityBreakData}
-        onSubmit={props.handleEditMealTypeSubmit}
-        onClose={props.handleCloseClick}
+        currentItem={props.currentItem}
+        handleEditSubmit={props.handleEditSubmit}
+        handleCloseClick={props.handleCloseClick}
       />
     </div>
   )

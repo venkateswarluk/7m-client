@@ -1,6 +1,8 @@
 import * as React from 'react'
 import axios from 'axios'
 import 'bulma/css/bulma.css'
+import { url } from '../config'
+import { FormikActions } from 'formik'
 import { CityBreakFormValues, AddCityBreakForm } from './AddCityBreakForm'
 import { EditCityBreakForm } from './EditCityBreakForm'
 import { Modal } from '../Model'
@@ -55,12 +57,12 @@ export const CityBreakList = () => {
   >([])
 
   const fetchMealTypeData = async () => {
-    const result = await axios('http://localhost:4000/citybreaks')
+    const result = await axios(`${url}/citybreaks`)
     setCityBreaks(result.data)
   }
 
   const fetchCitiesData = async () => {
-    const result = await axios('http://localhost:4000/cityBreakLocations')
+    const result = await axios(`${url}/cityBreakLocations`)
     const cities = result.data.map((x: any) => ({
       value: x.cityId,
       label: x.city,
@@ -74,7 +76,7 @@ export const CityBreakList = () => {
 
   const handleAddActivitySubmit = (
     values: CityBreakFormValues,
-    actions: any,
+    actions: FormikActions<CityBreakFormValues>,
   ) => {
     postCityBreak(values)
       .then(() => {
@@ -105,13 +107,16 @@ export const CityBreakList = () => {
     setEditCityBreakOpen(!editCityBreakOpen)
   }
 
-  const handleEditActivitySubmit = async (values: CityBreak, action: any) => {
+  const handleEditActivitySubmit = async (
+    values: CityBreak,
+    actions: FormikActions<CityBreakFormValues>,
+  ) => {
     const updateMealType = await putCityBreak(values)
     const meals = await getCityBreaks()
     if (updateMealType.status === 200) {
       setCityBreaks(meals)
       setEditCityBreakOpen(!editCityBreakOpen)
-      action.setSubmitting(false)
+      actions.setSubmitting(false)
     }
   }
 
@@ -160,7 +165,7 @@ export const CityBreakList = () => {
         {
           <AddCityBreakForm
             destinations={destinations}
-            handleAddMealTypeSubmit={handleAddActivitySubmit}
+            handleAddSubmit={handleAddActivitySubmit}
             handleCloseClick={handleAddMealClick}
           />
         }
@@ -174,8 +179,8 @@ export const CityBreakList = () => {
         {
           <EditCityBreakForm
             destinations={destinations}
-            editCityBreakData={editCityBreakData}
-            handleEditMealTypeSubmit={handleEditActivitySubmit}
+            currentItem={editCityBreakData}
+            handleEditSubmit={handleEditActivitySubmit}
             handleCloseClick={handleEditActivityCloseClick}
           />
         }

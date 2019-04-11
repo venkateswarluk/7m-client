@@ -1,12 +1,13 @@
 import axios from 'axios'
+import { url } from '../config'
 
 export const getCityBreakExclusions = async () => {
-  const res = await axios.get(`http://localhost:4000/cityBreakExclusions`)
+  const res = await axios.get(`${url}/cityBreakExclusions`)
   return res.data
 }
 
 export const getCityBreaksExclusionsById = (id: string) =>
-  fetch(`http://localhost:4000/cityBreakExclusions/${id}`, {
+  fetch(`${url}/cityBreakExclusions/${id}`, {
     method: 'GET',
     headers: new Headers({
       'Content-Type': 'application/json',
@@ -21,7 +22,7 @@ export const getCityBreaksExclusionsById = (id: string) =>
 export const postCityBreakExclusion = async (values: any) => {
   const res = await axios({
     method: 'post',
-    url: `http://localhost:4000/cityBreakExclusions`,
+    url: `${url}/cityBreakExclusions`,
     data: {
       ...values,
     },
@@ -34,7 +35,7 @@ export const postCityBreakExclusion = async (values: any) => {
 }
 
 export const putCityBreakExclusion = (values: any) =>
-  fetch(`http://localhost:4000/cityBreakExclusions/${values.id}`, {
+  fetch(`${url}/cityBreakExclusions/${values.id}`, {
     method: 'PUT',
     headers: {
       'content-type': 'application/json',
@@ -50,5 +51,5 @@ export const putCityBreakExclusion = (values: any) =>
 export const deleteCityBreakExclusion = async (id: string) =>
   await axios({
     method: 'delete',
-    url: `http://localhost:4000/cityBreakExclusions/${id}`,
+    url: `${url}/cityBreakExclusions/${id}`,
   })

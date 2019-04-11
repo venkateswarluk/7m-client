@@ -1,23 +1,29 @@
 import * as React from 'react'
-import { Field, Formik, Form } from 'formik'
+import { Field, Formik, Form, FormikActions } from 'formik'
 import {
   CityBreakInclusionFormValues,
   FormSchema,
 } from './AddCityBreakInclusionForm'
+import { EditFormProps, DestinationProps } from '../types'
 
-export const EditCityBreakInclusionInnerForm = (props: any) => {
+export const EditCityBreakInclusionInnerForm = (
+  props: EditFormProps<CityBreakInclusionFormValues> & DestinationProps,
+) => {
   return (
     <div>
       <Formik
-        initialValues={props.values}
-        onSubmit={(values: CityBreakInclusionFormValues, actions: any) => {
+        initialValues={props.currentItem}
+        onSubmit={(
+          values: CityBreakInclusionFormValues,
+          actions: FormikActions<CityBreakInclusionFormValues>,
+        ) => {
           const submitValues = {
             ...values,
             city: props.destinations.find(
               (x: any) => x.value === values.cityId,
             ),
           }
-          props.onSubmit(submitValues, actions)
+          props.handleEditSubmit(submitValues, actions)
         }}
         validationSchema={FormSchema}
       >
@@ -59,7 +65,7 @@ export const EditCityBreakInclusionInnerForm = (props: any) => {
             <button
               className="button is-danger"
               type="button"
-              onClick={() => props.onClose()}
+              onClick={() => props.handleCloseClick()}
             >
               Close
             </button>
@@ -70,14 +76,16 @@ export const EditCityBreakInclusionInnerForm = (props: any) => {
   )
 }
 
-export const EditCityBreakInclusionForm = (props: any) => {
+export const EditCityBreakInclusionForm = (
+  props: EditFormProps<CityBreakInclusionFormValues> & DestinationProps,
+) => {
   return (
     <div>
       <EditCityBreakInclusionInnerForm
-        values={props.cityBreakInclusions}
+        currentItem={props.currentItem}
         destinations={props.destinations}
-        onSubmit={props.handleEditMealTypeSubmit}
-        onClose={props.handleCloseClick}
+        handleEditSubmit={props.handleEditSubmit}
+        handleCloseClick={props.handleCloseClick}
       />
     </div>
   )

@@ -1,6 +1,8 @@
 import * as React from 'react'
 import axios from 'axios'
 import 'bulma/css/bulma.css'
+import { url } from '../config'
+import { FormikActions } from 'formik'
 import {
   CityBreakInclusionFormValues,
   AddCityBreakInclusionForm,
@@ -48,12 +50,12 @@ export const CityBreakInclusionsList = () => {
   >([])
 
   const fetchMealTypeData = async () => {
-    const result = await axios('http://localhost:4000/cityBreakInclusions')
+    const result = await axios(`${url}/cityBreakInclusions`)
     setCityBreaks(result.data)
   }
 
   const fetchCitiesData = async () => {
-    const result = await axios('http://localhost:4000/cityBreakLocations')
+    const result = await axios(`${url}/cityBreakLocations`)
     const cities = result.data.map((x: any) => ({
       value: x.cityId,
       label: x.city,
@@ -67,7 +69,7 @@ export const CityBreakInclusionsList = () => {
 
   const handleAddActivitySubmit = (
     values: CityBreakInclusionFormValues,
-    actions: any,
+    actions: FormikActions<CityBreakInclusionFormValues>,
   ) => {
     postCityBreakInclusion(values)
       .then(() => {
@@ -100,14 +102,14 @@ export const CityBreakInclusionsList = () => {
 
   const handleEditActivitySubmit = async (
     values: CityBreakInclusion,
-    action: any,
+    actions: FormikActions<CityBreakInclusionFormValues>,
   ) => {
     const updateMealType = await putCityBreakInclusion(values)
     const meals = await getCityBreakInclusions()
     if (updateMealType.status === 200) {
       setCityBreaks(meals)
       setEditCityBreakOpen(!editCityBreakOpen)
-      action.setSubmitting(false)
+      actions.setSubmitting(false)
     }
   }
 
@@ -156,7 +158,7 @@ export const CityBreakInclusionsList = () => {
         {
           <AddCityBreakInclusionForm
             destinations={destinations}
-            handleAddMealTypeSubmit={handleAddActivitySubmit}
+            handleAddSubmit={handleAddActivitySubmit}
             handleCloseClick={handleAddMealClick}
           />
         }
@@ -170,8 +172,8 @@ export const CityBreakInclusionsList = () => {
         {
           <EditCityBreakInclusionForm
             destinations={destinations}
-            cityBreakInclusions={editCityBreakData}
-            handleEditMealTypeSubmit={handleEditActivitySubmit}
+            currentItem={editCityBreakData}
+            handleEditSubmit={handleEditActivitySubmit}
             handleCloseClick={handleEditActivityCloseClick}
           />
         }

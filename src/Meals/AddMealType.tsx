@@ -2,6 +2,8 @@ import * as React from 'react'
 import { ErrorMessage, Field, Formik, Form, FormikActions } from 'formik'
 import * as yup from 'yup'
 
+import { AddFormProps } from '../types'
+
 export interface MealTypeForm {
   readonly name: string
   readonly mealType: string
@@ -9,14 +11,6 @@ export interface MealTypeForm {
   readonly description: string
   readonly price: number
   readonly items: string
-}
-
-export interface AddFormProps {
-  handleAddSubmit(
-    values: MealTypeForm,
-    actions: FormikActions<MealTypeForm>,
-  ): void
-  handleCloseClick(): void
 }
 
 const mealTypeValues: MealTypeForm = {
@@ -37,7 +31,7 @@ export const MealTypeFormSchema: yup.ObjectSchema<MealTypeForm> = yup.object({
   items: yup.string(),
 })
 
-export const AddMealTypeInnerForm = (props: AddFormProps) => (
+export const AddMealTypeInnerForm = (props: AddFormProps<MealTypeForm>) => (
   <div>
     <Formik
       initialValues={mealTypeValues}
@@ -127,7 +121,7 @@ export const AddMealTypeInnerForm = (props: AddFormProps) => (
   </div>
 )
 
-export const AddMealTypeForm = (props: AddFormProps) => {
+export const AddMealTypeForm = (props: AddFormProps<MealTypeForm>) => {
   return (
     <div>
       <AddMealTypeInnerForm

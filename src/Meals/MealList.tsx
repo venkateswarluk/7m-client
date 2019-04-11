@@ -86,7 +86,7 @@ export const MealTypeList = () => {
 
   const handleEditMealSubmit = async (
     values: MealType,
-    actions: FormikActions<MealTypeForm>,
+    actions: FormikActions<MealType>,
   ) => {
     const updateMealType = await putMealType(values)
     const meals = await getMealTypes()

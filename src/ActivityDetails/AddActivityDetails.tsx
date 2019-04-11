@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Field, Formik, Form, FormikActions } from 'formik'
+import { ErrorMessage, Field, Formik, Form, FormikActions } from 'formik'
 import * as yup from 'yup'
 
 export interface ActivityDetailForm {
@@ -69,6 +69,9 @@ export const AddActivityDetailsInnerForm = (props: AddFormProps) => (
             <div className="control">
               <label className="label">Activity Detail Id</label>
               <Field className="input" name="activityDetailId" type="number" />
+              <div className="has-text-danger is-size-7">
+                <ErrorMessage name="activityDetailId" />
+              </div>
             </div>
           </div>
 
@@ -76,6 +79,9 @@ export const AddActivityDetailsInnerForm = (props: AddFormProps) => (
             <div className="control">
               <label className="label">Short Description</label>
               <Field className="input" name="shortDescription" type="text" />
+              <div className="has-text-danger is-size-7">
+                <ErrorMessage name="shortDescription" />
+              </div>
             </div>
           </div>
 
@@ -83,6 +89,9 @@ export const AddActivityDetailsInnerForm = (props: AddFormProps) => (
             <div className="control">
               <label className="label">Long Description </label>
               <Field className="input" name="longDescription" type="text" />
+              <div className="has-text-danger is-size-7">
+                <ErrorMessage name="longDescription" />
+              </div>
             </div>
           </div>
 
@@ -90,6 +99,9 @@ export const AddActivityDetailsInnerForm = (props: AddFormProps) => (
             <div className="control">
               <label className="label">Images</label>
               <Field className="input" name="images" type="text" />
+              <div className="has-text-danger is-size-7">
+                <ErrorMessage name="images" />
+              </div>
             </div>
           </div>
 
@@ -97,6 +109,9 @@ export const AddActivityDetailsInnerForm = (props: AddFormProps) => (
             <div className="control">
               <label className="label">Videos</label>
               <Field className="input" name="videos" type="text" />
+              <div className="has-text-danger is-size-7">
+                <ErrorMessage name="videos" />
+              </div>
             </div>
           </div>
 
@@ -104,6 +119,9 @@ export const AddActivityDetailsInnerForm = (props: AddFormProps) => (
             <div className="control">
               <label className="label">Activity Phone</label>
               <Field className="input" name="activityPhone" type="text" />
+              <div className="has-text-danger is-size-7">
+                <ErrorMessage name="activityPhone" />
+              </div>
             </div>
           </div>
 
@@ -111,6 +129,9 @@ export const AddActivityDetailsInnerForm = (props: AddFormProps) => (
             <div className="control">
               <label className="label">ActivityId</label>
               <Field className="input" name="activityId" type="number" />
+              <div className="has-text-danger is-size-7">
+                <ErrorMessage name="activityId" />
+              </div>
             </div>
           </div>
 

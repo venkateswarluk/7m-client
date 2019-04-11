@@ -1,10 +1,11 @@
 import * as React from 'react'
-import { Field, Formik, FormikActions, Form } from 'formik'
+import { ErrorMessage, Field, Formik, FormikActions, Form } from 'formik'
+import * as yup from 'yup'
 
 export interface ActivityCategoryForm {
   readonly serviceType: string
   readonly categoryName: string
-  readonly categoryId: number
+  readonly categoryId?: number
 }
 
 const activityValues: ActivityCategoryForm = {
@@ -22,6 +23,11 @@ export interface AddActivityFormProps {
   handleCloseClick(): void
 }
 
+export const FormSchema: yup.ObjectSchema<ActivityCategoryForm> = yup.object({
+  serviceType: yup.string().required('Required'),
+  categoryName: yup.string().required('Required'),
+})
+
 export const AddActivityCategoryInnerForm = (props: AddActivityFormProps) => (
   <div>
     <Formik
@@ -30,6 +36,7 @@ export const AddActivityCategoryInnerForm = (props: AddActivityFormProps) => (
         const submitValues = { ...values, categoryId: props.count + 1 }
         props.handleAddSubmit(submitValues, actions)
       }}
+      validationSchema={FormSchema}
     >
       <div>
         <Form>
@@ -37,6 +44,9 @@ export const AddActivityCategoryInnerForm = (props: AddActivityFormProps) => (
             <div className="control">
               <label className="label">Service Type</label>
               <Field className="input" name="serviceType" type="text" />
+              <div className="has-text-danger is-size-7">
+                <ErrorMessage name="serviceType" />
+              </div>
             </div>
           </div>
 
@@ -44,6 +54,9 @@ export const AddActivityCategoryInnerForm = (props: AddActivityFormProps) => (
             <div className="control">
               <label className="label">Category</label>
               <Field className="input" name="categoryName" type="text" />
+              <div className="has-text-danger is-size-7">
+                <ErrorMessage name="categoryName" />
+              </div>
             </div>
           </div>
 

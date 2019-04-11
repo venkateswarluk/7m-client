@@ -1,6 +1,6 @@
 import * as React from 'react'
-import { Field, Formik, Form, FormikActions } from 'formik'
-import { ActivityCategoryForm } from './AddActivityCategoryForm'
+import { ErrorMessage, Field, Formik, Form, FormikActions } from 'formik'
+import { ActivityCategoryForm, FormSchema } from './AddActivityCategoryForm'
 
 interface EditFormProps {
   readonly currentItem: ActivityCategoryForm
@@ -20,6 +20,7 @@ export const EditActivityCategoryInnerForm = (props: EditFormProps) => (
         const submitValues = { ...values, categoryId: props.count + 1 }
         props.handleEditSubmit(submitValues, actions)
       }}
+      validationSchema={FormSchema}
     >
       <div>
         <Form>
@@ -27,6 +28,9 @@ export const EditActivityCategoryInnerForm = (props: EditFormProps) => (
             <div className="control">
               <label className="label">Service Type</label>
               <Field className="input" name="serviceType" type="text" />
+              <div className="has-text-danger is-size-7">
+                <ErrorMessage name="serviceType" />
+              </div>
             </div>
           </div>
 
@@ -34,6 +38,9 @@ export const EditActivityCategoryInnerForm = (props: EditFormProps) => (
             <div className="control">
               <label className="label">Category</label>
               <Field className="input" name="categoryName" type="text" />
+              <div className="has-text-danger is-size-7">
+                <ErrorMessage name="categoryName" />
+              </div>
             </div>
           </div>
 

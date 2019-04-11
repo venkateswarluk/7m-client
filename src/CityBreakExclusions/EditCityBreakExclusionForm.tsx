@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Field, Formik, Form, FormikActions } from 'formik'
+import { ErrorMessage, Field, Formik, Form, FormikActions } from 'formik'
 import {
   FormSchema,
   CityBreakExclusionFormValues,
@@ -46,6 +46,9 @@ export const EditCityBreakExclusionInnerForm = (
                       </option>
                     ))}
                   </Field>
+                  <div className="has-text-danger is-size-7">
+                    <ErrorMessage name="cityId" />
+                  </div>
                 </div>
               </div>
             </div>
@@ -54,6 +57,9 @@ export const EditCityBreakExclusionInnerForm = (
               <div className="control">
                 <label className="label">Exclusions</label>
                 <Field className="input" name="exclusions" type="text" />
+                <div className="has-text-danger is-size-7">
+                  <ErrorMessage name="exclusions" />
+                </div>
               </div>
             </div>
 

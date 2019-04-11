@@ -1,14 +1,23 @@
 import * as React from 'react'
-import { Field, Formik, Form } from 'formik'
+import { Field, Formik, Form, FormikActions } from 'formik'
 import { ActivityOptionForm } from './AddActivityOption'
 import { FormSchema } from './AddActivityOption'
 
-export const EditActivityOptionInnerForm = (props: any) => (
+interface EditFormProps {
+  readonly currentItem: ActivityOptionForm
+  handleEditSubmit(
+    values: ActivityOptionForm,
+    actions: FormikActions<ActivityOptionForm>,
+  ): void
+  handleCloseClick(): void
+}
+
+export const EditActivityOptionInnerForm = (props: EditFormProps) => (
   <div>
     <Formik
-      initialValues={props.values}
+      initialValues={props.currentItem}
       onSubmit={(values: ActivityOptionForm, actions: any) => {
-        props.onSubmit(values, actions)
+        props.handleEditSubmit(values, actions)
       }}
       validationSchema={FormSchema}
     >
@@ -55,7 +64,7 @@ export const EditActivityOptionInnerForm = (props: any) => (
           <button
             className="button is-danger"
             type="button"
-            onClick={() => props.onClose()}
+            onClick={() => props.handleCloseClick()}
           >
             Close
           </button>
@@ -65,13 +74,13 @@ export const EditActivityOptionInnerForm = (props: any) => (
   </div>
 )
 
-export const EditActivityOptionForm = (props: any) => {
+export const EditActivityOptionForm = (props: EditFormProps) => {
   return (
     <div>
       <EditActivityOptionInnerForm
-        values={props.activityOptionValues}
-        onSubmit={props.handleEditMealTypeSubmit}
-        onClose={props.handleCloseClick}
+        currentItem={props.currentItem}
+        handleEditSubmit={props.handleEditSubmit}
+        handleCloseClick={props.handleCloseClick}
       />
     </div>
   )

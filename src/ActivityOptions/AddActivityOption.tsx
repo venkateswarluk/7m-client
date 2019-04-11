@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Field, Formik, Form } from 'formik'
+import { Field, Formik, Form, FormikActions } from 'formik'
 import * as yup from 'yup'
 
 export interface ActivityOptionForm {
@@ -18,6 +18,14 @@ const activityValues: ActivityOptionForm = {
   name: '',
 }
 
+export interface AddFormProps {
+  handleAddSubmit(
+    values: ActivityOptionForm,
+    actions: FormikActions<ActivityOptionForm>,
+  ): void
+  handleCloseClick(): void
+}
+
 export const FormSchema: () => yup.ObjectSchema<
   ActivityOptionForm
 > = (): yup.ObjectSchema<ActivityOptionForm> =>
@@ -29,12 +37,15 @@ export const FormSchema: () => yup.ObjectSchema<
     name: yup.string().required('Name Required'),
   })
 
-export const AddActivityOptionInnerForm = (props: any) => (
+export const AddActivityOptionInnerForm = (props: AddFormProps) => (
   <div>
     <Formik
       initialValues={activityValues}
-      onSubmit={(values: ActivityOptionForm, actions: any) => {
-        props.onSubmit(values, actions)
+      onSubmit={(
+        values: ActivityOptionForm,
+        actions: FormikActions<ActivityOptionForm>,
+      ) => {
+        props.handleAddSubmit(values, actions)
       }}
       validationSchema={FormSchema}
     >
@@ -81,7 +92,7 @@ export const AddActivityOptionInnerForm = (props: any) => (
           <button
             className="button is-danger"
             type="button"
-            onClick={() => props.onClose()}
+            onClick={() => props.handleCloseClick()}
           >
             Close
           </button>
@@ -91,12 +102,12 @@ export const AddActivityOptionInnerForm = (props: any) => (
   </div>
 )
 
-export const AddActivityOptionForm = (props: any) => {
+export const AddActivityOptionForm = (props: AddFormProps) => {
   return (
     <div>
       <AddActivityOptionInnerForm
-        onSubmit={props.handleAddMealTypeSubmit}
-        onClose={props.handleCloseClick}
+        handleAddSubmit={props.handleAddSubmit}
+        handleCloseClick={props.handleCloseClick}
       />
     </div>
   )

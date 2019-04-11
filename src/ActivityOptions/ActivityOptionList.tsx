@@ -1,6 +1,8 @@
 import * as React from 'react'
 import axios from 'axios'
 import 'bulma/css/bulma.css'
+import { url } from '../config'
+import { FormikActions } from 'formik'
 import { ActivityOptionForm, AddActivityOptionForm } from './AddActivityOption'
 import { EditActivityOptionForm } from './EditActivityOption'
 import { Modal } from '../Model'
@@ -20,17 +22,6 @@ export interface ActivityOption {
   readonly name: string
   readonly activityId: number
 }
-
-// const activityOptioninitialValues: ReadonlyArray<ActivityOption> = [
-//   {
-//     id: '',
-//     activityOptionId: 0,
-//     activityId: 0,
-//     typeDescription: '',
-//     typeVal: '',
-//     name: '',
-//   },
-// ]
 
 const currentActivityOption: ActivityOption = {
   id: '',
@@ -52,7 +43,7 @@ export const ActivityOptionList = () => {
   )
 
   const fetchMealTypeData = async () => {
-    const result = await axios('http://localhost:4000/activityoptions')
+    const result = await axios(`${url}/activityoptions`)
     setActivityOptions(result.data)
   }
 
@@ -62,7 +53,7 @@ export const ActivityOptionList = () => {
 
   const handleAddActivitySubmit = (
     values: ActivityOptionForm,
-    actions: any,
+    actions: FormikActions<ActivityOption>,
   ) => {
     postActivityOptions(values)
       .then(() => {
@@ -95,7 +86,7 @@ export const ActivityOptionList = () => {
 
   const handleEditActivitySubmit = async (
     values: ActivityOption,
-    action: any,
+    action: FormikActions<ActivityOption>,
   ) => {
     const updateMealType = await putActivityOptions(values)
     const meals = await getActivityOptions()
@@ -146,7 +137,7 @@ export const ActivityOptionList = () => {
       >
         {
           <AddActivityOptionForm
-            handleAddMealTypeSubmit={handleAddActivitySubmit}
+            handleAddSubmit={handleAddActivitySubmit}
             handleCloseClick={handleAddMealClick}
           />
         }
@@ -159,8 +150,8 @@ export const ActivityOptionList = () => {
       >
         {
           <EditActivityOptionForm
-            activityOptionValues={editActivityData}
-            handleEditMealTypeSubmit={handleEditActivitySubmit}
+            currentItem={editActivityData}
+            handleEditSubmit={handleEditActivitySubmit}
             handleCloseClick={handleEditActivityCloseClick}
           />
         }

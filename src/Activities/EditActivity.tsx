@@ -1,6 +1,7 @@
 import * as React from 'react'
-import { Field, Formik, Form, FormikActions } from 'formik'
+import { ErrorMessage, Field, Formik, Form, FormikActions } from 'formik'
 import { ActivityFormSchema, destinations, categories } from './AddActivity'
+import { CFIntegerField } from '../CFIntegerField'
 
 export interface ActivityForm {
   readonly id?: string
@@ -33,7 +34,13 @@ export const EditActivityInnerForm = (props: EditFormProps) => (
         values: ActivityForm,
         actions: FormikActions<ActivityForm>,
       ) => {
-        props.handleEditSubmit(values, actions)
+        const submitValues: ActivityForm = {
+          ...values,
+          destinationId: parseInt(values.destinationId.toString(), 10),
+          categoryId: parseInt(values.categoryId.toString(), 10),
+          stars: parseInt(values.stars.toString(), 10),
+        }
+        props.handleEditSubmit(submitValues, actions)
       }}
       validationSchema={ActivityFormSchema}
     >
@@ -43,6 +50,9 @@ export const EditActivityInnerForm = (props: EditFormProps) => (
             <div className="control">
               <label className="label">Activity Name</label>
               <Field className="input" name="activityName" type="text" />
+              <div className="has-text-danger is-size-7">
+                <ErrorMessage name="activityName" />
+              </div>
             </div>
           </div>
 
@@ -50,13 +60,17 @@ export const EditActivityInnerForm = (props: EditFormProps) => (
             <div className="control">
               <label className="label">Description</label>
               <Field className="input" name="description" type="text" />
+              <div className="has-text-danger is-size-7">
+                <ErrorMessage name="description" />
+              </div>
             </div>
           </div>
 
           <div className="field">
             <div className="control">
               <label className="label">StarRating</label>
-              <Field className="input" name="stars" type="number" />
+              <CFIntegerField className="input" name="stars" />
+              <div className="has-text-danger is-size-7" />
             </div>
           </div>
 
@@ -64,20 +78,23 @@ export const EditActivityInnerForm = (props: EditFormProps) => (
             <div className="control">
               <label className="label">Image Url</label>
               <Field className="input" name="thumbUrl" type="url" />
+              <div className="has-text-danger is-size-7">
+                <ErrorMessage name="thumbUrl" />
+              </div>
             </div>
           </div>
 
           <div className="field">
             <div className="control">
               <label className="label">MinChildAge</label>
-              <Field className="input" name="minChildAge" type="number" />
+              <CFIntegerField className="input" name="minChildAge" />
             </div>
           </div>
 
           <div className="field">
             <div className="control">
               <label className="label">MaxChildAge</label>
-              <Field className="input" name="maxChildAge" type="number" />
+              <CFIntegerField className="input" name="maxChildAge" />
             </div>
           </div>
 
@@ -88,11 +105,17 @@ export const EditActivityInnerForm = (props: EditFormProps) => (
                 <Field name="destinationId" component="select">
                   <option>Select Destination</option>
                   {destinations.map(d => (
-                    <option key={d.value} value={d.value}>
+                    <option
+                      key={d.value}
+                      value={parseInt(d.value.toString(), 10)}
+                    >
                       {d.label}
                     </option>
                   ))}
                 </Field>
+                <div className="has-text-danger is-size-7">
+                  <ErrorMessage name="destinationId" />
+                </div>
               </div>
             </div>
           </div>
@@ -109,6 +132,9 @@ export const EditActivityInnerForm = (props: EditFormProps) => (
                     </option>
                   ))}
                 </Field>
+                <div className="has-text-danger is-size-7">
+                  <ErrorMessage name="categoryId" />
+                </div>
               </div>
             </div>
           </div>
@@ -116,13 +142,13 @@ export const EditActivityInnerForm = (props: EditFormProps) => (
           <div className="field">
             <div className="control">
               <label className="label">OptionId</label>
-              <Field className="input" name="optionId" type="number" />
+              <CFIntegerField className="input" name="optionId" />
             </div>
           </div>
           <div className="field">
             <div className="control">
               <label className="label">ActivityId</label>
-              <Field className="input" name="activityId" type="number" />
+              <CFIntegerField className="input" name="activityId" />
             </div>
           </div>
 

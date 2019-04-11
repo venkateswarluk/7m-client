@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Field, Formik, Form, FormikActions } from 'formik'
+import { ErrorMessage, Field, Formik, Form, FormikActions } from 'formik'
 import { ActivityOptionForm } from './AddActivityOption'
 import { FormSchema } from './AddActivityOption'
 
@@ -27,6 +27,9 @@ export const EditActivityOptionInnerForm = (props: EditFormProps) => (
             <div className="control">
               <label className="label">Activity Option Id</label>
               <Field className="input" name="activityOptionId" type="number" />
+              <div className="has-text-danger is-size-7">
+                <ErrorMessage name="activityOptionId" />
+              </div>
             </div>
           </div>
 
@@ -34,6 +37,9 @@ export const EditActivityOptionInnerForm = (props: EditFormProps) => (
             <div className="control">
               <label className="label">TypeVal </label>
               <Field className="input" name="typeVal" type="text" />
+              <div className="has-text-danger is-size-7">
+                <ErrorMessage name="typeVal" />
+              </div>
             </div>
           </div>
 
@@ -41,6 +47,9 @@ export const EditActivityOptionInnerForm = (props: EditFormProps) => (
             <div className="control">
               <label className="label">Type Description</label>
               <Field className="input" name="typeDescription" type="text" />
+              <div className="has-text-danger is-size-7">
+                <ErrorMessage name="typeDescription" />
+              </div>
             </div>
           </div>
 
@@ -48,6 +57,9 @@ export const EditActivityOptionInnerForm = (props: EditFormProps) => (
             <div className="control">
               <label className="label">Name</label>
               <Field className="input" name="name" type="text" />
+              <div className="has-text-danger is-size-7">
+                <ErrorMessage name="name" />
+              </div>
             </div>
           </div>
 
@@ -55,6 +67,9 @@ export const EditActivityOptionInnerForm = (props: EditFormProps) => (
             <div className="control">
               <label className="label">ActivityId</label>
               <Field className="input" name="activityId" type="number" />
+              <div className="has-text-danger is-size-7">
+                <ErrorMessage name="activityId" />
+              </div>
             </div>
           </div>
 

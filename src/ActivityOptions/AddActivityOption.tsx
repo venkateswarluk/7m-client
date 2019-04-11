@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Field, Formik, Form, FormikActions } from 'formik'
+import { ErrorMessage, Field, Formik, Form, FormikActions } from 'formik'
 import * as yup from 'yup'
 
 export interface ActivityOptionForm {
@@ -30,8 +30,14 @@ export const FormSchema: () => yup.ObjectSchema<
   ActivityOptionForm
 > = (): yup.ObjectSchema<ActivityOptionForm> =>
   yup.object({
-    activityOptionId: yup.number().required('ActivityOptionId Required'),
-    activityId: yup.number().required('ActivityId Required'),
+    activityOptionId: yup
+      .number()
+      .moreThan(0, 'Must more Than 0')
+      .required('ActivityOptionId Required'),
+    activityId: yup
+      .number()
+      .moreThan(0, 'Must more Than 0')
+      .required('ActivityId Required'),
     typeVal: yup.string().required(' TipeVal Required'),
     typeDescription: yup.string().required('TypeDescription Required'),
     name: yup.string().required('Name Required'),
@@ -55,6 +61,9 @@ export const AddActivityOptionInnerForm = (props: AddFormProps) => (
             <div className="control">
               <label className="label">Activity Option Id</label>
               <Field className="input" name="activityOptionId" type="number" />
+              <div className="has-text-danger is-size-7">
+                <ErrorMessage name="activityOptionId" />
+              </div>
             </div>
           </div>
 
@@ -62,6 +71,9 @@ export const AddActivityOptionInnerForm = (props: AddFormProps) => (
             <div className="control">
               <label className="label">TypeVal </label>
               <Field className="input" name="typeVal" type="text" />
+              <div className="has-text-danger is-size-7">
+                <ErrorMessage name="typeVal" />
+              </div>
             </div>
           </div>
 
@@ -69,6 +81,9 @@ export const AddActivityOptionInnerForm = (props: AddFormProps) => (
             <div className="control">
               <label className="label">Type Description</label>
               <Field className="input" name="typeDescription" type="text" />
+              <div className="has-text-danger is-size-7">
+                <ErrorMessage name="typeDescription" />
+              </div>
             </div>
           </div>
 
@@ -76,6 +91,9 @@ export const AddActivityOptionInnerForm = (props: AddFormProps) => (
             <div className="control">
               <label className="label">Name</label>
               <Field className="input" name="name" type="text" />
+              <div className="has-text-danger is-size-7">
+                <ErrorMessage name="name" />
+              </div>
             </div>
           </div>
 
@@ -83,6 +101,9 @@ export const AddActivityOptionInnerForm = (props: AddFormProps) => (
             <div className="control">
               <label className="label">ActivityId</label>
               <Field className="input" name="activityId" type="number" />
+              <div className="has-text-danger is-size-7">
+                <ErrorMessage name="activityId" />
+              </div>
             </div>
           </div>
 

@@ -1,23 +1,37 @@
 import * as React from 'react'
-import { Field, Formik, Form } from 'formik'
+import { ErrorMessage, Field, Formik, Form, FormikActions } from 'formik'
 import {
   CityBreakDetailsFormValues,
   FormSchema,
 } from './AddCityBreakDetailForm'
+import { OptionValues } from 'src/CityBreakLocations/CityBreakLocationList'
 
-export const EditCityBreakDateailInnerForm = (props: any) => {
+export interface EditFormProps {
+  readonly currentItem: CityBreakDetailsFormValues
+  readonly destinations: ReadonlyArray<OptionValues>
+  handleEditSubmit(
+    values: CityBreakDetailsFormValues,
+    actions: FormikActions<CityBreakDetailsFormValues>,
+  ): void
+  handleCloseClick(): void
+}
+
+export const EditCityBreakDateailInnerForm = (props: EditFormProps) => {
   return (
     <div>
       <Formik
-        initialValues={props.values}
-        onSubmit={(values: CityBreakDetailsFormValues, actions: any) => {
+        initialValues={props.currentItem}
+        onSubmit={(
+          values: CityBreakDetailsFormValues,
+          actions: FormikActions<CityBreakDetailsFormValues>,
+        ) => {
           const submitValues = {
             ...values,
             city: props.destinations.find(
               (x: any) => x.value === values.cityId,
             ),
           }
-          props.onSubmit(submitValues, actions)
+          props.handleEditSubmit(submitValues, actions)
         }}
         validationSchema={FormSchema}
       >
@@ -35,6 +49,9 @@ export const EditCityBreakDateailInnerForm = (props: any) => {
                       </option>
                     ))}
                   </Field>
+                  <div className="has-text-danger is-size-7">
+                    <ErrorMessage name="cityId" />
+                  </div>
                 </div>
               </div>
             </div>
@@ -43,6 +60,9 @@ export const EditCityBreakDateailInnerForm = (props: any) => {
               <div className="control">
                 <label className="label">Days </label>
                 <Field className="input" name="days" type="number" />
+                <div className="has-text-danger is-size-7">
+                  <ErrorMessage name="days" />
+                </div>
               </div>
             </div>
 
@@ -50,6 +70,9 @@ export const EditCityBreakDateailInnerForm = (props: any) => {
               <div className="control">
                 <label className="label">Day Number</label>
                 <Field className="input" name="dayNo" type="number" />
+                <div className="has-text-danger is-size-7">
+                  <ErrorMessage name="dayNo" />
+                </div>
               </div>
             </div>
 
@@ -57,6 +80,9 @@ export const EditCityBreakDateailInnerForm = (props: any) => {
               <div className="control">
                 <label className="label">DayInfo</label>
                 <Field className="input" name="dayInfo" type="text" />
+                <div className="has-text-danger is-size-7">
+                  <ErrorMessage name="dayInfo" />
+                </div>
               </div>
             </div>
 
@@ -66,7 +92,7 @@ export const EditCityBreakDateailInnerForm = (props: any) => {
             <button
               className="button is-danger"
               type="button"
-              onClick={() => props.onClose()}
+              onClick={() => props.handleCloseClick()}
             >
               Close
             </button>
@@ -77,14 +103,14 @@ export const EditCityBreakDateailInnerForm = (props: any) => {
   )
 }
 
-export const EditCityBreakDetailForm = (props: any) => {
+export const EditCityBreakDetailForm = (props: EditFormProps) => {
   return (
     <div>
       <EditCityBreakDateailInnerForm
-        values={props.cityBreakDetails}
+        currentItem={props.currentItem}
         destinations={props.destinations}
-        onSubmit={props.handleEditMealTypeSubmit}
-        onClose={props.handleCloseClick}
+        handleEditSubmit={props.handleEditSubmit}
+        handleCloseClick={props.handleCloseClick}
       />
     </div>
   )

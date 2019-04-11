@@ -1,12 +1,22 @@
 import * as React from 'react'
-import { Field, Formik, Form } from 'formik'
+import { Field, Formik, Form, FormikActions, ErrorMessage } from 'formik'
 import * as yup from 'yup'
+import { OptionValues } from 'src/CityBreaks/CityBreakList'
 
 export interface CityBreakDetailsFormValues {
   readonly cityId: number
   readonly days: number
   readonly dayNo: number
   readonly dayInfo: string
+}
+
+export interface AddFormProps {
+  readonly destinations: ReadonlyArray<OptionValues>
+  handleAddSubmit(
+    values: CityBreakDetailsFormValues,
+    actions: FormikActions<CityBreakDetailsFormValues>,
+  ): void
+  handleCloseClick(): void
 }
 
 const activityValues: CityBreakDetailsFormValues = {
@@ -25,19 +35,26 @@ export const FormSchema: () => yup.ObjectSchema<
     dayInfo: yup.string().required('DayInfo required'),
     dayNo: yup.number().required('DayNo required'),
   })
-export const AddCityBreakDateailInnerForm = (props: any) => {
+export const AddCityBreakDateailInnerForm = (props: AddFormProps) => {
   return (
     <div>
       <Formik
         initialValues={activityValues}
-        onSubmit={(values: CityBreakDetailsFormValues, actions: any) => {
+        onSubmit={(
+          values: CityBreakDetailsFormValues,
+          actions: FormikActions<CityBreakDetailsFormValues>,
+        ) => {
+          const city = props.destinations.find(
+            (x: OptionValues) =>
+              x.value.toString() === values.cityId.toString(),
+          )
           const submitValues = {
             ...values,
-            city: props.destinations.find(
-              (x: any) => x.value === values.cityId,
-            ),
+            city: city ? city.label : '',
+            cityId: parseInt(values.cityId.toString(), 10),
           }
-          props.onSubmit(submitValues, actions)
+
+          props.handleAddSubmit(submitValues, actions)
         }}
         validationSchema={FormSchema}
       >
@@ -55,6 +72,9 @@ export const AddCityBreakDateailInnerForm = (props: any) => {
                       </option>
                     ))}
                   </Field>
+                  <div className="has-text-danger is-size-7">
+                    <ErrorMessage name="cityId" />
+                  </div>
                 </div>
               </div>
             </div>
@@ -63,6 +83,9 @@ export const AddCityBreakDateailInnerForm = (props: any) => {
               <div className="control">
                 <label className="label">Days </label>
                 <Field className="input" name="days" type="number" />
+                <div className="has-text-danger is-size-7">
+                  <ErrorMessage name="days" />
+                </div>
               </div>
             </div>
 
@@ -70,6 +93,9 @@ export const AddCityBreakDateailInnerForm = (props: any) => {
               <div className="control">
                 <label className="label">Day Number</label>
                 <Field className="input" name="dayNo" type="number" />
+                <div className="has-text-danger is-size-7">
+                  <ErrorMessage name="dayNo" />
+                </div>
               </div>
             </div>
 
@@ -77,6 +103,9 @@ export const AddCityBreakDateailInnerForm = (props: any) => {
               <div className="control">
                 <label className="label">DayInfo</label>
                 <Field className="input" name="dayInfo" type="text" />
+                <div className="has-text-danger is-size-7">
+                  <ErrorMessage name="dayInfo" />
+                </div>
               </div>
             </div>
 
@@ -86,7 +115,7 @@ export const AddCityBreakDateailInnerForm = (props: any) => {
             <button
               className="button is-danger"
               type="button"
-              onClick={() => props.onClose()}
+              onClick={() => props.handleCloseClick()}
             >
               Close
             </button>
@@ -97,13 +126,13 @@ export const AddCityBreakDateailInnerForm = (props: any) => {
   )
 }
 
-export const AddCityBreakDetailForm = (props: any) => {
+export const AddCityBreakDetailForm = (props: AddFormProps) => {
   return (
     <div>
       <AddCityBreakDateailInnerForm
         destinations={props.destinations}
-        onSubmit={props.handleAddMealTypeSubmit}
-        onClose={props.handleCloseClick}
+        handleAddSubmit={props.handleAddSubmit}
+        handleCloseClick={props.handleCloseClick}
       />
     </div>
   )

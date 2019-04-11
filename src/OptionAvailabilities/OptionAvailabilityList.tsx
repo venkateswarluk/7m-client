@@ -1,7 +1,6 @@
 import * as React from 'react'
 import axios from 'axios'
 import 'bulma/css/bulma.css'
-import { url } from '../config'
 import { FormikActions } from 'formik'
 import {
   OptionAvailabilityForm,
@@ -10,12 +9,14 @@ import {
 import { EditOptionAvailabilityForm } from './EditOptionAvailabilityForm'
 import { Modal } from '../Model'
 import {
-  getOptionsAvailabilities,
-  getOptionAvailabilityById,
-  postOptionAvailability,
-  putOptionAvailability,
-  deleteOptionAvailability,
-} from './services'
+  getAllItems,
+  getItemById,
+  postItem,
+  putItem,
+  deleteItem,
+} from '../services'
+
+const url = `http://localhost:4000/optionavailabilities`
 
 export interface OptionAvailability {
   readonly id: string
@@ -58,7 +59,7 @@ export const OptionAvailabilityList = () => {
   )
 
   const fetchMealTypeData = async () => {
-    const result = await axios(`${url}/optionavailabilities`)
+    const result = await axios(`${url}`)
     setOptionAvailabilities(result.data)
   }
 
@@ -70,9 +71,9 @@ export const OptionAvailabilityList = () => {
     values: OptionAvailabilityForm,
     actions: FormikActions<OptionAvailabilityForm>,
   ) => {
-    postOptionAvailability(values)
+    postItem(url, values)
       .then(() => {
-        getOptionsAvailabilities()
+        getAllItems(url)
           .then(res => {
             setOptionAvailabilities(res)
             setAddActivityOpen(!addActivityOpen)
@@ -88,7 +89,7 @@ export const OptionAvailabilityList = () => {
   }
 
   const handleEditActivityClick = async (id: string) => {
-    const res = await getOptionAvailabilityById(id)
+    const res = await getItemById(url, id)
     if (res) {
       setEditActivityData(res)
       setEditActivityOpen(!editActivityOpen)
@@ -103,8 +104,8 @@ export const OptionAvailabilityList = () => {
     values: OptionAvailability,
     actions: FormikActions<OptionAvailabilityForm>,
   ) => {
-    const updateMealType = await putOptionAvailability(values)
-    const meals = await getOptionsAvailabilities()
+    const updateMealType = await putItem(url, values)
+    const meals = await getAllItems(url)
     if (updateMealType.status === 200) {
       setOptionAvailabilities(meals)
       setEditActivityOpen(!editActivityOpen)
@@ -113,9 +114,9 @@ export const OptionAvailabilityList = () => {
   }
 
   const handleDeleteActivitySubmit = (id: string) => {
-    deleteOptionAvailability(id)
+    deleteItem(url, id)
       .then(() => {
-        getOptionsAvailabilities()
+        getAllItems(url)
           .then(res => {
             setOptionAvailabilities(res)
           })

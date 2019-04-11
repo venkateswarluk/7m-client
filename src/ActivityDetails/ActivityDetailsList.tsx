@@ -1,7 +1,6 @@
 import * as React from 'react'
 import axios from 'axios'
 import 'bulma/css/bulma.css'
-import { url } from '../config'
 import { FormikActions } from 'formik'
 import {
   AddActivityDetailsForm,
@@ -10,12 +9,14 @@ import {
 import { EditActivityDetailsForm } from './EditActivityDetails'
 import { Modal } from '../Model'
 import {
-  getActivityDetails,
-  getActivityDetailsById,
-  postActivityDetail,
-  putActivityDetail,
-  deleteActivityDetail,
-} from './services'
+  getAllItems,
+  getItemById,
+  postItem,
+  putItem,
+  deleteItem,
+} from '../services'
+
+const url = `http://localhost:4000/activitydetails`
 
 export interface ActivityDetails {
   readonly id: string
@@ -50,7 +51,7 @@ export const ActivityDetailsList = () => {
   )
 
   const fetchMealTypeData = async () => {
-    const result = await axios(`${url}/activitydetails`)
+    const result = await axios(`${url}`)
     setActivityDetails(result.data)
   }
 
@@ -62,9 +63,9 @@ export const ActivityDetailsList = () => {
     values: ActivityDetailForm,
     actions: FormikActions<ActivityDetailForm>,
   ) => {
-    postActivityDetail(values)
+    postItem(url, values)
       .then(() => {
-        getActivityDetails()
+        getAllItems(url)
           .then(res => {
             setActivityDetails(res)
             setAddActivityOpen(!addActivityOpen)
@@ -80,7 +81,7 @@ export const ActivityDetailsList = () => {
   }
 
   const handleEditActivityClick = async (id: string) => {
-    const res = await getActivityDetailsById(id)
+    const res = await getItemById(url, id)
     if (res) {
       setEditActivityData(res)
       setEditActivityOpen(!editActivityOpen)
@@ -95,8 +96,8 @@ export const ActivityDetailsList = () => {
     values: ActivityDetails,
     action: FormikActions<ActivityDetailForm>,
   ) => {
-    const updateMealType = await putActivityDetail(values)
-    const meals = await getActivityDetails()
+    const updateMealType = await putItem(url, values)
+    const meals = await getAllItems(url)
     if (updateMealType.status === 200) {
       setActivityDetails(meals)
       setEditActivityOpen(!editActivityOpen)
@@ -105,9 +106,9 @@ export const ActivityDetailsList = () => {
   }
 
   const handleDeleteActivitySubmit = (id: string) => {
-    deleteActivityDetail(id)
+    deleteItem(url, id)
       .then(() => {
-        getActivityDetails()
+        getAllItems(url)
           .then(res => {
             setActivityDetails(res)
           })

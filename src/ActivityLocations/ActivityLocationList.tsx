@@ -2,7 +2,6 @@ import * as React from 'react'
 import axios from 'axios'
 import 'bulma/css/bulma.css'
 import { FormikActions } from 'formik'
-import { url } from '../config'
 import {
   AddActivityLocationForm,
   ActivityForm,
@@ -10,12 +9,14 @@ import {
 import { EditActivityLocationForm } from './EditActivityLocationForm'
 import { Modal } from '../Model'
 import {
-  getActivityLocations,
-  getActivityLocationsById,
-  postActivityLocation,
-  putActivityLocation,
-  deleteActivityLocation,
-} from './services'
+  getAllItems,
+  getItemById,
+  postItem,
+  putItem,
+  deleteItem,
+} from '../services'
+
+const url = `http://localhost:4000/activityLocations`
 
 export interface ActivityLocation {
   readonly id: string
@@ -56,7 +57,7 @@ export const ActivityLocationList = () => {
   )
 
   const fetchMealTypeData = async () => {
-    const result = await axios(`${url}/activityLocations`)
+    const result = await axios(`${url}`)
     setActivities(result.data)
   }
 
@@ -68,9 +69,9 @@ export const ActivityLocationList = () => {
     values: ActivityForm,
     actions: FormikActions<ActivityForm>,
   ) => {
-    postActivityLocation(values)
+    postItem(url, values)
       .then(() => {
-        getActivityLocations()
+        getAllItems(url)
           .then(res => {
             setActivities(res)
             setAddActivityOpen(!addActivityOpen)
@@ -86,7 +87,7 @@ export const ActivityLocationList = () => {
   }
 
   const handleEditActivityClick = async (id: string) => {
-    const res = await getActivityLocationsById(id)
+    const res = await getItemById(url, id)
     if (res) {
       setEditActivityData(res)
       setEditActivityOpen(!editActivityOpen)
@@ -101,8 +102,8 @@ export const ActivityLocationList = () => {
     values: ActivityLocation,
     action: FormikActions<ActivityLocation>,
   ) => {
-    const updateMealType = await putActivityLocation(values)
-    const meals = await getActivityLocations()
+    const updateMealType = await putItem(url, values)
+    const meals = await getAllItems(url)
     if (updateMealType.status === 200) {
       setActivities(meals)
       setEditActivityOpen(!editActivityOpen)
@@ -111,9 +112,9 @@ export const ActivityLocationList = () => {
   }
 
   const handleDeleteActivitySubmit = (id: string) => {
-    deleteActivityLocation(id)
+    deleteItem(url, id)
       .then(() => {
-        getActivityLocations()
+        getAllItems(url)
           .then(res => {
             setActivities(res)
           })

@@ -1,6 +1,5 @@
 import * as React from 'react'
 import axios from 'axios'
-import { url } from '../config'
 import { FormikActions } from 'formik'
 import 'bulma/css/bulma.css'
 import {
@@ -10,12 +9,14 @@ import {
 import { EditActivityCategoryForm } from './EditActivityCategoryForm'
 import { Modal } from '../Model'
 import {
-  getActivityCategories,
-  getActivityCategoriesById,
-  postActivityCategory,
-  putActivityCategory,
-  deleteActivityCategory,
-} from './services'
+  getAllItems,
+  getItemById,
+  postItem,
+  putItem,
+  deleteItem,
+} from '../services'
+
+const url = `http://localhost:4000/categories`
 
 export interface ActivityCategory {
   readonly id: string
@@ -42,7 +43,7 @@ export const ActivityCategoryList = () => {
   )
 
   const fetchMealTypeData = async () => {
-    const result = await axios(`${url}/categories`)
+    const result = await axios(`${url}`)
     setActivities(result.data)
   }
 
@@ -54,9 +55,9 @@ export const ActivityCategoryList = () => {
     values: ActivityCategoryForm,
     actions: FormikActions<ActivityCategoryForm>,
   ) => {
-    postActivityCategory(values)
+    postItem(url, values)
       .then(() => {
-        getActivityCategories()
+        getAllItems(url)
           .then(res => {
             setActivities(res)
             setAddActivityOpen(!addActivityOpen)
@@ -72,7 +73,7 @@ export const ActivityCategoryList = () => {
   }
 
   const handleEditActivityClick = async (id: string) => {
-    const res = await getActivityCategoriesById(id)
+    const res = await getItemById(url, id)
     if (res) {
       setEditActivityData(res)
       setEditActivityOpen(!editActivityOpen)
@@ -87,8 +88,8 @@ export const ActivityCategoryList = () => {
     values: ActivityCategory,
     action: FormikActions<ActivityCategoryForm>,
   ) => {
-    const updateMealType = await putActivityCategory(values)
-    const meals = await getActivityCategories()
+    const updateMealType = await putItem(url, values)
+    const meals = await getAllItems(url)
     if (updateMealType.status === 200) {
       setActivities(meals)
       setEditActivityOpen(!editActivityOpen)
@@ -97,9 +98,9 @@ export const ActivityCategoryList = () => {
   }
 
   const handleDeleteActivitySubmit = (id: string) => {
-    deleteActivityCategory(id)
+    deleteItem(url, id)
       .then(() => {
-        getActivityCategories()
+        getAllItems(url)
           .then(res => {
             setActivities(res)
           })

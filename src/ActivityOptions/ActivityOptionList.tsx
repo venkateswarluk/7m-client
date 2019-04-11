@@ -1,18 +1,19 @@
 import * as React from 'react'
 import axios from 'axios'
 import 'bulma/css/bulma.css'
-import { url } from '../config'
 import { FormikActions } from 'formik'
 import { ActivityOptionForm, AddActivityOptionForm } from './AddActivityOption'
 import { EditActivityOptionForm } from './EditActivityOption'
 import { Modal } from '../Model'
 import {
-  getActivityOptions,
-  getActivityOptionsById,
-  postActivityOptions,
-  putActivityOptions,
-  deleteActivityOptions,
-} from './services'
+  getAllItems,
+  getItemById,
+  postItem,
+  putItem,
+  deleteItem,
+} from '../services'
+
+const url = `http://localhost:4000/activityoptions`
 
 export interface ActivityOption {
   readonly id: string
@@ -43,7 +44,7 @@ export const ActivityOptionList = () => {
   )
 
   const fetchMealTypeData = async () => {
-    const result = await axios(`${url}/activityoptions`)
+    const result = await axios(`${url}`)
     setActivityOptions(result.data)
   }
 
@@ -55,9 +56,9 @@ export const ActivityOptionList = () => {
     values: ActivityOptionForm,
     actions: FormikActions<ActivityOption>,
   ) => {
-    postActivityOptions(values)
+    postItem(url, values)
       .then(() => {
-        getActivityOptions()
+        getAllItems(url)
           .then(res => {
             setActivityOptions(res)
             setAddActivityOpen(!addActivityOpen)
@@ -73,7 +74,7 @@ export const ActivityOptionList = () => {
   }
 
   const handleEditActivityClick = async (id: string) => {
-    const res = await getActivityOptionsById(id)
+    const res = await getItemById(url, id)
     if (res) {
       setEditActivityData(res)
       setEditActivityOpen(!editActivityOpen)
@@ -88,8 +89,8 @@ export const ActivityOptionList = () => {
     values: ActivityOption,
     action: FormikActions<ActivityOption>,
   ) => {
-    const updateMealType = await putActivityOptions(values)
-    const meals = await getActivityOptions()
+    const updateMealType = await putItem(url, values)
+    const meals = await getAllItems(url)
     if (updateMealType.status === 200) {
       setActivityOptions(meals)
       setEditActivityOpen(!editActivityOpen)
@@ -98,9 +99,9 @@ export const ActivityOptionList = () => {
   }
 
   const handleDeleteActivitySubmit = (id: string) => {
-    deleteActivityOptions(id)
+    deleteItem(url, id)
       .then(() => {
-        getActivityOptions()
+        getAllItems(url)
           .then(res => {
             setActivityOptions(res)
           })

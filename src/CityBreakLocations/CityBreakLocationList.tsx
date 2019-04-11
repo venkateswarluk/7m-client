@@ -8,12 +8,14 @@ import {
 import { EditCityBreakLocationForm } from './EditCityBreakLocatiionForm'
 import { Modal } from '../Model'
 import {
-  getCityBreakLocations,
-  getCityBreaksLocationsById,
-  postCityBreakLocation,
-  putCityBreakLocation,
-  deleteCityBreakLocation,
-} from './services'
+  getAllItems,
+  getItemById,
+  postItem,
+  putItem,
+  deleteItem,
+} from '../services'
+
+const url = `http://localhost:4000/cityBreakLocations`
 
 export interface CityBreakLocation {
   readonly id: string
@@ -48,12 +50,12 @@ export const CityBreakLocationsList = () => {
   >([])
 
   const fetchMealTypeData = async () => {
-    const result = await axios('http://localhost:4000/cityBreakLocations')
+    const result = await axios(`${url}`)
     setCityBreaks(result.data)
   }
 
   const fetchCitiesData = async () => {
-    const result = await axios('http://localhost:4000/cityBreakLocations')
+    const result = await axios(`${url}`)
     const cities = result.data.map((x: any) => ({
       value: x.cityId,
       label: x.city,
@@ -69,9 +71,9 @@ export const CityBreakLocationsList = () => {
     values: CityBreakLocationFormValues,
     actions: any,
   ) => {
-    postCityBreakLocation(values)
+    postItem(url, values)
       .then(() => {
-        getCityBreakLocations()
+        getAllItems(url)
           .then(res => {
             setCityBreaks(res)
             setAddCityBreakOpen(!addCityBreakOpen)
@@ -87,7 +89,7 @@ export const CityBreakLocationsList = () => {
   }
 
   const handleEditActivityClick = async (id: string) => {
-    const res = await getCityBreaksLocationsById(id)
+    const res = await getItemById(url, id)
     if (res) {
       setEditCityBreakData(res)
       setEditCityBreakOpen(!editCityBreakOpen)
@@ -102,8 +104,8 @@ export const CityBreakLocationsList = () => {
     values: CityBreakLocation,
     action: any,
   ) => {
-    const updateMealType = await putCityBreakLocation(values)
-    const meals = await getCityBreakLocations()
+    const updateMealType = await putItem(url, values)
+    const meals = await getAllItems(url)
     if (updateMealType.status === 200) {
       setCityBreaks(meals)
       setEditCityBreakOpen(!editCityBreakOpen)
@@ -112,9 +114,9 @@ export const CityBreakLocationsList = () => {
   }
 
   const handleDeleteActivitySubmit = (id: string) => {
-    deleteCityBreakLocation(id)
+    deleteItem(url, id)
       .then(() => {
-        getCityBreakLocations()
+        getAllItems(url)
           .then(res => {
             setCityBreaks(res)
           })

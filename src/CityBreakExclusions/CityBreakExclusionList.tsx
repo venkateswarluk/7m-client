@@ -1,7 +1,6 @@
 import * as React from 'react'
 import axios from 'axios'
 import 'bulma/css/bulma.css'
-import { url } from '../config'
 import { FormikActions } from 'formik'
 import {
   CityBreakExclusionFormValues,
@@ -10,12 +9,14 @@ import {
 import { EditCityBreakExclusionForm } from './EditCityBreakExclusionForm'
 import { Modal } from '../Model'
 import {
-  getCityBreakExclusions,
-  getCityBreaksExclusionsById,
-  postCityBreakExclusion,
-  putCityBreakExclusion,
-  deleteCityBreakExclusion,
-} from './services'
+  getAllItems,
+  getItemById,
+  postItem,
+  putItem,
+  deleteItem,
+} from '../services'
+
+const url = `http://localhost:4000/cityBreakExclusions`
 
 export interface CityBreakExclusion {
   readonly id: string
@@ -48,12 +49,12 @@ export const CityBreakExclusionsList = () => {
   >([])
 
   const fetchMealTypeData = async () => {
-    const result = await axios(`${url}/cityBreakExclusions`)
+    const result = await axios(`${url}`)
     setCityBreaks(result.data)
   }
 
   const fetchCitiesData = async () => {
-    const result = await axios(`${url}/cityBreakLocations`)
+    const result = await axios(`http://localhost:4000/cityBreakLocations`)
     const cities = result.data.map((x: any) => ({
       value: x.cityId,
       label: x.city,
@@ -69,9 +70,9 @@ export const CityBreakExclusionsList = () => {
     values: CityBreakExclusionFormValues,
     actions: FormikActions<CityBreakExclusionFormValues>,
   ) => {
-    postCityBreakExclusion(values)
+    postItem(url, values)
       .then(() => {
-        getCityBreakExclusions()
+        getAllItems(url)
           .then(res => {
             setCityBreaks(res)
             setAddCityBreakOpen(!addCityBreakOpen)
@@ -87,7 +88,7 @@ export const CityBreakExclusionsList = () => {
   }
 
   const handleEditActivityClick = async (id: string) => {
-    const res = await getCityBreaksExclusionsById(id)
+    const res = await getItemById(url, id)
     if (res) {
       setEditCityBreakData(res)
       setEditCityBreakOpen(!editCityBreakOpen)
@@ -102,8 +103,8 @@ export const CityBreakExclusionsList = () => {
     values: CityBreakExclusion,
     actions: FormikActions<CityBreakExclusionFormValues>,
   ) => {
-    const updateMealType = await putCityBreakExclusion(values)
-    const meals = await getCityBreakExclusions()
+    const updateMealType = await putItem(url, values)
+    const meals = await getAllItems(url)
     if (updateMealType.status === 200) {
       setCityBreaks(meals)
       setEditCityBreakOpen(!editCityBreakOpen)
@@ -112,9 +113,9 @@ export const CityBreakExclusionsList = () => {
   }
 
   const handleDeleteActivitySubmit = (id: string) => {
-    deleteCityBreakExclusion(id)
+    deleteItem(url, id)
       .then(() => {
-        getCityBreakExclusions()
+        getAllItems(url)
           .then(res => {
             setCityBreaks(res)
           })

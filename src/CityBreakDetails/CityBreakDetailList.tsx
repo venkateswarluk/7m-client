@@ -1,7 +1,6 @@
 import * as React from 'react'
 import axios from 'axios'
 import 'bulma/css/bulma.css'
-import { url } from '../config'
 import { FormikActions } from 'formik'
 import {
   CityBreakDetailsFormValues,
@@ -10,12 +9,14 @@ import {
 import { EditCityBreakDetailForm } from './EditCityBreakDetailForm'
 import { Modal } from '../Model'
 import {
-  getCityBreakDetails,
-  getCityBreaksDetailsById,
-  postCityBreakDetail,
-  putCityBreakDetail,
-  deleteCityBreakDetail,
-} from './services'
+  getAllItems,
+  getItemById,
+  postItem,
+  putItem,
+  deleteItem,
+} from '../services'
+
+const url = `http://localhost:4000/citybreakdetails`
 
 export interface CityBreakDetails {
   readonly id: string
@@ -52,12 +53,12 @@ export const CityBreakDetailsList = () => {
   >([])
 
   const fetchMealTypeData = async () => {
-    const result = await axios(`${url}/citybreakdetails`)
+    const result = await axios(`${url}`)
     setCityBreaks(result.data)
   }
 
   const fetchCitiesData = async () => {
-    const result = await axios(`${url}/cityBreakLocations`)
+    const result = await axios(`http://localhost:4000/cityBreakLocations`)
     const cities = result.data.map((x: any) => ({
       value: x.cityId,
       label: x.city,
@@ -73,9 +74,9 @@ export const CityBreakDetailsList = () => {
     values: CityBreakDetailsFormValues,
     actions: FormikActions<CityBreakDetailsFormValues>,
   ) => {
-    postCityBreakDetail(values)
+    postItem(url, values)
       .then(() => {
-        getCityBreakDetails()
+        getAllItems(url)
           .then(res => {
             setCityBreaks(res)
             setAddCityBreakOpen(!addCityBreakOpen)
@@ -91,7 +92,7 @@ export const CityBreakDetailsList = () => {
   }
 
   const handleEditActivityClick = async (id: string) => {
-    const res = await getCityBreaksDetailsById(id)
+    const res = await getItemById(url, id)
     if (res) {
       setEditCityBreakData(res)
       setEditCityBreakOpen(!editCityBreakOpen)
@@ -106,8 +107,8 @@ export const CityBreakDetailsList = () => {
     values: CityBreakDetails,
     actions: FormikActions<CityBreakDetailsFormValues>,
   ) => {
-    const updateMealType = await putCityBreakDetail(values)
-    const meals = await getCityBreakDetails()
+    const updateMealType = await putItem(url, values)
+    const meals = await getAllItems(url)
     if (updateMealType.status === 200) {
       setCityBreaks(meals)
       setEditCityBreakOpen(!editCityBreakOpen)
@@ -116,9 +117,9 @@ export const CityBreakDetailsList = () => {
   }
 
   const handleDeleteActivitySubmit = (id: string) => {
-    deleteCityBreakDetail(id)
+    deleteItem(url, id)
       .then(() => {
-        getCityBreakDetails()
+        getAllItems(url)
           .then(res => {
             setCityBreaks(res)
           })

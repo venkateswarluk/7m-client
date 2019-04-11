@@ -1,14 +1,24 @@
 import * as React from 'react'
-import { Field, Formik, Form } from 'formik'
+import { Field, Formik, Form, FormikActions } from 'formik'
 import { ActivityCategoryForm } from './AddActivityCategoryForm'
 
-export const EditActivityCategoryInnerForm = (props: any) => (
+interface EditFormProps {
+  readonly currentItem: ActivityCategoryForm
+  readonly count: number
+  handleEditSubmit(
+    values: ActivityCategoryForm,
+    actions: FormikActions<ActivityCategoryForm>,
+  ): void
+  handleCloseClick(): void
+}
+
+export const EditActivityCategoryInnerForm = (props: EditFormProps) => (
   <div>
     <Formik
-      initialValues={props.values}
+      initialValues={props.currentItem}
       onSubmit={(values: ActivityCategoryForm, actions: any) => {
         const submitValues = { ...values, categoryId: props.count + 1 }
-        props.onSubmit(submitValues, actions)
+        props.handleEditSubmit(submitValues, actions)
       }}
     >
       <div>
@@ -33,7 +43,7 @@ export const EditActivityCategoryInnerForm = (props: any) => (
           <button
             className="button is-danger"
             type="button"
-            onClick={() => props.onClose()}
+            onClick={() => props.handleCloseClick()}
           >
             Close
           </button>
@@ -43,14 +53,14 @@ export const EditActivityCategoryInnerForm = (props: any) => (
   </div>
 )
 
-export const EditActivityCategoryForm = (props: any) => {
+export const EditActivityCategoryForm = (props: EditFormProps) => {
   return (
     <div>
       <EditActivityCategoryInnerForm
-        values={props.activityCategories}
+        currentItem={props.currentItem}
         count={props.count}
-        onSubmit={props.handleEditMealTypeSubmit}
-        onClose={props.handleCloseClick}
+        handleEditSubmit={props.handleEditSubmit}
+        handleCloseClick={props.handleCloseClick}
       />
     </div>
   )

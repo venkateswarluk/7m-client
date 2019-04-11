@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Field, Formik, Form } from 'formik'
+import { Field, Formik, FormikActions, Form } from 'formik'
 
 export interface ActivityCategoryForm {
   readonly serviceType: string
@@ -13,13 +13,22 @@ const activityValues: ActivityCategoryForm = {
   categoryId: 0,
 }
 
-export const AddActivityCategoryInnerForm = (props: any) => (
+export interface AddActivityFormProps {
+  readonly count: number
+  handleAddSubmit(
+    values: ActivityCategoryForm,
+    actions: FormikActions<ActivityCategoryForm>,
+  ): void
+  handleCloseClick(): void
+}
+
+export const AddActivityCategoryInnerForm = (props: AddActivityFormProps) => (
   <div>
     <Formik
       initialValues={activityValues}
       onSubmit={(values: ActivityCategoryForm, actions: any) => {
         const submitValues = { ...values, categoryId: props.count + 1 }
-        props.onSubmit(submitValues, actions)
+        props.handleAddSubmit(submitValues, actions)
       }}
     >
       <div>
@@ -44,7 +53,7 @@ export const AddActivityCategoryInnerForm = (props: any) => (
           <button
             className="button is-danger"
             type="button"
-            onClick={() => props.onClose()}
+            onClick={() => props.handleCloseClick()}
           >
             Close
           </button>
@@ -54,13 +63,13 @@ export const AddActivityCategoryInnerForm = (props: any) => (
   </div>
 )
 
-export const AddActivityCategoryForm = (props: any) => {
+export const AddActivityCategoryForm = (props: AddActivityFormProps) => {
   return (
     <div>
       <AddActivityCategoryInnerForm
         count={props.count}
-        onSubmit={props.handleAddMealTypeSubmit}
-        onClose={props.handleCloseClick}
+        handleAddSubmit={props.handleAddSubmit}
+        handleCloseClick={props.handleCloseClick}
       />
     </div>
   )

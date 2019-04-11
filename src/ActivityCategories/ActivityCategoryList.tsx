@@ -1,5 +1,7 @@
 import * as React from 'react'
 import axios from 'axios'
+import { url } from '../config'
+import { FormikActions } from 'formik'
 import 'bulma/css/bulma.css'
 import {
   AddActivityCategoryForm,
@@ -40,7 +42,7 @@ export const ActivityCategoryList = () => {
   )
 
   const fetchMealTypeData = async () => {
-    const result = await axios('http://localhost:4000/categories')
+    const result = await axios(`${url}/categories`)
     setActivities(result.data)
   }
 
@@ -50,7 +52,7 @@ export const ActivityCategoryList = () => {
 
   const handleAddActivitySubmit = (
     values: ActivityCategoryForm,
-    actions: any,
+    actions: FormikActions<ActivityCategoryForm>,
   ) => {
     postActivityCategory(values)
       .then(() => {
@@ -83,7 +85,7 @@ export const ActivityCategoryList = () => {
 
   const handleEditActivitySubmit = async (
     values: ActivityCategory,
-    action: any,
+    action: FormikActions<ActivityCategoryForm>,
   ) => {
     const updateMealType = await putActivityCategory(values)
     const meals = await getActivityCategories()
@@ -135,7 +137,7 @@ export const ActivityCategoryList = () => {
         {
           <AddActivityCategoryForm
             count={activities.length}
-            handleAddMealTypeSubmit={handleAddActivitySubmit}
+            handleAddSubmit={handleAddActivitySubmit}
             handleCloseClick={handleAddMealClick}
           />
         }
@@ -149,8 +151,8 @@ export const ActivityCategoryList = () => {
         {
           <EditActivityCategoryForm
             count={activities.length}
-            activityCategories={editActivityData}
-            handleEditMealTypeSubmit={handleEditActivitySubmit}
+            currentItem={editActivityData}
+            handleEditSubmit={handleEditActivitySubmit}
             handleCloseClick={handleEditActivityCloseClick}
           />
         }

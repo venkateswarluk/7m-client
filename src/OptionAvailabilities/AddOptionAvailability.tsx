@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Field, Formik, Form, FormikActions } from 'formik'
+import { Field, Formik, Form, FormikActions, ErrorMessage } from 'formik'
 import * as yup from 'yup'
 
 export interface OptionAvailabilityForm {
@@ -83,6 +83,9 @@ export const AddOptionAvailabilityInnerForm = (props: AddFormProps) => (
                 name="optionAvailabilityId"
                 type="number"
               />
+              <div className="has-text-danger is-size-7">
+                <ErrorMessage name="optionAvailabilityId" />
+              </div>
             </div>
           </div>
 
@@ -90,6 +93,9 @@ export const AddOptionAvailabilityInnerForm = (props: AddFormProps) => (
             <div className="control">
               <label className="label">MaxAdults </label>
               <Field className="input" name="maxAdults" type="number" />
+              <div className="has-text-danger is-size-7">
+                <ErrorMessage name="maxAdults" />
+              </div>
             </div>
           </div>
 
@@ -97,6 +103,9 @@ export const AddOptionAvailabilityInnerForm = (props: AddFormProps) => (
             <div className="control">
               <label className="label">MaxChilds</label>
               <Field className="input" name="maxChilds" type="number" />
+              <div className="has-text-danger is-size-7">
+                <ErrorMessage name="maxChilds" />
+              </div>
             </div>
           </div>
 
@@ -104,6 +113,9 @@ export const AddOptionAvailabilityInnerForm = (props: AddFormProps) => (
             <div className="control">
               <label className="label">MaxUnits</label>
               <Field className="input" name="maxUnits" type="number" />
+              <div className="has-text-danger is-size-7">
+                <ErrorMessage name="maxUnits" />
+              </div>
             </div>
           </div>
 
@@ -111,6 +123,9 @@ export const AddOptionAvailabilityInnerForm = (props: AddFormProps) => (
             <div className="control">
               <label className="label">AdultPrice</label>
               <Field className="input" name="adultPrice" type="number" />
+              <div className="has-text-danger is-size-7">
+                <ErrorMessage name="adultPrice" />
+              </div>
             </div>
           </div>
 
@@ -118,12 +133,18 @@ export const AddOptionAvailabilityInnerForm = (props: AddFormProps) => (
             <div className="control">
               <label className="label">ChildPrice</label>
               <Field className="input" name="childPrice" type="number" />
+              <div className="has-text-danger is-size-7">
+                <ErrorMessage name="childPrice" />
+              </div>
             </div>
           </div>
           <div className="field">
             <div className="control">
               <label className="label">UnitPrice</label>
               <Field className="input" name="unitPrice" type="number" />
+              <div className="has-text-danger is-size-7">
+                <ErrorMessage name="unitPrice" />
+              </div>
             </div>
           </div>
 
@@ -131,6 +152,9 @@ export const AddOptionAvailabilityInnerForm = (props: AddFormProps) => (
             <div className="control">
               <label className="label">FromDate</label>
               <Field className="input" name="fromDate" type="date" />
+              <div className="has-text-danger is-size-7">
+                <ErrorMessage name="fromDate" />
+              </div>
             </div>
           </div>
 
@@ -138,6 +162,9 @@ export const AddOptionAvailabilityInnerForm = (props: AddFormProps) => (
             <div className="control">
               <label className="label">ToDate</label>
               <Field className="input" name="toDate" type="date" />
+              <div className="has-text-danger is-size-7">
+                <ErrorMessage name="toDate" />
+              </div>
             </div>
           </div>
 
@@ -145,6 +172,9 @@ export const AddOptionAvailabilityInnerForm = (props: AddFormProps) => (
             <div className="control">
               <label className="label">ActivityId</label>
               <Field className="input" name="activityId" type="number" />
+              <div className="has-text-danger is-size-7">
+                <ErrorMessage name="activityId" />
+              </div>
             </div>
           </div>
 
@@ -152,6 +182,9 @@ export const AddOptionAvailabilityInnerForm = (props: AddFormProps) => (
             <div className="control">
               <label className="label">OptionId</label>
               <Field className="input" name="optionId" type="number" />
+              <div className="has-text-danger is-size-7">
+                <ErrorMessage name="optionId" />
+              </div>
             </div>
           </div>
 

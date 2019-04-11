@@ -5,6 +5,7 @@ import {
   FormSchema,
 } from './AddCityBreakDetailForm'
 import { OptionValues } from 'src/CityBreakLocations/CityBreakLocationList'
+import { EditFormProps, DestinationProps } from '../types'
 
 export interface EditFormProps {
   readonly currentItem: CityBreakDetailsFormValues
@@ -16,7 +17,9 @@ export interface EditFormProps {
   handleCloseClick(): void
 }
 
-export const EditCityBreakDateailInnerForm = (props: EditFormProps) => {
+export const EditCityBreakDateailInnerForm = (
+  props: EditFormProps<CityBreakDetailsFormValues> & DestinationProps,
+) => {
   return (
     <div>
       <Formik
@@ -103,7 +106,9 @@ export const EditCityBreakDateailInnerForm = (props: EditFormProps) => {
   )
 }
 
-export const EditCityBreakDetailForm = (props: EditFormProps) => {
+export const EditCityBreakDetailForm = (
+  props: EditFormProps<CityBreakDetailsFormValues> & DestinationProps,
+) => {
   return (
     <div>
       <EditCityBreakDateailInnerForm

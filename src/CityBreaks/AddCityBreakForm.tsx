@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { ErrorMessage, Field, Formik, Form, FormikActions } from 'formik'
 import * as yup from 'yup'
-import { OptionValues } from './CityBreakList'
+import { AddFormProps, DestinationProps } from '../types'
 
 export interface CityBreakFormValues {
   readonly cityId: number
@@ -11,15 +11,6 @@ export interface CityBreakFormValues {
   readonly imageUrl: string
   readonly phone: string
   readonly starRating: number
-}
-
-export interface AddFormProps {
-  readonly destinations: ReadonlyArray<OptionValues>
-  handleAddSubmit(
-    values: CityBreakFormValues,
-    actions: FormikActions<CityBreakFormValues>,
-  ): void
-  handleCloseClick(): void
 }
 
 const activityValues: CityBreakFormValues = {
@@ -44,7 +35,9 @@ export const FormSchema: () => yup.ObjectSchema<
     phone: yup.string().required('Phone required'),
     starRating: yup.number().required('StarRating required'),
   })
-export const AddCityBreakInnerForm = (props: AddFormProps) => {
+export const AddCityBreakInnerForm = (
+  props: AddFormProps<CityBreakFormValues> & DestinationProps,
+) => {
   return (
     <div>
       <Formik
@@ -90,16 +83,6 @@ export const AddCityBreakInnerForm = (props: AddFormProps) => {
                 </div>
               </div>
             </div>
-
-            {/* <div className="field">
-              <div className="control">
-                <label className="label">City </label>
-                <Field className="input" name="city" type="text" />
-                <div>
-                  <ErrorMessage name="city" />
-                </div>
-              </div>
-            </div> */}
 
             <div className="field">
               <div className="control">
@@ -178,7 +161,9 @@ export const AddCityBreakInnerForm = (props: AddFormProps) => {
   )
 }
 
-export const AddCityBreakForm = (props: AddFormProps) => {
+export const AddCityBreakForm = (
+  props: AddFormProps<CityBreakFormValues> & DestinationProps,
+) => {
   return (
     <div>
       <AddCityBreakInnerForm

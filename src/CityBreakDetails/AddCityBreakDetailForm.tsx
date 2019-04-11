@@ -2,6 +2,7 @@ import * as React from 'react'
 import { Field, Formik, Form, FormikActions, ErrorMessage } from 'formik'
 import * as yup from 'yup'
 import { OptionValues } from 'src/CityBreaks/CityBreakList'
+import { AddFormProps, DestinationProps } from '../types'
 
 export interface CityBreakDetailsFormValues {
   readonly cityId: number
@@ -10,14 +11,14 @@ export interface CityBreakDetailsFormValues {
   readonly dayInfo: string
 }
 
-export interface AddFormProps {
-  readonly destinations: ReadonlyArray<OptionValues>
-  handleAddSubmit(
-    values: CityBreakDetailsFormValues,
-    actions: FormikActions<CityBreakDetailsFormValues>,
-  ): void
-  handleCloseClick(): void
-}
+// export interface AddFormProps {
+//   readonly destinations: ReadonlyArray<OptionValues>
+//   handleAddSubmit(
+//     values: CityBreakDetailsFormValues,
+//     actions: FormikActions<CityBreakDetailsFormValues>,
+//   ): void
+//   handleCloseClick(): void
+// }
 
 const activityValues: CityBreakDetailsFormValues = {
   cityId: 0,
@@ -35,7 +36,9 @@ export const FormSchema: () => yup.ObjectSchema<
     dayInfo: yup.string().required('DayInfo required'),
     dayNo: yup.number().required('DayNo required'),
   })
-export const AddCityBreakDateailInnerForm = (props: AddFormProps) => {
+export const AddCityBreakDateailInnerForm = (
+  props: AddFormProps<CityBreakDetailsFormValues> & DestinationProps,
+) => {
   return (
     <div>
       <Formik
@@ -126,7 +129,9 @@ export const AddCityBreakDateailInnerForm = (props: AddFormProps) => {
   )
 }
 
-export const AddCityBreakDetailForm = (props: AddFormProps) => {
+export const AddCityBreakDetailForm = (
+  props: AddFormProps<CityBreakDetailsFormValues> & DestinationProps,
+) => {
   return (
     <div>
       <AddCityBreakDateailInnerForm

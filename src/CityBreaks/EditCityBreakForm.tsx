@@ -2,18 +2,11 @@ import * as React from 'react'
 import { Field, Formik, Form, FormikActions } from 'formik'
 import { CityBreakFormValues, FormSchema } from './AddCityBreakForm'
 import { OptionValues } from 'src/CityBreakDetails/CityBreakDetailList'
+import { EditFormProps, DestinationProps } from '../types'
 
-export interface EditFormProps {
-  readonly currentItem: CityBreakFormValues
-  readonly destinations: ReadonlyArray<OptionValues>
-  handleEditSubmit(
-    values: CityBreakFormValues,
-    actions: FormikActions<CityBreakFormValues>,
-  ): void
-  handleCloseClick(): void
-}
-
-export const EditCityBreakInnerForm = (props: EditFormProps) => (
+export const EditCityBreakInnerForm = (
+  props: EditFormProps<CityBreakFormValues> & DestinationProps,
+) => (
   <div>
     <Formik
       initialValues={props.currentItem}
@@ -112,7 +105,9 @@ export const EditCityBreakInnerForm = (props: EditFormProps) => (
   </div>
 )
 
-export const EditCityBreakForm = (props: EditFormProps) => {
+export const EditCityBreakForm = (
+  props: EditFormProps<CityBreakFormValues> & DestinationProps,
+) => {
   return (
     <div>
       <EditCityBreakInnerForm

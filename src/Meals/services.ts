@@ -1,14 +1,15 @@
 import axios from 'axios'
 import { MealTypeForm } from './AddMealType'
 import { MealType } from './MealList'
+import { url } from '../config'
 
 export const getMealTypes = async () => {
-  const res = await axios.get(`http://localhost:4000/mealTypes`)
+  const res = await axios.get(`${url}/mealTypes`)
   return res.data
 }
 
 export const getMealTypeById = (id: string) =>
-  fetch(`http://localhost:4000/mealTypes/${id}`, {
+  fetch(`${url}/mealTypes/${id}`, {
     method: 'GET',
     headers: new Headers({
       'Content-Type': 'application/json',
@@ -23,7 +24,7 @@ export const getMealTypeById = (id: string) =>
 export const postMealType = async (values: MealTypeForm) => {
   const res = await axios({
     method: 'post',
-    url: `http://localhost:4000/mealTypes`,
+    url: `${url}/mealTypes`,
     data: {
       ...values,
     },
@@ -36,7 +37,7 @@ export const postMealType = async (values: MealTypeForm) => {
 }
 
 export const putMealType = (values: MealType) =>
-  fetch(`http://localhost:4000/mealTypes/${values.id}`, {
+  fetch(`${url}/mealTypes/${values.id}`, {
     method: 'PUT',
     headers: {
       'content-type': 'application/json',
@@ -52,5 +53,5 @@ export const putMealType = (values: MealType) =>
 export const deleteMealType = async (mealTypeId: string) =>
   await axios({
     method: 'delete',
-    url: `http://localhost:4000/mealTypes/${mealTypeId}`,
+    url: `${url}/mealTypes/${mealTypeId}`,
   })

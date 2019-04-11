@@ -1,10 +1,10 @@
 import * as React from 'react'
-import { Field, Formik, Form, FormikActions } from 'formik'
+import { ErrorMessage, Field, Formik, Form, FormikActions } from 'formik'
 import {
   CityBreakInclusionFormValues,
   FormSchema,
 } from './AddCityBreakInclusionForm'
-import { EditFormProps, DestinationProps } from '../types'
+import { EditFormProps, DestinationProps, OptionValues } from '../types'
 
 export const EditCityBreakInclusionInnerForm = (
   props: EditFormProps<CityBreakInclusionFormValues> & DestinationProps,
@@ -17,12 +17,16 @@ export const EditCityBreakInclusionInnerForm = (
           values: CityBreakInclusionFormValues,
           actions: FormikActions<CityBreakInclusionFormValues>,
         ) => {
+          const city = props.destinations.find(
+            (x: OptionValues) =>
+              x.value.toString() === values.cityId.toString(),
+          )
           const submitValues = {
             ...values,
-            city: props.destinations.find(
-              (x: any) => x.value === values.cityId,
-            ),
+            city: city ? city.label : '',
+            cityId: parseInt(values.cityId.toString(), 10),
           }
+
           props.handleEditSubmit(submitValues, actions)
         }}
         validationSchema={FormSchema}
@@ -41,6 +45,9 @@ export const EditCityBreakInclusionInnerForm = (
                       </option>
                     ))}
                   </Field>
+                  <div className="has-text-danger is-size-7">
+                    <ErrorMessage name="cityId" />
+                  </div>
                 </div>
               </div>
             </div>
@@ -49,6 +56,9 @@ export const EditCityBreakInclusionInnerForm = (
               <div className="control">
                 <label className="label">Days </label>
                 <Field className="input" name="days" type="number" />
+                <div className="has-text-danger is-size-7">
+                  <ErrorMessage name="days" />
+                </div>
               </div>
             </div>
 
@@ -56,6 +66,9 @@ export const EditCityBreakInclusionInnerForm = (
               <div className="control">
                 <label className="label">Inclusions</label>
                 <Field className="input" name="inclusions" type="text" />
+                <div className="has-text-danger is-size-7">
+                  <ErrorMessage name="inclusions" />
+                </div>
               </div>
             </div>
 

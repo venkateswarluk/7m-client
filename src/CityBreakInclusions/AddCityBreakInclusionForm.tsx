@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Field, Formik, Form, FormikActions } from 'formik'
+import { ErrorMessage, Field, Formik, Form, FormikActions } from 'formik'
 import * as yup from 'yup'
 import { AddFormProps, DestinationProps, OptionValues } from '../types'
 
@@ -62,6 +62,9 @@ export const AddCityBreakInclusionInnerForm = (
                       </option>
                     ))}
                   </Field>
+                  <div className="has-text-danger is-size-7">
+                    <ErrorMessage name="cityId" />
+                  </div>
                 </div>
               </div>
             </div>
@@ -70,6 +73,9 @@ export const AddCityBreakInclusionInnerForm = (
               <div className="control">
                 <label className="label">Days </label>
                 <Field className="input" name="days" type="number" />
+                <div className="has-text-danger is-size-7">
+                  <ErrorMessage name="days" />
+                </div>
               </div>
             </div>
 
@@ -77,6 +83,9 @@ export const AddCityBreakInclusionInnerForm = (
               <div className="control">
                 <label className="label">Inclusions</label>
                 <Field className="input" name="inclusions" type="text" />
+                <div className="has-text-danger is-size-7">
+                  <ErrorMessage name="inclusions" />
+                </div>
               </div>
             </div>
 

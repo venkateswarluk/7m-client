@@ -1,35 +1,40 @@
 import * as React from 'react'
-import { Field, Formik, Form } from 'formik'
+import { Field, Formik, Form, FormikActions } from 'formik'
 import {
   ActivityDetailForm,
   ActivityDetailFormSchema,
 } from './AddActivityDetails'
 
-export interface ActivityForm {
-  readonly id?: string
-  readonly activityName: string
-  readonly description: string
-  readonly stars: number
-  readonly thumbUrl: string
-  readonly minChildAge: number
-  readonly maxChildAge: number
-  readonly destinationId: number
-  readonly activityId: number
-  readonly categoryId: number
-  readonly optionId: number
+interface EditFormProps {
+  readonly currentItem: ActivityDetailForm
+  handleEditSubmit(
+    values: ActivityDetailForm,
+    actions: FormikActions<ActivityDetailForm>,
+  ): void
+  handleCloseClick(): void
 }
 
-export const EditActivityDetialsInnerForm = (props: any) => (
+export const EditActivityDetialsInnerForm = (props: EditFormProps) => (
   <div>
     <Formik
-      initialValues={props.values}
-      onSubmit={(values: ActivityDetailForm, actions: any) => {
+      initialValues={props.currentItem}
+      onSubmit={(
+        values: ActivityDetailForm,
+        actions: FormikActions<ActivityDetailForm>,
+      ) => {
         const submitValues = {
           ...values,
-          images: values.images.split(','),
-          videos: values.videos.split(','),
+          images:
+            typeof values.images === 'string'
+              ? values.images.split(',')
+              : values.images,
+          videos:
+            typeof values.videos === 'string'
+              ? values.videos.split(',')
+              : values.videos,
         }
-        props.onSubmit(submitValues, actions)
+        console.log(JSON.stringify(submitValues))
+        props.handleEditSubmit(submitValues, actions)
       }}
       validationSchema={ActivityDetailFormSchema}
     >
@@ -73,7 +78,7 @@ export const EditActivityDetialsInnerForm = (props: any) => (
           <div className="field">
             <div className="control">
               <label className="label">Activity Phone</label>
-              <Field className="input" name="activityPhone" type="number" />
+              <Field className="input" name="activityPhone" type="text" />
             </div>
           </div>
 
@@ -90,7 +95,7 @@ export const EditActivityDetialsInnerForm = (props: any) => (
           <button
             className="button is-danger"
             type="button"
-            onClick={() => props.onClose()}
+            onClick={() => props.handleCloseClick()}
           >
             Close
           </button>
@@ -100,13 +105,13 @@ export const EditActivityDetialsInnerForm = (props: any) => (
   </div>
 )
 
-export const EditActivityDetailsForm = (props: any) => {
+export const EditActivityDetailsForm = (props: EditFormProps) => {
   return (
     <div>
       <EditActivityDetialsInnerForm
-        values={props.activityValues}
-        onSubmit={props.handleEditMealTypeSubmit}
-        onClose={props.handleCloseClick}
+        currentItem={props.currentItem}
+        handleEditSubmit={props.handleEditSubmit}
+        handleCloseClick={props.handleCloseClick}
       />
     </div>
   )

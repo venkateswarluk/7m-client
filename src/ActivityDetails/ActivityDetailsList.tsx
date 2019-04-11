@@ -1,6 +1,8 @@
 import * as React from 'react'
 import axios from 'axios'
 import 'bulma/css/bulma.css'
+import { url } from '../config'
+import { FormikActions } from 'formik'
 import {
   AddActivityDetailsForm,
   ActivityDetailForm,
@@ -48,7 +50,7 @@ export const ActivityDetailsList = () => {
   )
 
   const fetchMealTypeData = async () => {
-    const result = await axios('http://localhost:4000/activitydetails')
+    const result = await axios(`${url}/activitydetails`)
     setActivityDetails(result.data)
   }
 
@@ -58,7 +60,7 @@ export const ActivityDetailsList = () => {
 
   const handleAddActivitySubmit = (
     values: ActivityDetailForm,
-    actions: any,
+    actions: FormikActions<ActivityDetailForm>,
   ) => {
     postActivityDetail(values)
       .then(() => {
@@ -91,7 +93,7 @@ export const ActivityDetailsList = () => {
 
   const handleEditActivitySubmit = async (
     values: ActivityDetails,
-    action: any,
+    action: FormikActions<ActivityDetailForm>,
   ) => {
     const updateMealType = await putActivityDetail(values)
     const meals = await getActivityDetails()
@@ -138,11 +140,11 @@ export const ActivityDetailsList = () => {
       <Modal
         closeModal={handleAddMealClick}
         modalState={addActivityOpen}
-        title="Meal Type Form"
+        title="Activity Details Form"
       >
         {
           <AddActivityDetailsForm
-            handleAddMealTypeSubmit={handleAddActivitySubmit}
+            handleAddSubmit={handleAddActivitySubmit}
             handleCloseClick={handleAddMealClick}
           />
         }
@@ -151,12 +153,12 @@ export const ActivityDetailsList = () => {
       <Modal
         closeModal={handleEditActivityCloseClick}
         modalState={editActivityOpen}
-        title="Meal Type Form"
+        title="Activity DetailsForm"
       >
         {
           <EditActivityDetailsForm
-            activityValues={editActivityData}
-            handleEditMealTypeSubmit={handleEditActivitySubmit}
+            currentItem={editActivityData}
+            handleEditSubmit={handleEditActivitySubmit}
             handleCloseClick={handleEditActivityCloseClick}
           />
         }

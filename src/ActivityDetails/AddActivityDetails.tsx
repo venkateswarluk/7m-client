@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Field, Formik, Form } from 'formik'
+import { Field, Formik, Form, FormikActions } from 'formik'
 import * as yup from 'yup'
 
 export interface ActivityDetailForm {
@@ -7,8 +7,8 @@ export interface ActivityDetailForm {
   readonly activityId: number
   readonly shortDescription: string
   readonly longDescription: string
-  readonly images: string
-  readonly videos: string
+  readonly images: string | ReadonlyArray<string>
+  readonly videos: string | ReadonlyArray<string>
   readonly activityPhone: string
 }
 
@@ -22,30 +22,44 @@ const activityValues: ActivityDetailForm = {
   activityPhone: '',
 }
 
+export interface AddFormProps {
+  handleAddSubmit(
+    values: ActivityDetailForm,
+    actions: FormikActions<ActivityDetailForm>,
+  ): void
+  handleCloseClick(): void
+}
+
 export const ActivityDetailFormSchema: () => yup.ObjectSchema<
   ActivityDetailForm
 > = (): yup.ObjectSchema<ActivityDetailForm> =>
   yup.object({
     activityDetailId: yup.number().required('ActivityDetailId Required'),
     activityId: yup.number().required('ActivityId Required'),
-    shortDescription: yup.string().required(' TipeVal Required'),
-    longDescription: yup.string().required('TypeDescription Required'),
+    shortDescription: yup.string().required(' Short Description Required'),
+    longDescription: yup.string().required('Long Description Required'),
     images: yup.string(),
     videos: yup.string(),
-    activityPhone: yup.string().required('Name Required'),
+    activityPhone: yup.string().required('Activity Phone Required'),
   })
 
-export const AddActivityDetailsInnerForm = (props: any) => (
+export const AddActivityDetailsInnerForm = (props: AddFormProps) => (
   <div>
     <Formik
       initialValues={activityValues}
-      onSubmit={(values: ActivityDetailForm, actions: any) => {
+      onSubmit={(values: ActivityDetailForm, actions: FormikActions<any>) => {
         const submitValues = {
           ...values,
-          images: values.images.split(','),
-          videos: values.videos.split(','),
+          images:
+            typeof values.images === 'string'
+              ? values.images.split(',')
+              : values.images,
+          videos:
+            typeof values.videos === 'string'
+              ? values.videos.split(',')
+              : values.videos,
         }
-        props.onSubmit(submitValues, actions)
+        props.handleAddSubmit(submitValues, actions)
       }}
       validationSchema={ActivityDetailFormSchema}
     >
@@ -106,7 +120,7 @@ export const AddActivityDetailsInnerForm = (props: any) => (
           <button
             className="button is-danger"
             type="button"
-            onClick={() => props.onClose()}
+            onClick={() => props.handleCloseClick()}
           >
             Close
           </button>
@@ -116,12 +130,12 @@ export const AddActivityDetailsInnerForm = (props: any) => (
   </div>
 )
 
-export const AddActivityDetailsForm = (props: any) => {
+export const AddActivityDetailsForm = (props: AddFormProps) => {
   return (
     <div>
       <AddActivityDetailsInnerForm
-        onSubmit={props.handleAddMealTypeSubmit}
-        onClose={props.handleCloseClick}
+        handleAddSubmit={props.handleAddSubmit}
+        handleCloseClick={props.handleCloseClick}
       />
     </div>
   )

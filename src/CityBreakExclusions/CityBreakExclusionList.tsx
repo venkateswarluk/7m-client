@@ -1,6 +1,8 @@
 import * as React from 'react'
 import axios from 'axios'
 import 'bulma/css/bulma.css'
+import { url } from '../config'
+import { FormikActions } from 'formik'
 import {
   CityBreakExclusionFormValues,
   AddCityBreakExclusionForm,
@@ -46,12 +48,12 @@ export const CityBreakExclusionsList = () => {
   >([])
 
   const fetchMealTypeData = async () => {
-    const result = await axios('http://localhost:4000/cityBreakExclusions')
+    const result = await axios(`${url}/cityBreakExclusions`)
     setCityBreaks(result.data)
   }
 
   const fetchCitiesData = async () => {
-    const result = await axios('http://localhost:4000/cityBreakLocations')
+    const result = await axios(`${url}/cityBreakLocations`)
     const cities = result.data.map((x: any) => ({
       value: x.cityId,
       label: x.city,
@@ -65,7 +67,7 @@ export const CityBreakExclusionsList = () => {
 
   const handleAddActivitySubmit = (
     values: CityBreakExclusionFormValues,
-    actions: any,
+    actions: FormikActions<CityBreakExclusionFormValues>,
   ) => {
     postCityBreakExclusion(values)
       .then(() => {
@@ -98,14 +100,14 @@ export const CityBreakExclusionsList = () => {
 
   const handleEditActivitySubmit = async (
     values: CityBreakExclusion,
-    action: any,
+    actions: FormikActions<CityBreakExclusionFormValues>,
   ) => {
     const updateMealType = await putCityBreakExclusion(values)
     const meals = await getCityBreakExclusions()
     if (updateMealType.status === 200) {
       setCityBreaks(meals)
       setEditCityBreakOpen(!editCityBreakOpen)
-      action.setSubmitting(false)
+      actions.setSubmitting(false)
     }
   }
 
@@ -154,7 +156,7 @@ export const CityBreakExclusionsList = () => {
         {
           <AddCityBreakExclusionForm
             destinations={destinations}
-            handleAddMealTypeSubmit={handleAddActivitySubmit}
+            handleAddSubmit={handleAddActivitySubmit}
             handleCloseClick={handleAddMealClick}
           />
         }
@@ -168,8 +170,8 @@ export const CityBreakExclusionsList = () => {
         {
           <EditCityBreakExclusionForm
             destinations={destinations}
-            cityBreakEclusions={editCityBreakData}
-            handleEditMealTypeSubmit={handleEditActivitySubmit}
+            currentItem={editCityBreakData}
+            handleEditSubmit={handleEditActivitySubmit}
             handleCloseClick={handleEditActivityCloseClick}
           />
         }

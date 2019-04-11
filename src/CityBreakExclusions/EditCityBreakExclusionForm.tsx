@@ -1,23 +1,34 @@
 import * as React from 'react'
-import { Field, Formik, Form } from 'formik'
+import { Field, Formik, Form, FormikActions } from 'formik'
 import {
   FormSchema,
   CityBreakExclusionFormValues,
 } from './AddCityBreakExclusionForm'
 
-export const EditCityBreakExclusionInnerForm = (props: any) => {
+import { EditFormProps, DestinationProps, OptionValues } from '../types'
+
+export const EditCityBreakExclusionInnerForm = (
+  props: EditFormProps<CityBreakExclusionFormValues> & DestinationProps,
+) => {
   return (
     <div>
       <Formik
-        initialValues={props.values}
-        onSubmit={(values: CityBreakExclusionFormValues, actions: any) => {
+        initialValues={props.currentItem}
+        onSubmit={(
+          values: CityBreakExclusionFormValues,
+          actions: FormikActions<CityBreakExclusionFormValues>,
+        ) => {
+          const city = props.destinations.find(
+            (x: OptionValues) =>
+              x.value.toString() === values.cityId.toString(),
+          )
           const submitValues = {
             ...values,
-            city: props.destinations.find(
-              (x: any) => x.value === values.cityId,
-            ),
+            city: city ? city.label : '',
+            cityId: parseInt(values.cityId.toString(), 10),
           }
-          props.onSubmit(submitValues, actions)
+
+          props.handleEditSubmit(submitValues, actions)
         }}
         validationSchema={FormSchema}
       >
@@ -52,7 +63,7 @@ export const EditCityBreakExclusionInnerForm = (props: any) => {
             <button
               className="button is-danger"
               type="button"
-              onClick={() => props.onClose()}
+              onClick={() => props.handleCloseClick()}
             >
               Close
             </button>
@@ -63,14 +74,16 @@ export const EditCityBreakExclusionInnerForm = (props: any) => {
   )
 }
 
-export const EditCityBreakExclusionForm = (props: any) => {
+export const EditCityBreakExclusionForm = (
+  props: EditFormProps<CityBreakExclusionFormValues> & DestinationProps,
+) => {
   return (
     <div>
       <EditCityBreakExclusionInnerForm
-        values={props.cityBreakEclusions}
+        currentItem={props.currentItem}
         destinations={props.destinations}
-        onSubmit={props.handleEditMealTypeSubmit}
-        onClose={props.handleCloseClick}
+        handleEditSubmit={props.handleEditSubmit}
+        handleCloseClick={props.handleCloseClick}
       />
     </div>
   )

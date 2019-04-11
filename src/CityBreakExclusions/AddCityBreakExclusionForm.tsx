@@ -1,6 +1,7 @@
 import * as React from 'react'
-import { Field, Formik, Form } from 'formik'
+import { Field, Formik, Form, FormikActions } from 'formik'
 import * as yup from 'yup'
+import { AddFormProps, DestinationProps, OptionValues } from '../types'
 
 export interface CityBreakExclusionFormValues {
   readonly cityId: number
@@ -19,19 +20,28 @@ export const FormSchema: () => yup.ObjectSchema<
     cityId: yup.number().required('Select City'),
     exclusions: yup.string().required('Exclusions required'),
   })
-export const AddCityBreakExclusionInnerForm = (props: any) => {
+export const AddCityBreakExclusionInnerForm = (
+  props: AddFormProps<CityBreakExclusionFormValues> & DestinationProps,
+) => {
   return (
     <div>
       <Formik
         initialValues={activityValues}
-        onSubmit={(values: CityBreakExclusionFormValues, actions: any) => {
+        onSubmit={(
+          values: CityBreakExclusionFormValues,
+          actions: FormikActions<CityBreakExclusionFormValues>,
+        ) => {
+          const city = props.destinations.find(
+            (x: OptionValues) =>
+              x.value.toString() === values.cityId.toString(),
+          )
           const submitValues = {
             ...values,
-            city: props.destinations.find(
-              (x: any) => x.value === values.cityId,
-            ),
+            city: city ? city.label : '',
+            cityId: parseInt(values.cityId.toString(), 10),
           }
-          props.onSubmit(submitValues, actions)
+
+          props.handleAddSubmit(submitValues, actions)
         }}
         validationSchema={FormSchema}
       >
@@ -66,7 +76,7 @@ export const AddCityBreakExclusionInnerForm = (props: any) => {
             <button
               className="button is-danger"
               type="button"
-              onClick={() => props.onClose()}
+              onClick={() => props.handleCloseClick()}
             >
               Close
             </button>
@@ -77,13 +87,15 @@ export const AddCityBreakExclusionInnerForm = (props: any) => {
   )
 }
 
-export const AddCityBreakExclusionForm = (props: any) => {
+export const AddCityBreakExclusionForm = (
+  props: AddFormProps<CityBreakExclusionFormValues> & DestinationProps,
+) => {
   return (
     <div>
       <AddCityBreakExclusionInnerForm
         destinations={props.destinations}
-        onSubmit={props.handleAddMealTypeSubmit}
-        onClose={props.handleCloseClick}
+        handleAddSubmit={props.handleAddSubmit}
+        handleCloseClick={props.handleCloseClick}
       />
     </div>
   )

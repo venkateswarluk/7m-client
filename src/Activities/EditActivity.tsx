@@ -21,7 +21,7 @@ export interface ActivityForm {
 export const EditActivityInnerForm = (props: EditFormProps<ActivityForm>) => (
   <div>
     <Formik
-      initialValues={props.values}
+      initialValues={props.currentItem}
       onSubmit={(
         values: ActivityForm,
         actions: FormikActions<ActivityForm>,
@@ -164,7 +164,7 @@ export const EditActivityForm = (props: EditFormProps<ActivityForm>) => {
   return (
     <div>
       <EditActivityInnerForm
-        values={props.values}
+        currentItem={props.currentItem}
         handleEditSubmit={props.handleEditSubmit}
         handleCloseClick={props.handleCloseClick}
       />

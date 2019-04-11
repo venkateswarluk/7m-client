@@ -2,21 +2,18 @@ import * as React from 'react'
 import { ErrorMessage, Field, Formik, Form, FormikActions } from 'formik'
 import { ActivityOptionForm } from './AddActivityOption'
 import { FormSchema } from './AddActivityOption'
+import { EditFormProps } from '../types'
 
-interface EditFormProps {
-  readonly currentItem: ActivityOptionForm
-  handleEditSubmit(
-    values: ActivityOptionForm,
-    actions: FormikActions<ActivityOptionForm>,
-  ): void
-  handleCloseClick(): void
-}
-
-export const EditActivityOptionInnerForm = (props: EditFormProps) => (
+export const EditActivityOptionInnerForm = (
+  props: EditFormProps<ActivityOptionForm>,
+) => (
   <div>
     <Formik
       initialValues={props.currentItem}
-      onSubmit={(values: ActivityOptionForm, actions: any) => {
+      onSubmit={(
+        values: ActivityOptionForm,
+        actions: FormikActions<ActivityOptionForm>,
+      ) => {
         props.handleEditSubmit(values, actions)
       }}
       validationSchema={FormSchema}
@@ -89,7 +86,9 @@ export const EditActivityOptionInnerForm = (props: EditFormProps) => (
   </div>
 )
 
-export const EditActivityOptionForm = (props: EditFormProps) => {
+export const EditActivityOptionForm = (
+  props: EditFormProps<ActivityOptionForm>,
+) => {
   return (
     <div>
       <EditActivityOptionInnerForm

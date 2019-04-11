@@ -1,20 +1,15 @@
 import * as React from 'react'
+import { EditFormProps } from '../types'
+
 import { ErrorMessage, Field, Formik, Form, FormikActions } from 'formik'
 import {
   ActivityDetailForm,
   ActivityDetailFormSchema,
 } from './AddActivityDetails'
 
-interface EditFormProps {
-  readonly currentItem: ActivityDetailForm
-  handleEditSubmit(
-    values: ActivityDetailForm,
-    actions: FormikActions<ActivityDetailForm>,
-  ): void
-  handleCloseClick(): void
-}
-
-export const EditActivityDetialsInnerForm = (props: EditFormProps) => (
+export const EditActivityDetialsInnerForm = (
+  props: EditFormProps<ActivityDetailForm>,
+) => (
   <div>
     <Formik
       initialValues={props.currentItem}
@@ -126,7 +121,9 @@ export const EditActivityDetialsInnerForm = (props: EditFormProps) => (
   </div>
 )
 
-export const EditActivityDetailsForm = (props: EditFormProps) => {
+export const EditActivityDetailsForm = (
+  props: EditFormProps<ActivityDetailForm>,
+) => {
   return (
     <div>
       <EditActivityDetialsInnerForm

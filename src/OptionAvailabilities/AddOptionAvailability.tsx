@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { Field, Formik, Form, FormikActions, ErrorMessage } from 'formik'
 import * as yup from 'yup'
+import { AddFormProps } from '../types'
 
 export interface OptionAvailabilityForm {
   readonly optionAvailabilityId: number
@@ -30,14 +31,6 @@ const optionAvailabilitiesValues: OptionAvailabilityForm = {
   toDate: '',
 }
 
-export interface AddFormProps {
-  handleAddSubmit(
-    values: OptionAvailabilityForm,
-    actions: FormikActions<OptionAvailabilityForm>,
-  ): void
-  handleCloseClick(): void
-}
-
 export const FormSchema: () => yup.ObjectSchema<
   OptionAvailabilityForm
 > = (): yup.ObjectSchema<OptionAvailabilityForm> =>
@@ -53,7 +46,9 @@ export const FormSchema: () => yup.ObjectSchema<
     toDate: yup.string().required('Required'),
   })
 
-export const AddOptionAvailabilityInnerForm = (props: AddFormProps) => (
+export const AddOptionAvailabilityInnerForm = (
+  props: AddFormProps<OptionAvailabilityForm>,
+) => (
   <div>
     <Formik
       initialValues={optionAvailabilitiesValues}
@@ -204,7 +199,9 @@ export const AddOptionAvailabilityInnerForm = (props: AddFormProps) => (
   </div>
 )
 
-export const AddOptionAvailabilityForm = (props: AddFormProps) => {
+export const AddOptionAvailabilityForm = (
+  props: AddFormProps<OptionAvailabilityForm>,
+) => {
   return (
     <div>
       <AddOptionAvailabilityInnerForm

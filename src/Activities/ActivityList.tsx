@@ -159,7 +159,7 @@ export const ActivityList = () => {
       >
         {
           <EditActivityForm
-            values={editActivityData}
+            currentItem={editActivityData}
             handleEditSubmit={handleEditActivitySubmit}
             handleCloseClick={handleEditActivityCloseClick}
           />

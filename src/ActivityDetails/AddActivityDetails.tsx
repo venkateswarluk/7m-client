@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { ErrorMessage, Field, Formik, Form, FormikActions } from 'formik'
 import * as yup from 'yup'
+import { AddFormProps } from '../types'
 
 export interface ActivityDetailForm {
   readonly activityDetailId: number
@@ -22,14 +23,6 @@ const activityValues: ActivityDetailForm = {
   activityPhone: '',
 }
 
-export interface AddFormProps {
-  handleAddSubmit(
-    values: ActivityDetailForm,
-    actions: FormikActions<ActivityDetailForm>,
-  ): void
-  handleCloseClick(): void
-}
-
 export const ActivityDetailFormSchema: () => yup.ObjectSchema<
   ActivityDetailForm
 > = (): yup.ObjectSchema<ActivityDetailForm> =>
@@ -43,7 +36,9 @@ export const ActivityDetailFormSchema: () => yup.ObjectSchema<
     activityPhone: yup.string().required('Activity Phone Required'),
   })
 
-export const AddActivityDetailsInnerForm = (props: AddFormProps) => (
+export const AddActivityDetailsInnerForm = (
+  props: AddFormProps<ActivityDetailForm>,
+) => (
   <div>
     <Formik
       initialValues={activityValues}
@@ -151,7 +146,9 @@ export const AddActivityDetailsInnerForm = (props: AddFormProps) => (
   </div>
 )
 
-export const AddActivityDetailsForm = (props: AddFormProps) => {
+export const AddActivityDetailsForm = (
+  props: AddFormProps<ActivityDetailForm>,
+) => {
   return (
     <div>
       <AddActivityDetailsInnerForm

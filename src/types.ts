@@ -5,7 +5,7 @@ export interface AddFormProps<T> {
 }
 
 export interface EditFormProps<T> {
-  readonly values: T
+  readonly currentItem: T
   handleEditSubmit(values: T, actions: FormikActions<T>): void
   handleCloseClick(): void
 }

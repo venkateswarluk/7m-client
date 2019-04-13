@@ -19,3 +19,8 @@ export interface EditFormProps<T> {
   handleEditSubmit(values: T, actions: FormikActions<T>): void
   handleCloseClick(): void
 }
+
+export interface PaginationResult<T> {
+  readonly result: T
+  readonly total: number
+}

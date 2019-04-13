@@ -5,6 +5,11 @@ export const getAllItems = async (url: string) => {
   return res.data
 }
 
+export const getAllCount = async (url: string) => {
+  const res = await axios.get(`${url}/all`)
+  return res.data
+}
+
 export const getItemById = (url: string, id: string) =>
   fetch(`${url}/${id}`, {
     method: 'GET',

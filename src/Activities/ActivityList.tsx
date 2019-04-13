@@ -13,6 +13,8 @@ import {
   deleteItem,
 } from '../services'
 
+import { PaginationResult } from '../types'
+
 const url = `http://localhost:4000/activities`
 
 export interface Activity {
@@ -44,9 +46,10 @@ const currentActivity: Activity = {
 }
 
 export const ActivityList = () => {
-  const [activities, setActivities] = React.useState<ReadonlyArray<Activity>>(
-    [],
-  )
+  const [activitiesWithCount, setActivityCount] = React.useState<
+    PaginationResult<ReadonlyArray<Activity>>
+  >()
+  const [, setActivities] = React.useState<ReadonlyArray<Activity>>([])
   const [addActivityOpen, setAddActivityOpen] = React.useState(false)
   const [editActivityOpen, setEditActivityOpen] = React.useState(false)
   const [editActivityData, setEditActivityData] = React.useState(
@@ -54,8 +57,8 @@ export const ActivityList = () => {
   )
 
   const fetchMealTypeData = async () => {
-    const result = await axios('http://localhost:4000/activities')
-    setActivities(result.data)
+    const result = await axios(`${url}/all`)
+    setActivityCount(result.data)
   }
 
   const handleAddMealClick = () => {
@@ -124,9 +127,12 @@ export const ActivityList = () => {
       })
   }
 
-  React.useEffect(() => {
-    fetchMealTypeData()
-  }, [])
+  React.useEffect(
+    () => {
+      fetchMealTypeData()
+    },
+    [activitiesWithCount],
+  )
 
   return (
     <div>
@@ -168,9 +174,9 @@ export const ActivityList = () => {
         }
       </Modal>
 
-      <div className="box">
-        {activities.length > 0 ? (
-          <table className="table is-bordered is-striped is-narrow is-hoverable is-fullwidth is-responsive">
+      <div>
+        {activitiesWithCount && activitiesWithCount.result.length > 0 ? (
+          <table className="table is-bordered is-striped is-narrow is-hoverable  is-responsive">
             <thead>
               <tr>
                 <th>ActivityName</th>
@@ -186,7 +192,7 @@ export const ActivityList = () => {
               </tr>
             </thead>
             <tbody>
-              {activities.map((activity: Activity) => (
+              {activitiesWithCount.result.map((activity: Activity) => (
                 <tr key={activity.id}>
                   <td>{activity.activityName}</td>
                   <td>{activity.stars}</td>

@@ -4,10 +4,7 @@ import * as ReactDOM from 'react-dom'
 import { register } from './registerServiceWorker'
 
 // import { App } from './App'
-import { Pagination } from './Pagination'
-ReactDOM.render(
-  <Pagination currentPage={3} totalPages={10} />,
-  document.getElementById('root') as HTMLElement,
-)
+import { AppRoutes } from './React-router-config/App'
+ReactDOM.render(<AppRoutes />, document.getElementById('root') as HTMLElement)
 
 register()

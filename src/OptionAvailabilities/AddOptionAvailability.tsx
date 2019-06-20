@@ -35,13 +35,43 @@ export const FormSchema: () => yup.ObjectSchema<
   OptionAvailabilityForm
 > = (): yup.ObjectSchema<OptionAvailabilityForm> =>
   yup.object({
-    optionAvailabilityId: yup.number().required('ActivityOptionId Required'),
-    activityId: yup.number().required('ActivityId Required'),
-    optionId: yup.number().required('OptionId Required'),
-    maxAdults: yup.number().required(' Required'),
-    maxChilds: yup.number().required(' Required'),
-    adultPrice: yup.number().required(' Required'),
-    childPrice: yup.number().required(' Required'),
+    optionAvailabilityId: yup
+      .number()
+      .min(1)
+      .required('ActivityOptionId Required'),
+    activityId: yup
+      .number()
+      .min(1)
+      .required('ActivityId Required'),
+    optionId: yup
+      .number()
+      .min(1)
+      .required('OptionId Required'),
+    maxAdults: yup
+      .number()
+      .min(1)
+      .required(' Required'),
+    maxChilds: yup
+      .number()
+      .min(1)
+      .required(' Required'),
+    adultPrice: yup
+      .number()
+      .min(1)
+      .required(' Required'),
+    childPrice: yup
+      .number()
+      .min(1)
+      .required(' Required'),
+    maxUnits: yup
+      .number()
+      .min(1)
+      .required(' Required'),
+    unitPrice: yup
+      .number()
+      .min(1)
+      .required(' Required'),
+
     fromDate: yup.string().required('Required'),
     toDate: yup.string().required('Required'),
   })

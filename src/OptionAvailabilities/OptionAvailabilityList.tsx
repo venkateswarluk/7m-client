@@ -141,7 +141,7 @@ export const OptionAvailabilityList = () => {
       <div className="field">
         <div className="control has-text-right">
           <button className="button is-info " onClick={handleAddMealClick}>
-            Add Availability
+            Add Option Availability
           </button>
         </div>
       </div>

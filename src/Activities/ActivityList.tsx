@@ -137,7 +137,7 @@ export const ActivityList = () => {
   return (
     <div>
       <div className="has-text-centered has-text-info is-size-3">
-        Activity Details
+        Activities
       </div>
       <div className="field">
         <div className="control has-text-right">

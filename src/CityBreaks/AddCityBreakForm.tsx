@@ -6,6 +6,7 @@ import { AddFormProps, DestinationProps } from '../types'
 export interface CityBreakFormValues {
   readonly cityId: number
   readonly days: number
+  readonly tourName: string
   readonly description: string
   readonly price: number
   readonly imageUrl: string
@@ -16,6 +17,7 @@ export interface CityBreakFormValues {
 const activityValues: CityBreakFormValues = {
   cityId: 0,
   days: 0,
+  tourName: '',
   description: '',
   price: 0.0,
   imageUrl: '',
@@ -29,6 +31,7 @@ export const FormSchema: () => yup.ObjectSchema<
   yup.object({
     cityId: yup.number().required('Select City'),
     days: yup.number().required('days Required'),
+    tourName: yup.string().required('TourName required'),
     description: yup.string().required('Description required'),
     price: yup.number().required('Price required'),
     imageUrl: yup.string().required('Image required'),
@@ -62,7 +65,6 @@ export const AddCityBreakInnerForm = (
       >
         <div>
           <Form>
-            {JSON.stringify(props.destinations)}
             <div className="field">
               <div className="control">
                 <label className="label">City</label>
@@ -90,6 +92,16 @@ export const AddCityBreakInnerForm = (
                 <Field className="input" name="days" type="number" />
                 <div>
                   <ErrorMessage name="days" />
+                </div>
+              </div>
+            </div>
+
+            <div className="field">
+              <div className="control">
+                <label className="label">TourName</label>
+                <Field className="input" name="tourName" type="text" />
+                <div>
+                  <ErrorMessage name="tourName" />
                 </div>
               </div>
             </div>

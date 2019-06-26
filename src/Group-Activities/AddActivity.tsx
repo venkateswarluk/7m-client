@@ -1,11 +1,9 @@
 import * as React from 'react'
 import { ErrorMessage, Field, Formik, Form, FormikActions } from 'formik'
-import { ActivityFormSchema } from './AddActivity'
-import { CFIntegerField } from '../CFIntegerField'
-import { EditFormProps, DestinationProps, CategoryProps } from '../types'
+import * as yup from 'yup'
+import { AddFormProps, DestinationProps, CategoryProps } from '../types'
 
 export interface ActivityForm {
-  readonly id?: string
   readonly activityName: string
   readonly description: string
   readonly stars: number
@@ -18,12 +16,105 @@ export interface ActivityForm {
   readonly optionId: number
 }
 
-export const EditActivityInnerForm = (
-  props: EditFormProps<ActivityForm> & DestinationProps & CategoryProps,
+const activityValues: ActivityForm = {
+  activityName: '',
+  description: '',
+  stars: 0,
+  thumbUrl: '',
+  minChildAge: 0,
+  maxChildAge: 0,
+  destinationId: 0,
+  activityId: 0,
+  categoryId: 0,
+  optionId: 0,
+}
+
+export interface OptionValues {
+  readonly value: number
+  readonly label: string
+}
+
+// export const categories: ReadonlyArray<OptionValues> = [
+//   { value: 588, label: 'Attraction Passes' },
+//   { value: 214, label: 'Museum' },
+//   { value: 213, label: 'Observation deck' },
+//   { value: 215, label: 'Entertainment' },
+//   { value: 212, label: 'Theme Parks' },
+//   { value: 216, label: 'Aquarium' },
+//   { value: 217, label: 'Cruise / Boat (Tour/Ride)' },
+//   { value: 219, label: 'Zoological Theme Park' },
+//   { value: 220, label: 'Political Attraction' },
+//   { value: 221, label: 'Bus (Tour/Ride)' },
+//   { value: 218, label: 'Helicopter Ride' },
+//   { value: 222, label: 'Wine Tour' },
+//   { value: 223, label: 'City Tour' },
+//   { value: 15, label: 'Transfer' },
+//   { value: 16, label: 'Guide' },
+//   { value: 224, label: 'Hop On Hop Off Tour' },
+//   { value: 225, label: 'Disney World' },
+// ]
+
+// export const destinations: ReadonlyArray<OptionValues> = [
+//   { value: 1, label: 'New York' },
+//   { value: 2, label: 'Orlando' },
+//   { value: 3, label: 'Houston' },
+//   { value: 4, label: 'Seattle' },
+//   { value: 5, label: 'Los Angeles' },
+//   { value: 6, label: 'San Diego' },
+//   { value: 7, label: 'San Francisco' },
+//   { value: 8, label: 'Lake Tahoe' },
+//   { value: 9, label: 'Washington DC' },
+//   { value: 10, label: 'Alexandria Bay' },
+//   { value: 11, label: 'Niagara' },
+//   { value: 12, label: 'Boston' },
+//   { value: 13, label: 'Philadelphia' },
+//   { value: 14, label: 'Atlanta' },
+//   { value: 15, label: 'Miami' },
+//   { value: 16, label: 'Tampa' },
+//   { value: 17, label: 'Chicago' },
+//   { value: 18, label: 'Las Vegas' },
+//   { value: 19, label: 'Denver' },
+//   { value: 20, label: 'New Orleans' },
+//   { value: 21, label: 'Key west' },
+//   { value: 22, label: 'Anchorage' },
+// ]
+
+export const ActivityFormSchema: () => yup.ObjectSchema<
+  ActivityForm
+> = (): yup.ObjectSchema<ActivityForm> =>
+  yup.object({
+    activityName: yup.string().required('ActivityName Required'),
+    description: yup.string().required(' Title Required'),
+    stars: yup
+      .number()
+      .required('Stars Required')
+      .moreThan(0, 'Stars Must MoreThan 0'),
+    thumbUrl: yup.string().required(' Thumb Url Required'),
+    minChildAge: yup
+      .number()
+      .required()
+      .moreThan(0, 'MinChildAge Must MoreThan 0'),
+    maxChildAge: yup
+      .number()
+      .required()
+      .moreThan(0, 'MaxChildAge Must MoreThan 0')
+      .lessThan(9, 'MaxChildAge Must lessThan 10'),
+    destinationId: yup
+      .number()
+      .required()
+      .moreThan(0, 'Select destination'),
+
+    categoryId: yup.number().required(),
+    activityId: yup.number().required(),
+    optionId: yup.number().required(),
+  })
+
+export const AddActivityInnerForm = (
+  props: AddFormProps<ActivityForm> & DestinationProps & CategoryProps,
 ) => (
   <div>
     <Formik
-      initialValues={props.currentItem}
+      initialValues={activityValues}
       onSubmit={(
         values: ActivityForm,
         actions: FormikActions<ActivityForm>,
@@ -34,7 +125,7 @@ export const EditActivityInnerForm = (
           categoryId: parseInt(values.categoryId.toString(), 10),
           stars: parseInt(values.stars.toString(), 10),
         }
-        props.handleEditSubmit(submitValues, actions)
+        props.handleAddSubmit(submitValues, actions)
       }}
       validationSchema={ActivityFormSchema}
     >
@@ -63,8 +154,10 @@ export const EditActivityInnerForm = (
           <div className="field">
             <div className="control">
               <label className="label">StarRating</label>
-              <CFIntegerField className="input" name="stars" />
-              <div className="has-text-danger is-size-7" />
+              <Field className="input" name="stars" type="number" />
+              <div className="has-text-danger is-size-7">
+                <ErrorMessage name="stars" />
+              </div>
             </div>
           </div>
 
@@ -81,14 +174,20 @@ export const EditActivityInnerForm = (
           <div className="field">
             <div className="control">
               <label className="label">MinChildAge</label>
-              <CFIntegerField className="input" name="minChildAge" />
+              <Field className="input" name="minChildAge" type="number" />
+              <div className="has-text-danger is-size-7">
+                <ErrorMessage name="minChildAge" />
+              </div>
             </div>
           </div>
 
           <div className="field">
             <div className="control">
               <label className="label">MaxChildAge</label>
-              <CFIntegerField className="input" name="maxChildAge" />
+              <Field className="input" name="maxChildAge" type="number" />
+              <div className="has-text-danger is-size-7">
+                <ErrorMessage name="maxChildAge" />
+              </div>
             </div>
           </div>
 
@@ -133,13 +232,19 @@ export const EditActivityInnerForm = (
           <div className="field">
             <div className="control">
               <label className="label">OptionId</label>
-              <CFIntegerField className="input" name="optionId" />
+              <Field className="input" name="optionId" type="number" />
+              <div className="has-text-danger is-size-7">
+                <ErrorMessage name="optionId" />
+              </div>
             </div>
           </div>
           <div className="field">
             <div className="control">
               <label className="label">ActivityId</label>
-              <CFIntegerField className="input" name="activityId" />
+              <Field className="input" name="activityId" type="number" />
+              <div className="has-text-danger is-size-7">
+                <ErrorMessage name="activityId" />
+              </div>
             </div>
           </div>
 
@@ -159,16 +264,15 @@ export const EditActivityInnerForm = (
   </div>
 )
 
-export const EditActivityForm = (
-  props: EditFormProps<ActivityForm> & DestinationProps & CategoryProps,
+export const AddActivityForm = (
+  props: AddFormProps<ActivityForm> & DestinationProps & CategoryProps,
 ) => {
   return (
     <div>
-      <EditActivityInnerForm
-        categories={props.categories}
+      <AddActivityInnerForm
         destinations={props.destinations}
-        currentItem={props.currentItem}
-        handleEditSubmit={props.handleEditSubmit}
+        categories={props.categories}
+        handleAddSubmit={props.handleAddSubmit}
         handleCloseClick={props.handleCloseClick}
       />
     </div>

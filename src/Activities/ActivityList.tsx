@@ -12,10 +12,13 @@ import {
   putItem,
   deleteItem,
 } from '../services'
+import { OptionValues } from '../types'
 
-import { PaginationResult } from '../types'
+import { mainUrl } from '../config'
 
-const url = `http://localhost:4000/activities`
+// import { PaginationResult } from '../types'
+
+const url = `${mainUrl}/activities`
 
 export interface Activity {
   readonly id: string
@@ -46,19 +49,43 @@ const currentActivity: Activity = {
 }
 
 export const ActivityList = () => {
-  const [activitiesWithCount, setActivityCount] = React.useState<
-    PaginationResult<ReadonlyArray<Activity>>
-  >()
-  const [, setActivities] = React.useState<ReadonlyArray<Activity>>([])
+  const [activities, setActivities] = React.useState<ReadonlyArray<Activity>>(
+    [],
+  )
   const [addActivityOpen, setAddActivityOpen] = React.useState(false)
   const [editActivityOpen, setEditActivityOpen] = React.useState(false)
   const [editActivityData, setEditActivityData] = React.useState(
     currentActivity,
   )
+  const [destinations, setDestinations] = React.useState<
+    ReadonlyArray<OptionValues>
+  >([])
+
+  const [categories, setCategories] = React.useState<
+    ReadonlyArray<OptionValues>
+  >([])
 
   const fetchMealTypeData = async () => {
-    const result = await axios(`${url}/all`)
-    setActivityCount(result.data)
+    const result = await axios(`${url}`)
+    setActivities(result.data)
+  }
+
+  const fetchDestinations = async () => {
+    const result = await axios(`${mainUrl}/activityLocations`)
+    const meals = result.data.map((x: any) => ({
+      value: x.locationId,
+      label: x.city,
+    }))
+    setDestinations(meals)
+  }
+
+  const fetchCategories = async () => {
+    const result = await axios(`${mainUrl}/categories`)
+    const meals = result.data.map((x: any) => ({
+      value: x.categoryId,
+      label: x.categoryName,
+    }))
+    setCategories(meals)
   }
 
   const handleAddMealClick = () => {
@@ -127,12 +154,17 @@ export const ActivityList = () => {
       })
   }
 
-  React.useEffect(
-    () => {
-      fetchMealTypeData()
-    },
-    [activitiesWithCount],
-  )
+  React.useEffect(() => {
+    fetchMealTypeData()
+  }, [])
+
+  React.useEffect(() => {
+    fetchDestinations()
+  }, [])
+
+  React.useEffect(() => {
+    fetchCategories()
+  }, [])
 
   return (
     <div>
@@ -150,10 +182,12 @@ export const ActivityList = () => {
       <Modal
         closeModal={handleAddMealClick}
         modalState={addActivityOpen}
-        title="Meal Type Form"
+        title="Activity Form"
       >
         {
           <AddActivityForm
+            categories={categories}
+            destinations={destinations}
             handleAddSubmit={handleAddActivitySubmit}
             handleCloseClick={handleAddMealClick}
           />
@@ -163,10 +197,12 @@ export const ActivityList = () => {
       <Modal
         closeModal={handleEditActivityCloseClick}
         modalState={editActivityOpen}
-        title="Meal Type Form"
+        title="Activity Form"
       >
         {
           <EditActivityForm
+            categories={categories}
+            destinations={destinations}
             currentItem={editActivityData}
             handleEditSubmit={handleEditActivitySubmit}
             handleCloseClick={handleEditActivityCloseClick}
@@ -175,7 +211,7 @@ export const ActivityList = () => {
       </Modal>
 
       <div>
-        {activitiesWithCount && activitiesWithCount.result.length > 0 ? (
+        {activities && activities.length > 0 ? (
           <table className="table is-bordered is-striped is-narrow is-hoverable  is-responsive">
             <thead>
               <tr>
@@ -192,7 +228,7 @@ export const ActivityList = () => {
               </tr>
             </thead>
             <tbody>
-              {activitiesWithCount.result.map((activity: Activity) => (
+              {activities.map((activity: Activity) => (
                 <tr key={activity.id}>
                   <td>{activity.activityName}</td>
                   <td>{activity.stars}</td>

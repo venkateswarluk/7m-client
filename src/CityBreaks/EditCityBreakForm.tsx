@@ -23,6 +23,7 @@ export const EditCityBreakInnerForm = (
           city: city ? city.label : '',
           cityId: parseInt(values.cityId.toString(), 10),
           starRating: parseInt(values.starRating.toString(), 10),
+          price: parseFloat(values.price.toString()),
         }
 
         props.handleEditSubmit(submitValues, actions)
@@ -51,6 +52,13 @@ export const EditCityBreakInnerForm = (
             <div className="control">
               <label className="label">Days </label>
               <Field className="input" name="days" type="number" />
+            </div>
+          </div>
+
+          <div className="field">
+            <div className="control">
+              <label className="label">TourName</label>
+              <Field className="input" name="tourname" type="text" />
             </div>
           </div>
 

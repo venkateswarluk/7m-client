@@ -99,7 +99,10 @@ export const EditActivityInnerForm = (
                 <Field name="destinationId" component="select">
                   <option>Select Destination</option>
                   {props.destinations.map(d => (
-                    <option key={d.value} value={d.value}>
+                    <option
+                      key={d.value}
+                      value={parseInt(d.value.toString(), 10)}
+                    >
                       {d.label}
                     </option>
                   ))}
@@ -165,8 +168,8 @@ export const EditActivityForm = (
   return (
     <div>
       <EditActivityInnerForm
-        categories={props.categories}
         destinations={props.destinations}
+        categories={props.categories}
         currentItem={props.currentItem}
         handleEditSubmit={props.handleEditSubmit}
         handleCloseClick={props.handleCloseClick}

@@ -16,7 +16,9 @@ import {
   deleteItem,
 } from '../services'
 
-const url = `http://localhost:4000/optionavailabilities`
+import { mainUrl } from '../config'
+
+const url = `${mainUrl}/optionavailabilities`
 
 export interface OptionAvailability {
   readonly id: string

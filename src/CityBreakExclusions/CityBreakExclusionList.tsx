@@ -16,7 +16,9 @@ import {
   deleteItem,
 } from '../services'
 
-const url = `http://localhost:4000/cityBreakExclusions`
+import { mainUrl } from '../config'
+
+const url = `${mainUrl}/cityBreakExclusions`
 
 export interface CityBreakExclusion {
   readonly id: string
@@ -54,7 +56,7 @@ export const CityBreakExclusionsList = () => {
   }
 
   const fetchCitiesData = async () => {
-    const result = await axios(`http://localhost:4000/cityBreakLocations`)
+    const result = await axios(`${mainUrl}/cityBreakLocations`)
     const cities = result.data.map((x: any) => ({
       value: x.cityId,
       label: x.city,

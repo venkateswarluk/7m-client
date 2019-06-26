@@ -16,37 +16,21 @@ import {
 
 import { mainUrl } from '../config'
 
-const url = `${mainUrl}/mealtypes`
+const url = `${mainUrl}/mealstypes`
 
 export interface MealType {
   readonly id: string
-  readonly name: string
   readonly mealType: string
   readonly mealCategory: string
-  readonly imageUrl: string
-  readonly description: string
-  readonly price: number
-  readonly items: ReadonlyArray<string>
-  readonly note: string
 }
 
 const currentMealType: MealType = {
   id: '',
-  name: '',
   mealType: '',
   mealCategory: '',
-  imageUrl: '',
-  description: '',
-  price: 0.0,
-  items: [],
-  note: '',
-}
-export interface OptionValues {
-  readonly value: number | string
-  readonly label: string
 }
 
-export const MealTypeList = () => {
+export const MealsTypeList = () => {
   const [mealTypes, setMealTypes] = React.useState<ReadonlyArray<MealType>>([])
   const [addMealOpen, setAddMealOpen] = React.useState(false)
   const [editMealOpen, setEditMealOpen] = React.useState(false)
@@ -54,23 +38,9 @@ export const MealTypeList = () => {
     currentMealType,
   )
 
-  const [mealsTypes, setMealsTypes] = React.useState<
-    ReadonlyArray<OptionValues & { readonly mealCategory: string }>
-  >([])
-
   const fetchMealTypeData = async () => {
     const result = await axios(`${url}`)
     setMealTypes(result.data)
-  }
-
-  const fetchMealsTypeData = async () => {
-    const result = await axios(`${mainUrl}/mealstypes`)
-    const meals = result.data.map((x: any) => ({
-      value: x.mealType,
-      label: x.mealType,
-      mealCategory: x.mealCategory,
-    }))
-    setMealsTypes(meals)
   }
 
   const handleAddMealClick = () => {
@@ -143,19 +113,15 @@ export const MealTypeList = () => {
     fetchMealTypeData()
   }, [])
 
-  React.useEffect(() => {
-    fetchMealsTypeData()
-  }, [])
-
   return (
     <div>
       <div className="has-text-centered has-text-info is-size-3">
-        Meal Details
+        MealType Details
       </div>
       <div className="field">
         <div className="control has-text-right">
           <button className="button is-info " onClick={handleAddMealClick}>
-            Add Meal
+            Add MealType
           </button>
         </div>
       </div>
@@ -169,7 +135,6 @@ export const MealTypeList = () => {
           <AddMealTypeForm
             handleAddSubmit={handleAddMealTypeSubmit}
             handleCloseClick={handleAddMealClick}
-            mealTypes={mealsTypes}
           />
         }
       </Modal>
@@ -184,7 +149,6 @@ export const MealTypeList = () => {
             currentItem={editMealTypeData}
             handleEditSubmit={handleEditMealSubmit}
             handleCloseClick={handleEditMealCloseClick}
-            mealTypes={mealsTypes}
           />
         }
       </Modal>
@@ -194,26 +158,18 @@ export const MealTypeList = () => {
           <table className="table is-bordered is-striped is-narrow is-hoverable is-fullwidth is-responsive">
             <thead>
               <tr>
-                <th>Name</th>
                 <th>Meal Type</th>
-                <th>Category</th>
-                <th>Description</th>
-                <th>Price</th>
-                <th>Items</th>
-                <th>Note</th>
+                <th>Meal Category</th>
+
                 <th>Actions</th>
               </tr>
             </thead>
             <tbody>
               {mealTypes.map((mealType: MealType) => (
                 <tr key={mealType.id}>
-                  <td>{mealType.name}</td>
                   <td>{mealType.mealType}</td>
                   <td>{mealType.mealCategory}</td>
-                  <td>{mealType.description}</td>
-                  <td>{mealType.price}</td>
-                  <td>{mealType.items.join(',')}</td>
-                  <td>{mealType.note}</td>
+
                   <td>
                     <span
                       className="icon"

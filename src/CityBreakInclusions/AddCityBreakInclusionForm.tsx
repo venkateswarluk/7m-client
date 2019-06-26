@@ -1,7 +1,15 @@
 import * as React from 'react'
-import { ErrorMessage, Field, Formik, Form, FormikActions } from 'formik'
+import {
+  ErrorMessage,
+  Field,
+  Formik,
+  Form,
+  FormikActions,
+  FormikProps,
+} from 'formik'
 import * as yup from 'yup'
-import { AddFormProps, DestinationProps, OptionValues } from '../types'
+import { AddFormProps, DestinationProps, TourProps } from '../types'
+import { tourNamesByCityId } from '../CityBreakDetails/AddCityBreakDetailForm'
 
 export interface CityBreakInclusionFormValues {
   readonly cityId: number
@@ -23,8 +31,11 @@ export const FormSchema: () => yup.ObjectSchema<
     days: yup.number().required('days Required'),
     inclusions: yup.string().required('DayInfo required'),
   })
+
 export const AddCityBreakInclusionInnerForm = (
-  props: AddFormProps<CityBreakInclusionFormValues> & DestinationProps,
+  props: AddFormProps<CityBreakInclusionFormValues> &
+    DestinationProps &
+    TourProps,
 ) => {
   return (
     <div>
@@ -34,21 +45,15 @@ export const AddCityBreakInclusionInnerForm = (
           values: CityBreakInclusionFormValues,
           actions: FormikActions<CityBreakInclusionFormValues>,
         ) => {
-          const city = props.destinations.find(
-            (x: OptionValues) =>
-              x.value.toString() === values.cityId.toString(),
-          )
           const submitValues = {
             ...values,
-            city: city ? city.label : '',
+
             cityId: parseInt(values.cityId.toString(), 10),
           }
-
           props.handleAddSubmit(submitValues, actions)
         }}
         validationSchema={FormSchema}
-      >
-        <div>
+        render={(formikBag: FormikProps<CityBreakInclusionFormValues>) => (
           <Form>
             <div className="field">
               <div className="control">
@@ -81,6 +86,29 @@ export const AddCityBreakInclusionInnerForm = (
 
             <div className="field">
               <div className="control">
+                <label className="label">TourName</label>
+                <div className="select">
+                  <Field name="tourName" component="select">
+                    <option>Select TourName</option>
+                    {tourNamesByCityId(
+                      props.tourNames,
+                      formikBag.values.cityId,
+                      formikBag.values.days,
+                    ).map((d: any) => (
+                      <option key={d.value} value={d.value}>
+                        {d.label}
+                      </option>
+                    ))}
+                  </Field>
+                  <div className="has-text-danger is-size-7">
+                    <ErrorMessage name="tourName" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="field">
+              <div className="control">
                 <label className="label">Inclusions</label>
                 <Field className="input" name="inclusions" type="text" />
                 <div className="has-text-danger is-size-7">
@@ -100,18 +128,21 @@ export const AddCityBreakInclusionInnerForm = (
               Close
             </button>
           </Form>
-        </div>
-      </Formik>
+        )}
+      />
     </div>
   )
 }
 
 export const AddCityBreakInclusionForm = (
-  props: AddFormProps<CityBreakInclusionFormValues> & DestinationProps,
+  props: AddFormProps<CityBreakInclusionFormValues> &
+    DestinationProps &
+    TourProps,
 ) => {
   return (
     <div>
       <AddCityBreakInclusionInnerForm
+        tourNames={props.tourNames}
         destinations={props.destinations}
         handleAddSubmit={props.handleAddSubmit}
         handleCloseClick={props.handleCloseClick}

@@ -1,12 +1,9 @@
 import * as React from 'react'
 import axios from 'axios'
-import { FormikActions } from 'formik'
 import 'bulma/css/bulma.css'
-import {
-  AddActivityCategoryForm,
-  ActivityCategoryForm,
-} from './AddActivityCategoryForm'
-import { EditActivityCategoryForm } from './EditActivityCategoryForm'
+import { FormikActions } from 'formik'
+import { AddActivityForm, ActivityForm } from './AddActivity'
+import { EditActivityForm } from './EditActivity'
 import { Modal } from '../Model'
 import {
   getAllItems,
@@ -15,38 +12,81 @@ import {
   putItem,
   deleteItem,
 } from '../services'
+import { OptionValues } from '../types'
+
+// import { PaginationResult } from '../types'
 
 import { mainUrl } from '../config'
 
-const url = `${mainUrl}/categories`
+const url = `${mainUrl}/group-activities`
 
-export interface ActivityCategory {
+export interface Activity {
   readonly id: string
-  readonly serviceType: string
-  readonly categoryName: string
+  readonly activityName: string
+  readonly description: string
+  readonly stars: number
+  readonly thumbUrl: string
+  readonly minChildAge: number
+  readonly maxChildAge: number
+  readonly destinationId: number
+  readonly activityId: number
   readonly categoryId: number
+  readonly optionId: number
 }
 
-const currentActivity: ActivityCategory = {
+const currentActivity: Activity = {
   id: '',
-  serviceType: '',
-  categoryName: '',
+  activityName: '',
+  description: '',
+  stars: 0,
+  thumbUrl: '',
+  minChildAge: 0,
+  maxChildAge: 0,
+  destinationId: 0,
+  activityId: 0,
   categoryId: 0,
+  optionId: 0,
 }
 
-export const ActivityCategoryList = () => {
-  const [activities, setActivities] = React.useState<
-    ReadonlyArray<ActivityCategory>
-  >([])
+export const GroupActivityList = () => {
+  const [activities, setActivities] = React.useState<ReadonlyArray<Activity>>(
+    [],
+  )
   const [addActivityOpen, setAddActivityOpen] = React.useState(false)
   const [editActivityOpen, setEditActivityOpen] = React.useState(false)
   const [editActivityData, setEditActivityData] = React.useState(
     currentActivity,
   )
 
+  const [destinations, setDestinations] = React.useState<
+    ReadonlyArray<OptionValues>
+  >([])
+
+  const [categories, setCategories] = React.useState<
+    ReadonlyArray<OptionValues>
+  >([])
+
   const fetchMealTypeData = async () => {
     const result = await axios(`${url}`)
     setActivities(result.data)
+  }
+
+  const fetchDestinations = async () => {
+    const result = await axios(`${mainUrl}/activityLocations`)
+    const meals = result.data.map((x: any) => ({
+      value: x.locationId,
+      label: x.city,
+    }))
+    setDestinations(meals)
+  }
+
+  const fetchCategories = async () => {
+    const result = await axios(`${mainUrl}/group-categories`)
+    const meals = result.data.map((x: any) => ({
+      value: x.categoryId,
+      label: x.categoryName,
+    }))
+    setCategories(meals)
   }
 
   const handleAddMealClick = () => {
@@ -54,23 +94,23 @@ export const ActivityCategoryList = () => {
   }
 
   const handleAddActivitySubmit = (
-    values: ActivityCategoryForm,
-    actions: FormikActions<ActivityCategoryForm>,
+    values: ActivityForm,
+    actions: FormikActions<ActivityForm>,
   ) => {
     postItem(url, values)
       .then(() => {
         getAllItems(url)
-          .then(res => {
+          .then((res: any) => {
             setActivities(res)
             setAddActivityOpen(!addActivityOpen)
             actions.setSubmitting(false)
           })
-          .catch(err => {
+          .catch((err: string) => {
             throw Error(err)
           })
       })
       .catch(err => {
-        throw Error(err)
+        return Error(err)
       })
   }
 
@@ -87,8 +127,8 @@ export const ActivityCategoryList = () => {
   }
 
   const handleEditActivitySubmit = async (
-    values: ActivityCategory,
-    action: FormikActions<ActivityCategoryForm>,
+    values: Activity,
+    action: FormikActions<ActivityForm>,
   ) => {
     const updateMealType = await putItem(url, values)
     const meals = await getAllItems(url)
@@ -103,10 +143,10 @@ export const ActivityCategoryList = () => {
     deleteItem(url, id)
       .then(() => {
         getAllItems(url)
-          .then(res => {
+          .then((res: any) => {
             setActivities(res)
           })
-          .catch(err => {
+          .catch((err: string) => {
             throw Error(err)
           })
       })
@@ -119,15 +159,23 @@ export const ActivityCategoryList = () => {
     fetchMealTypeData()
   }, [])
 
+  React.useEffect(() => {
+    fetchDestinations()
+  }, [])
+
+  React.useEffect(() => {
+    fetchCategories()
+  }, [])
+
   return (
     <div>
       <div className="has-text-centered has-text-info is-size-3">
-        Activity Category Details
+        Activity Details
       </div>
       <div className="field">
         <div className="control has-text-right">
           <button className="button is-info " onClick={handleAddMealClick}>
-            Add Activity Category
+            Add Activity
           </button>
         </div>
       </div>
@@ -135,11 +183,12 @@ export const ActivityCategoryList = () => {
       <Modal
         closeModal={handleAddMealClick}
         modalState={addActivityOpen}
-        title=" Activity Category Form"
+        title="Activity Form"
       >
         {
-          <AddActivityCategoryForm
-            count={activities.length}
+          <AddActivityForm
+            destinations={destinations}
+            categories={categories}
             handleAddSubmit={handleAddActivitySubmit}
             handleCloseClick={handleAddMealClick}
           />
@@ -149,11 +198,12 @@ export const ActivityCategoryList = () => {
       <Modal
         closeModal={handleEditActivityCloseClick}
         modalState={editActivityOpen}
-        title=" Activity Category Form"
+        title="Activity Form"
       >
         {
-          <EditActivityCategoryForm
-            count={activities.length}
+          <EditActivityForm
+            destinations={destinations}
+            categories={categories}
             currentItem={editActivityData}
             handleEditSubmit={handleEditActivitySubmit}
             handleCloseClick={handleEditActivityCloseClick}
@@ -161,23 +211,36 @@ export const ActivityCategoryList = () => {
         }
       </Modal>
 
-      <div className="box">
-        {activities.length > 0 ? (
-          <table className="table is-bordered is-striped is-narrow is-hoverable is-fullwidth is-responsive">
+      <div>
+        {activities && activities.length > 0 ? (
+          <table className="table is-bordered is-striped is-narrow is-hoverable  is-responsive">
             <thead>
               <tr>
-                <th>ServiceType</th>
+                <th>ActivityName</th>
+                <th>Stars</th>
+                <th>Description</th>
+                <th>MinChildAge</th>
+                <th>MaxChildAge</th>
+                <th>destinationId</th>
+                <th>ActivityId</th>
+                <th>OptionId</th>
                 <th>CategoryId</th>
-                <th>Category</th>
                 <th>Actions</th>
               </tr>
             </thead>
             <tbody>
-              {activities.map((activity: ActivityCategory) => (
+              {activities.map((activity: Activity) => (
                 <tr key={activity.id}>
-                  <td>{activity.serviceType}</td>
+                  <td>{activity.activityName}</td>
+                  <td>{activity.stars}</td>
+                  <td>{activity.description}</td>
+                  <td>{activity.minChildAge}</td>
+                  <td>{activity.maxChildAge}</td>
+                  <td>{activity.destinationId}</td>
+                  <td>{activity.activityId}</td>
+                  <td>{activity.optionId}</td>
                   <td>{activity.categoryId}</td>
-                  <td>{activity.categoryName}</td>
+
                   <td>
                     <span
                       className="icon"
@@ -198,8 +261,8 @@ export const ActivityCategoryList = () => {
             </tbody>
           </table>
         ) : (
-          <div className="has-text-info is-size-3 has-text-centered">
-            No Activity Categories Exist
+          <div className=" has-text-info is-size-3 has-text-centered">
+            No Activities Exist
           </div>
         )}
       </div>

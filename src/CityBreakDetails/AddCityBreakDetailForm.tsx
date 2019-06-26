@@ -1,12 +1,25 @@
 import * as React from 'react'
-import { Field, Formik, Form, FormikActions, ErrorMessage } from 'formik'
+import {
+  Field,
+  Formik,
+  Form,
+  FormikActions,
+  FormikProps,
+  ErrorMessage,
+} from 'formik'
 import * as yup from 'yup'
 import { OptionValues } from 'src/CityBreaks/CityBreakList'
-import { AddFormProps, DestinationProps } from '../types'
+import {
+  AddFormProps,
+  DestinationProps,
+  TourProps,
+  OptionValues1,
+} from '../types'
 
 export interface CityBreakDetailsFormValues {
   readonly cityId: number
   readonly days: number
+  readonly tourName: string
   readonly dayNo: number
   readonly dayInfo: string
 }
@@ -23,6 +36,7 @@ export interface CityBreakDetailsFormValues {
 const activityValues: CityBreakDetailsFormValues = {
   cityId: 0,
   days: 0,
+  tourName: '',
   dayNo: 0,
   dayInfo: '',
 }
@@ -33,11 +47,25 @@ export const FormSchema: () => yup.ObjectSchema<
   yup.object({
     cityId: yup.number().required('Select City'),
     days: yup.number().required('days Required'),
+    tourName: yup.string().required('TourName required'),
     dayInfo: yup.string().required('DayInfo required'),
     dayNo: yup.number().required('DayNo required'),
   })
+
+export const tourNamesByCityId = (
+  tours: ReadonlyArray<OptionValues1>,
+  cityId: number,
+  days: number,
+) => {
+  return cityId && days
+    ? tours.filter((x: any) => x.cityId == cityId && x.days == days)
+    : []
+}
+
 export const AddCityBreakDateailInnerForm = (
-  props: AddFormProps<CityBreakDetailsFormValues> & DestinationProps,
+  props: AddFormProps<CityBreakDetailsFormValues> &
+    DestinationProps &
+    TourProps,
 ) => {
   return (
     <div>
@@ -60,8 +88,7 @@ export const AddCityBreakDateailInnerForm = (
           props.handleAddSubmit(submitValues, actions)
         }}
         validationSchema={FormSchema}
-      >
-        <div>
+        render={(formikBag: FormikProps<CityBreakDetailsFormValues>) => (
           <Form>
             <div className="field">
               <div className="control">
@@ -94,6 +121,39 @@ export const AddCityBreakDateailInnerForm = (
 
             <div className="field">
               <div className="control">
+                <label className="label">TourName</label>
+                <div className="select">
+                  <Field name="tourName" component="select">
+                    <option>Select TourName</option>
+                    {tourNamesByCityId(
+                      props.tourNames,
+                      formikBag.values.cityId,
+                      formikBag.values.days,
+                    ).map((d: any) => (
+                      <option key={d.value} value={d.value}>
+                        {d.label}
+                      </option>
+                    ))}
+                  </Field>
+                  <div className="has-text-danger is-size-7">
+                    <ErrorMessage name="tourName" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* <div className="field">
+              <div className="control">
+                <label className="label">TourName</label>
+                <Field className="input" name="tourName" type="text" />
+                <div className="has-text-danger is-size-7">
+                  <ErrorMessage name="tourName" />
+                </div>
+              </div>
+            </div> */}
+
+            <div className="field">
+              <div className="control">
                 <label className="label">Day Number</label>
                 <Field className="input" name="dayNo" type="number" />
                 <div className="has-text-danger is-size-7">
@@ -123,18 +183,21 @@ export const AddCityBreakDateailInnerForm = (
               Close
             </button>
           </Form>
-        </div>
-      </Formik>
+        )}
+      />
     </div>
   )
 }
 
 export const AddCityBreakDetailForm = (
-  props: AddFormProps<CityBreakDetailsFormValues> & DestinationProps,
+  props: AddFormProps<CityBreakDetailsFormValues> &
+    DestinationProps &
+    TourProps,
 ) => {
   return (
     <div>
       <AddCityBreakDateailInnerForm
+        tourNames={props.tourNames}
         destinations={props.destinations}
         handleAddSubmit={props.handleAddSubmit}
         handleCloseClick={props.handleCloseClick}

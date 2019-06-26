@@ -16,7 +16,9 @@ import {
   deleteItem,
 } from '../services'
 
-const url = `http://localhost:4000/activitydetails`
+import { mainUrl } from '../config'
+
+const url = `${mainUrl}/activitydetails`
 
 export interface ActivityDetails {
   readonly id: string

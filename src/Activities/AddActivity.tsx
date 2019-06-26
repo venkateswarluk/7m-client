@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { ErrorMessage, Field, Formik, Form, FormikActions } from 'formik'
 import * as yup from 'yup'
-import { AddFormProps } from '../types'
+import { AddFormProps, DestinationProps, CategoryProps } from '../types'
 
 export interface ActivityForm {
   readonly activityName: string
@@ -34,51 +34,6 @@ export interface OptionValues {
   readonly label: string
 }
 
-export const categories: ReadonlyArray<OptionValues> = [
-  { value: 588, label: 'Attraction Passes' },
-  { value: 214, label: 'Museum' },
-  { value: 213, label: 'Observation deck' },
-  { value: 215, label: 'Entertainment' },
-  { value: 212, label: 'Theme Parks' },
-  { value: 216, label: 'Aquarium' },
-  { value: 217, label: 'Cruise / Boat (Tour/Ride)' },
-  { value: 219, label: 'Zoological Theme Park' },
-  { value: 220, label: 'Political Attraction' },
-  { value: 221, label: 'Bus (Tour/Ride)' },
-  { value: 218, label: 'Helicopter Ride' },
-  { value: 222, label: 'Wine Tour' },
-  { value: 223, label: 'City Tour' },
-  { value: 15, label: 'Transfer' },
-  { value: 16, label: 'Guide' },
-  { value: 224, label: 'Hop On Hop Off Tour' },
-  { value: 225, label: 'Disney World' },
-]
-
-export const destinations: ReadonlyArray<OptionValues> = [
-  { value: 1, label: 'New York' },
-  { value: 2, label: 'Orlando' },
-  { value: 3, label: 'Houston' },
-  { value: 4, label: 'Seattle' },
-  { value: 5, label: 'Los Angeles' },
-  { value: 6, label: 'San Diego' },
-  { value: 7, label: 'San Francisco' },
-  { value: 8, label: 'Lake Tahoe' },
-  { value: 9, label: 'Washington DC' },
-  { value: 10, label: 'Alexandria Bay' },
-  { value: 11, label: 'Niagara' },
-  { value: 12, label: 'Boston' },
-  { value: 13, label: 'Philadelphia' },
-  { value: 14, label: 'Atlanta' },
-  { value: 15, label: 'Miami' },
-  { value: 16, label: 'Tampa' },
-  { value: 17, label: 'Chicago' },
-  { value: 18, label: 'Las Vegas' },
-  { value: 19, label: 'Denver' },
-  { value: 20, label: 'New Orleans' },
-  { value: 21, label: 'Key west' },
-  { value: 22, label: 'Anchorage' },
-]
-
 export const ActivityFormSchema: () => yup.ObjectSchema<
   ActivityForm
 > = (): yup.ObjectSchema<ActivityForm> =>
@@ -98,7 +53,7 @@ export const ActivityFormSchema: () => yup.ObjectSchema<
       .number()
       .required()
       .moreThan(0, 'MaxChildAge Must MoreThan 0')
-      .lessThan(9, 'MaxChildAge Must lessThan 9'),
+      .lessThan(9, 'MaxChildAge Must lessThan 10'),
     destinationId: yup
       .number()
       .required()
@@ -109,7 +64,9 @@ export const ActivityFormSchema: () => yup.ObjectSchema<
     optionId: yup.number().required(),
   })
 
-export const AddActivityInnerForm = (props: AddFormProps<ActivityForm>) => (
+export const AddActivityInnerForm = (
+  props: AddFormProps<ActivityForm> & DestinationProps & CategoryProps,
+) => (
   <div>
     <Formik
       initialValues={activityValues}
@@ -195,7 +152,7 @@ export const AddActivityInnerForm = (props: AddFormProps<ActivityForm>) => (
               <div className="select">
                 <Field name="destinationId" component="select">
                   <option>Select Destination</option>
-                  {destinations.map(d => (
+                  {props.destinations.map(d => (
                     <option key={d.value} value={d.value}>
                       {d.label}
                     </option>
@@ -214,7 +171,7 @@ export const AddActivityInnerForm = (props: AddFormProps<ActivityForm>) => (
               <div className="select">
                 <Field name="categoryId" component="select">
                   <option>Select Category</option>
-                  {categories.map(d => (
+                  {props.categories.map(d => (
                     <option key={d.value} value={d.value}>
                       {d.label}
                     </option>
@@ -262,10 +219,14 @@ export const AddActivityInnerForm = (props: AddFormProps<ActivityForm>) => (
   </div>
 )
 
-export const AddActivityForm = (props: AddFormProps<ActivityForm>) => {
+export const AddActivityForm = (
+  props: AddFormProps<ActivityForm> & DestinationProps & CategoryProps,
+) => {
   return (
     <div>
       <AddActivityInnerForm
+        categories={props.categories}
+        destinations={props.destinations}
         handleAddSubmit={props.handleAddSubmit}
         handleCloseClick={props.handleCloseClick}
       />

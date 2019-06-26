@@ -1,11 +1,9 @@
 import * as React from 'react'
 import axios from 'axios'
 import 'bulma/css/bulma.css'
-import {
-  CityBreakLocationFormValues,
-  AddCityBreakLocationForm,
-} from './AddCityBreakLocationForm'
-import { EditCityBreakLocationForm } from './EditCityBreakLocatiionForm'
+import { FormikActions } from 'formik'
+import { ActivityOptionForm, AddActivityOptionForm } from './AddActivityOption'
+import { EditActivityOptionForm } from './EditActivityOption'
 import { Modal } from '../Model'
 import {
   getAllItems,
@@ -17,68 +15,55 @@ import {
 
 import { mainUrl } from '../config'
 
-const url = `${mainUrl}/cityBreakLocations`
+const url = `${mainUrl}/group-activityoptions`
 
-export interface CityBreakLocation {
+export interface ActivityOption {
   readonly id: string
-  readonly city: string
-  readonly country: string
-  readonly cityId: number
+  readonly activityOptionId: number
+  readonly typeVal: string
+  readonly typeDescription: string
+  readonly name: string
+  readonly activityId: number
 }
 
-export interface OptionValues {
-  readonly value: number | string
-  readonly label: string
-}
-
-const currentCityBreakDetail: CityBreakLocation = {
+const currentActivityOption: ActivityOption = {
   id: '',
-  cityId: 0,
-  city: '',
-  country: '',
+  activityOptionId: 0,
+  activityId: 0,
+  typeDescription: '',
+  typeVal: '',
+  name: '',
 }
 
-export const CityBreakLocationsList = () => {
-  const [cityBreakLocations, setCityBreaks] = React.useState<
-    ReadonlyArray<CityBreakLocation>
+export const GroupActivityOptionList = () => {
+  const [activityOptions, setActivityOptions] = React.useState<
+    ReadonlyArray<ActivityOption>
   >([])
-  const [addCityBreakOpen, setAddCityBreakOpen] = React.useState(false)
-  const [editCityBreakOpen, setEditCityBreakOpen] = React.useState(false)
-  const [editCityBreakData, setEditCityBreakData] = React.useState(
-    currentCityBreakDetail,
+  const [addActivityOpen, setAddActivityOpen] = React.useState(false)
+  const [editActivityOpen, setEditActivityOpen] = React.useState(false)
+  const [editActivityData, setEditActivityData] = React.useState(
+    currentActivityOption,
   )
-  const [destinations, setDestinations] = React.useState<
-    ReadonlyArray<OptionValues>
-  >([])
 
   const fetchMealTypeData = async () => {
     const result = await axios(`${url}`)
-    setCityBreaks(result.data)
-  }
-
-  const fetchCitiesData = async () => {
-    const result = await axios(`${url}`)
-    const cities = result.data.map((x: any) => ({
-      value: x.cityId,
-      label: x.city,
-    }))
-    setDestinations(cities)
+    setActivityOptions(result.data)
   }
 
   const handleAddMealClick = () => {
-    setAddCityBreakOpen(!addCityBreakOpen)
+    setAddActivityOpen(!addActivityOpen)
   }
 
   const handleAddActivitySubmit = (
-    values: CityBreakLocationFormValues,
-    actions: any,
+    values: ActivityOptionForm,
+    actions: FormikActions<ActivityOption>,
   ) => {
     postItem(url, values)
       .then(() => {
         getAllItems(url)
           .then(res => {
-            setCityBreaks(res)
-            setAddCityBreakOpen(!addCityBreakOpen)
+            setActivityOptions(res)
+            setAddActivityOpen(!addActivityOpen)
             actions.setSubmitting(false)
           })
           .catch(err => {
@@ -93,24 +78,24 @@ export const CityBreakLocationsList = () => {
   const handleEditActivityClick = async (id: string) => {
     const res = await getItemById(url, id)
     if (res) {
-      setEditCityBreakData(res)
-      setEditCityBreakOpen(!editCityBreakOpen)
+      setEditActivityData(res)
+      setEditActivityOpen(!editActivityOpen)
     }
   }
 
   const handleEditActivityCloseClick = () => {
-    setEditCityBreakOpen(!editCityBreakOpen)
+    setEditActivityOpen(!editActivityOpen)
   }
 
   const handleEditActivitySubmit = async (
-    values: CityBreakLocation,
-    action: any,
+    values: ActivityOption,
+    action: FormikActions<ActivityOption>,
   ) => {
     const updateMealType = await putItem(url, values)
     const meals = await getAllItems(url)
     if (updateMealType.status === 200) {
-      setCityBreaks(meals)
-      setEditCityBreakOpen(!editCityBreakOpen)
+      setActivityOptions(meals)
+      setEditActivityOpen(!editActivityOpen)
       action.setSubmitting(false)
     }
   }
@@ -120,7 +105,7 @@ export const CityBreakLocationsList = () => {
       .then(() => {
         getAllItems(url)
           .then(res => {
-            setCityBreaks(res)
+            setActivityOptions(res)
           })
           .catch(err => {
             throw Error(err)
@@ -135,33 +120,27 @@ export const CityBreakLocationsList = () => {
     fetchMealTypeData()
   }, [])
 
-  React.useEffect(() => {
-    fetchCitiesData()
-  }, [])
-
   return (
     <div>
       <div className="has-text-centered has-text-info is-size-3">
-        CityBreak Locations
+        Activity Options
       </div>
       <div className="field">
         <div className="control has-text-right">
           <button className="button is-info " onClick={handleAddMealClick}>
-            Add CityBreakLocation
+            Add Activity Option
           </button>
         </div>
       </div>
 
       <Modal
         closeModal={handleAddMealClick}
-        modalState={addCityBreakOpen}
-        title="CityBreakLocation Form"
+        modalState={addActivityOpen}
+        title="Activity Option Form"
       >
         {
-          <AddCityBreakLocationForm
-            count={cityBreakLocations.length}
-            destinations={destinations}
-            handleAddMealTypeSubmit={handleAddActivitySubmit}
+          <AddActivityOptionForm
+            handleAddSubmit={handleAddActivitySubmit}
             handleCloseClick={handleAddMealClick}
           />
         }
@@ -169,48 +148,51 @@ export const CityBreakLocationsList = () => {
 
       <Modal
         closeModal={handleEditActivityCloseClick}
-        modalState={editCityBreakOpen}
-        title="CityBreakLocation Form"
+        modalState={editActivityOpen}
+        title="Activity Option Form"
       >
         {
-          <EditCityBreakLocationForm
-            count={cityBreakLocations.length}
-            destinations={destinations}
-            cityBreakLocations={editCityBreakData}
-            handleEditMealTypeSubmit={handleEditActivitySubmit}
+          <EditActivityOptionForm
+            currentItem={editActivityData}
+            handleEditSubmit={handleEditActivitySubmit}
             handleCloseClick={handleEditActivityCloseClick}
           />
         }
       </Modal>
 
       <div className="box">
-        {cityBreakLocations.length > 0 ? (
+        {activityOptions.length > 0 ? (
           <table className="table is-bordered is-striped is-narrow is-hoverable is-fullwidth is-responsive">
             <thead>
               <tr>
-                <th>CityId</th>
-                <th>City</th>
-                <th>Country</th>
+                <th>ActivityOptionId</th>
+                <th>TypeVal</th>
+                <th>TypeDescription</th>
+                <th>Name</th>
+                <th>ActivityId</th>
                 <th>Actions</th>
               </tr>
             </thead>
             <tbody>
-              {cityBreakLocations.map((cityBreak: CityBreakLocation) => (
-                <tr key={cityBreak.id}>
-                  <td>{cityBreak.cityId}</td>
-                  <td>{cityBreak.city}</td>
-                  <td>{cityBreak.country}</td>
+              {activityOptions.map((activity: ActivityOption) => (
+                <tr key={activity.id}>
+                  <td>{activity.activityOptionId}</td>
+                  <td>{activity.typeVal}</td>
+                  <td>{activity.typeDescription}</td>
+                  <td>{activity.name}</td>
+                  <td>{activity.activityId}</td>
+
                   <td>
                     <span
                       className="icon"
-                      onClick={() => handleEditActivityClick(cityBreak.id)}
+                      onClick={() => handleEditActivityClick(activity.id)}
                     >
                       <i className="fa fa-edit" />
                     </span>
 
                     <span
                       className="icon"
-                      onClick={() => handleDeleteActivitySubmit(cityBreak.id)}
+                      onClick={() => handleDeleteActivitySubmit(activity.id)}
                     >
                       <i className="fa fa-trash" />
                     </span>
@@ -221,7 +203,7 @@ export const CityBreakLocationsList = () => {
           </table>
         ) : (
           <div className="has-text-info is-size-3 has-text-centered">
-            No CityBreak Locations Exist
+            No Activity Options Exist
           </div>
         )}
       </div>

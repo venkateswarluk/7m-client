@@ -15,13 +15,17 @@ import {
   putItem,
   deleteItem,
 } from '../services'
+import { OptionValues1 } from '../types'
 
-const url = `http://localhost:4000/cityBreakInclusions`
+import { mainUrl } from '../config'
+
+const url = `${mainUrl}/cityBreakInclusions`
 
 export interface CityBreakInclusion {
   readonly id: string
   readonly cityId: number
   readonly days: number
+  readonly tourName: string
   readonly inclusions: string
 }
 
@@ -34,6 +38,7 @@ const currentCityBreakDetail: CityBreakInclusion = {
   id: '',
   cityId: 0,
   days: 0,
+  tourName: '',
   inclusions: '',
 }
 
@@ -50,18 +55,33 @@ export const CityBreakInclusionsList = () => {
     ReadonlyArray<OptionValues>
   >([])
 
+  const [tourNames, setTourNames] = React.useState<
+    ReadonlyArray<OptionValues1>
+  >([])
+
   const fetchMealTypeData = async () => {
     const result = await axios(`${url}`)
     setCityBreaks(result.data)
   }
 
   const fetchCitiesData = async () => {
-    const result = await axios(`http://localhost:4000/cityBreakLocations`)
+    const result = await axios(`${mainUrl}/cityBreakLocations`)
     const cities = result.data.map((x: any) => ({
       value: x.cityId,
       label: x.city,
     }))
     setDestinations(cities)
+  }
+
+  const fetchTourNames = async () => {
+    const result = await axios(`${mainUrl}/citybreaks`)
+    const cities = result.data.map((x: any) => ({
+      value: x.tourName,
+      label: x.tourName,
+      cityId: x.cityId,
+      days: x.days,
+    }))
+    setTourNames(cities)
   }
 
   const handleAddMealClick = () => {
@@ -138,6 +158,10 @@ export const CityBreakInclusionsList = () => {
     fetchCitiesData()
   }, [])
 
+  React.useEffect(() => {
+    fetchTourNames()
+  }, [])
+
   return (
     <div>
       <div className="has-text-centered has-text-info is-size-3">
@@ -158,6 +182,7 @@ export const CityBreakInclusionsList = () => {
       >
         {
           <AddCityBreakInclusionForm
+            tourNames={tourNames}
             destinations={destinations}
             handleAddSubmit={handleAddActivitySubmit}
             handleCloseClick={handleAddMealClick}
@@ -172,6 +197,7 @@ export const CityBreakInclusionsList = () => {
       >
         {
           <EditCityBreakInclusionForm
+            tourNames={tourNames}
             destinations={destinations}
             currentItem={editCityBreakData}
             handleEditSubmit={handleEditActivitySubmit}
@@ -187,6 +213,7 @@ export const CityBreakInclusionsList = () => {
               <tr>
                 <th>CityId</th>
                 <th>Days</th>
+                <th>TourName</th>
                 <th>Inclusions</th>
                 <th>Actions</th>
               </tr>
@@ -196,6 +223,7 @@ export const CityBreakInclusionsList = () => {
                 <tr key={cityBreak.id}>
                   <td>{cityBreak.cityId}</td>
                   <td>{cityBreak.days}</td>
+                  <td>{cityBreak.tourName}</td>
                   <td>{cityBreak.inclusions}</td>
                   <td>
                     <span

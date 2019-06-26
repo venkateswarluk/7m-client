@@ -13,10 +13,13 @@ import {
   deleteItem,
 } from '../services'
 
-const url = `http://localhost:4000/citybreaks`
+import { mainUrl } from '../config'
+
+const url = `${mainUrl}/citybreaks`
 export interface CityBreak {
   readonly id: string
   readonly cityId: number
+  readonly tourName: string
   readonly city: string
   readonly days: number
   readonly description: string
@@ -34,6 +37,7 @@ export interface OptionValues {
 const currentCityBreak: CityBreak = {
   id: '',
   cityId: 0,
+  tourName: '',
   city: '',
   days: 0,
   description: '',
@@ -62,7 +66,7 @@ export const CityBreakList = () => {
   }
 
   const fetchCitiesData = async () => {
-    const result = await axios(`http://localhost:4000/cityBreakLocations`)
+    const result = await axios(`${mainUrl}/cityBreakLocations`)
     const cities = result.data.map((x: any) => ({
       value: x.cityId,
       label: x.city,
@@ -193,6 +197,7 @@ export const CityBreakList = () => {
               <tr>
                 <th>City</th>
                 <th>Days</th>
+                <th>TourName</th>
                 <th>Description</th>
                 <th>Price</th>
                 <th>Phone</th>
@@ -205,6 +210,7 @@ export const CityBreakList = () => {
                 <tr key={cityBreak.id}>
                   <td>{cityBreak.city}</td>
                   <td>{cityBreak.days}</td>
+                  <td>{cityBreak.tourName}</td>
                   <td>{cityBreak.description}</td>
                   <td>{cityBreak.price}</td>
                   <td>{cityBreak.phone}</td>

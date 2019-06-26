@@ -7,6 +7,8 @@ import {
 } from 'react-router-config'
 import { BrowserRouter, NavLink } from 'react-router-dom'
 import { MealTypeList } from '../Meals/MealList'
+import { MealsTypeList } from '../MealType/MealList'
+
 import { ActivityList } from '../Activities/ActivityList'
 import { ActivityDetailsList } from '../ActivityDetails/ActivityDetailsList'
 import { ActivityLocationList } from '../ActivityLocations/ActivityLocationList'
@@ -18,6 +20,11 @@ import { CityBreakDetailsList } from '../CityBreakDetails/CityBreakDetailList'
 import { CityBreakInclusionsList } from '../CityBreakInclusions/CityBreakInclusionList'
 import { CityBreakExclusionsList } from '../CityBreakExclusions/CityBreakExclusionList'
 import { CityBreakLocationsList } from '../CityBreakLocations/CityBreakLocationList'
+import { GroupActivityList } from '../Group-Activities/ActivityList'
+import { GroupActivityDetailsList } from '../Group-ActivityDetails/ActivityDetailsList'
+import { GroupActivityOptionList } from '../Group-ActivityOptions/ActivityOptionList'
+import { GroupOptionAvailabilityList } from '../Group-OptionAvailabilities/OptionAvailabilityList'
+import { GroupActivityCategoryList } from '../Group-ActivityCategories/ActivityCategoryList'
 
 const Root = ({ route }: RouteConfigComponentProps) => (
   <div>{renderRoutes(route && route.routes)}</div>
@@ -63,6 +70,11 @@ const routes: ReadonlyArray<RouteConfig> = [
         component: MealTypeList,
       },
       {
+        path: '/meal-types',
+        exact: true,
+        component: MealsTypeList,
+      },
+      {
         path: '/city-break',
         exact: true,
         component: CityBreakList,
@@ -87,14 +99,40 @@ const routes: ReadonlyArray<RouteConfig> = [
         exact: true,
         component: CityBreakLocationsList,
       },
+      {
+        path: '/group-activity',
+        exact: true,
+        component: GroupActivityList,
+      },
+      {
+        path: '/group-activity-details',
+        exact: true,
+        component: GroupActivityDetailsList,
+      },
+
+      {
+        path: '/group-activity-option',
+        exact: true,
+        component: GroupActivityOptionList,
+      },
+      {
+        path: '/group-option-availability',
+        exact: true,
+        component: GroupOptionAvailabilityList,
+      },
+      {
+        path: '/group-activity-category',
+        exact: true,
+        component: GroupActivityCategoryList,
+      },
     ],
   },
 ]
 
 export const AppRoutes = () => (
   <BrowserRouter>
-    <div className="main-content columns is-fullheight">
-      <aside className="column is-2 is-narrow-mobile is-fullheight section is-hidden-mobile">
+    <div className="main-content columns ">
+      <aside className="column is-2 ">
         <div className="has-text-info is-size-5">Activities</div>
         <ul className="menu-list">
           <li>
@@ -136,7 +174,13 @@ export const AppRoutes = () => (
               Meals
             </NavLink>
           </li>
+          <li>
+            <NavLink exact={true} activeClassName="active" to="/meal-types">
+              MealTypes
+            </NavLink>
+          </li>
         </ul>
+
         <div className="has-text-info is-size-5">CityBreaks</div>
         <ul className="menu-list">
           <li>
@@ -178,6 +222,36 @@ export const AppRoutes = () => (
               to="/city-break-locations"
             >
               CityBreakLocations
+            </NavLink>
+          </li>
+        </ul>
+
+        <div className="has-text-info is-size-5">Group Activities</div>
+        <ul className="menu-list">
+          <li>
+            <NavLink activeClassName="active" to="/group-activity">
+              GroupActivity
+            </NavLink>
+          </li>
+          <li>
+            <NavLink activeClassName="active" to="/group-activity-details">
+              GroupActivityDetails
+            </NavLink>
+          </li>
+          <li>
+            <NavLink activeClassName="active" to="/group-activity-option">
+              GroupActivityOption
+            </NavLink>
+          </li>
+
+          <li>
+            <NavLink activeClassName="active" to="/group-option-availability">
+              GroupOptionAvailability
+            </NavLink>
+          </li>
+          <li>
+            <NavLink activeClassName="active" to="/group-activity-category">
+              GroupActivityCategory
             </NavLink>
           </li>
         </ul>

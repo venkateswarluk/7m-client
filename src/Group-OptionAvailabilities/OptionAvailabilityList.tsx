@@ -1,12 +1,12 @@
 import * as React from 'react'
 import axios from 'axios'
-import { FormikActions } from 'formik'
 import 'bulma/css/bulma.css'
+import { FormikActions } from 'formik'
 import {
-  AddActivityCategoryForm,
-  ActivityCategoryForm,
-} from './AddActivityCategoryForm'
-import { EditActivityCategoryForm } from './EditActivityCategoryForm'
+  OptionAvailabilityForm,
+  AddOptionAvailabilityForm,
+} from './AddOptionAvailability'
+import { EditOptionAvailabilityForm } from './EditOptionAvailabilityForm'
 import { Modal } from '../Model'
 import {
   getAllItems,
@@ -18,35 +18,51 @@ import {
 
 import { mainUrl } from '../config'
 
-const url = `${mainUrl}/categories`
+const url = `${mainUrl}/group-optionavailabilities`
 
-export interface ActivityCategory {
+export interface OptionAvailability {
   readonly id: string
-  readonly serviceType: string
-  readonly categoryName: string
-  readonly categoryId: number
+  readonly optionAvailabilityId: number
+  readonly maxAdults: number
+  readonly maxChilds: number
+  readonly maxUnits: number
+  readonly adultPrice: number
+  readonly childPrice: number
+  readonly unitPrice: number
+  readonly optionId: number
+  readonly activityId: number
+  readonly fromDate: string
+  readonly toDate: string
 }
 
-const currentActivity: ActivityCategory = {
+const currentActivityOption: OptionAvailability = {
   id: '',
-  serviceType: '',
-  categoryName: '',
-  categoryId: 0,
+  optionAvailabilityId: 0,
+  maxAdults: 0,
+  maxChilds: 0,
+  maxUnits: 0,
+  adultPrice: 0.0,
+  childPrice: 0.0,
+  unitPrice: 0.0,
+  optionId: 0,
+  activityId: 0,
+  fromDate: '',
+  toDate: '',
 }
 
-export const ActivityCategoryList = () => {
-  const [activities, setActivities] = React.useState<
-    ReadonlyArray<ActivityCategory>
+export const GroupOptionAvailabilityList = () => {
+  const [optionAvailabilities, setOptionAvailabilities] = React.useState<
+    ReadonlyArray<OptionAvailability>
   >([])
   const [addActivityOpen, setAddActivityOpen] = React.useState(false)
   const [editActivityOpen, setEditActivityOpen] = React.useState(false)
   const [editActivityData, setEditActivityData] = React.useState(
-    currentActivity,
+    currentActivityOption,
   )
 
   const fetchMealTypeData = async () => {
     const result = await axios(`${url}`)
-    setActivities(result.data)
+    setOptionAvailabilities(result.data)
   }
 
   const handleAddMealClick = () => {
@@ -54,14 +70,14 @@ export const ActivityCategoryList = () => {
   }
 
   const handleAddActivitySubmit = (
-    values: ActivityCategoryForm,
-    actions: FormikActions<ActivityCategoryForm>,
+    values: OptionAvailabilityForm,
+    actions: FormikActions<OptionAvailabilityForm>,
   ) => {
     postItem(url, values)
       .then(() => {
         getAllItems(url)
           .then(res => {
-            setActivities(res)
+            setOptionAvailabilities(res)
             setAddActivityOpen(!addActivityOpen)
             actions.setSubmitting(false)
           })
@@ -87,15 +103,15 @@ export const ActivityCategoryList = () => {
   }
 
   const handleEditActivitySubmit = async (
-    values: ActivityCategory,
-    action: FormikActions<ActivityCategoryForm>,
+    values: OptionAvailability,
+    actions: FormikActions<OptionAvailabilityForm>,
   ) => {
     const updateMealType = await putItem(url, values)
     const meals = await getAllItems(url)
     if (updateMealType.status === 200) {
-      setActivities(meals)
+      setOptionAvailabilities(meals)
       setEditActivityOpen(!editActivityOpen)
-      action.setSubmitting(false)
+      actions.setSubmitting(false)
     }
   }
 
@@ -104,7 +120,7 @@ export const ActivityCategoryList = () => {
       .then(() => {
         getAllItems(url)
           .then(res => {
-            setActivities(res)
+            setOptionAvailabilities(res)
           })
           .catch(err => {
             throw Error(err)
@@ -122,12 +138,12 @@ export const ActivityCategoryList = () => {
   return (
     <div>
       <div className="has-text-centered has-text-info is-size-3">
-        Activity Category Details
+        Option Availabilities
       </div>
       <div className="field">
         <div className="control has-text-right">
           <button className="button is-info " onClick={handleAddMealClick}>
-            Add Activity Category
+            Add Availability
           </button>
         </div>
       </div>
@@ -135,11 +151,10 @@ export const ActivityCategoryList = () => {
       <Modal
         closeModal={handleAddMealClick}
         modalState={addActivityOpen}
-        title=" Activity Category Form"
+        title=" Option Availability Form"
       >
         {
-          <AddActivityCategoryForm
-            count={activities.length}
+          <AddOptionAvailabilityForm
             handleAddSubmit={handleAddActivitySubmit}
             handleCloseClick={handleAddMealClick}
           />
@@ -149,11 +164,10 @@ export const ActivityCategoryList = () => {
       <Modal
         closeModal={handleEditActivityCloseClick}
         modalState={editActivityOpen}
-        title=" Activity Category Form"
+        title=" Option Availability Form"
       >
         {
-          <EditActivityCategoryForm
-            count={activities.length}
+          <EditOptionAvailabilityForm
             currentItem={editActivityData}
             handleEditSubmit={handleEditActivitySubmit}
             handleCloseClick={handleEditActivityCloseClick}
@@ -162,22 +176,34 @@ export const ActivityCategoryList = () => {
       </Modal>
 
       <div className="box">
-        {activities.length > 0 ? (
+        {optionAvailabilities.length > 0 ? (
           <table className="table is-bordered is-striped is-narrow is-hoverable is-fullwidth is-responsive">
             <thead>
               <tr>
-                <th>ServiceType</th>
-                <th>CategoryId</th>
-                <th>Category</th>
+                <th>OptionAvailabilityId</th>
+                <th>MaxAdults</th>
+                <th>MaxChilds</th>
+                <th>AdultPrice</th>
+                <th>ChildPrice</th>
+                <th>FromDate</th>
+                <th>ToDate</th>
+                <th>OptionId</th>
+                <th>ActivityId</th>
                 <th>Actions</th>
               </tr>
             </thead>
             <tbody>
-              {activities.map((activity: ActivityCategory) => (
+              {optionAvailabilities.map((activity: OptionAvailability) => (
                 <tr key={activity.id}>
-                  <td>{activity.serviceType}</td>
-                  <td>{activity.categoryId}</td>
-                  <td>{activity.categoryName}</td>
+                  <td>{activity.optionAvailabilityId}</td>
+                  <td>{activity.maxAdults}</td>
+                  <td>{activity.maxChilds}</td>
+                  <td>{activity.adultPrice}</td>
+                  <td>{activity.childPrice}</td>
+                  <td>{activity.fromDate}</td>
+                  <td>{activity.toDate}</td>
+                  <td>{activity.optionId}</td>
+                  <td>{activity.activityId}</td>
                   <td>
                     <span
                       className="icon"
@@ -199,7 +225,7 @@ export const ActivityCategoryList = () => {
           </table>
         ) : (
           <div className="has-text-info is-size-3 has-text-centered">
-            No Activity Categories Exist
+            No Availabilities Exist
           </div>
         )}
       </div>

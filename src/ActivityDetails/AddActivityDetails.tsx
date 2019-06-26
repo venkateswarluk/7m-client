@@ -27,12 +27,18 @@ export const ActivityDetailFormSchema: () => yup.ObjectSchema<
   ActivityDetailForm
 > = (): yup.ObjectSchema<ActivityDetailForm> =>
   yup.object({
-    activityDetailId: yup.number().required('ActivityDetailId Required'),
-    activityId: yup.number().required('ActivityId Required'),
+    activityDetailId: yup
+      .number()
+      .min(1)
+      .required('ActivityDetailId Required'),
+    activityId: yup
+      .number()
+      .min(1)
+      .required('ActivityId Required'),
     shortDescription: yup.string().required(' Short Description Required'),
     longDescription: yup.string().required('Long Description Required'),
-    images: yup.string(),
-    videos: yup.string(),
+    images: yup.string().required(),
+    videos: yup.string().required(),
     activityPhone: yup.string().required('Activity Phone Required'),
   })
 
@@ -92,7 +98,7 @@ export const AddActivityDetailsInnerForm = (
 
           <div className="field">
             <div className="control">
-              <label className="label">Images</label>
+              <label className="label">Image URL</label>
               <Field className="input" name="images" type="text" />
               <div className="has-text-danger is-size-7">
                 <ErrorMessage name="images" />

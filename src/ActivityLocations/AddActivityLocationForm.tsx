@@ -1,5 +1,6 @@
 import * as React from 'react'
-import { Field, Formik, Form, FormikActions } from 'formik'
+import { Field, Formik, Form, FormikActions, ErrorMessage } from 'formik'
+import * as yup from 'yup'
 
 export interface ActivityForm {
   readonly locationId: number
@@ -36,6 +37,25 @@ export interface AddFormProps {
   handleCloseClick(): void
 }
 
+export const FormSchema: () => yup.ObjectSchema<
+  ActivityForm
+> = (): yup.ObjectSchema<ActivityForm> =>
+  yup.object({
+    locationId: yup
+      .number()
+      .min(1)
+      .required(),
+    countryCode: yup.string().required(),
+    stateCode: yup.string().required(),
+    city: yup.string().required(),
+    searchingCity: yup.string().required(),
+    searchingState: yup.string().required(),
+    location: yup.string().required(),
+    address: yup.string().required(),
+    longitude: yup.string().required(),
+    latitude: yup.string().required(),
+  })
+
 export const AddActivityLocationInnerForm = (props: AddFormProps) => (
   <div>
     <Formik
@@ -52,6 +72,7 @@ export const AddActivityLocationInnerForm = (props: AddFormProps) => (
         }
         props.handleAddSubmit(submitValues, actions)
       }}
+      validationSchema={FormSchema}
     >
       <div>
         <Form>
@@ -59,6 +80,9 @@ export const AddActivityLocationInnerForm = (props: AddFormProps) => (
             <div className="control">
               <label className="label">Country Code</label>
               <Field className="input" name="countryCode" type="text" />
+              <div className="has-text-danger is-size-7">
+                <ErrorMessage name="countryCode" />
+              </div>
             </div>
           </div>
 
@@ -66,6 +90,9 @@ export const AddActivityLocationInnerForm = (props: AddFormProps) => (
             <div className="control">
               <label className="label">State Code</label>
               <Field className="input" name="stateCode" type="text" />
+              <div className="has-text-danger is-size-7">
+                <ErrorMessage name="stateCode" />
+              </div>
             </div>
           </div>
 
@@ -73,6 +100,9 @@ export const AddActivityLocationInnerForm = (props: AddFormProps) => (
             <div className="control">
               <label className="label">City</label>
               <Field className="input" name="city" type="text" />
+              <div className="has-text-danger is-size-7">
+                <ErrorMessage name="city" />
+              </div>
             </div>
           </div>
 
@@ -80,6 +110,9 @@ export const AddActivityLocationInnerForm = (props: AddFormProps) => (
             <div className="control">
               <label className="label">State</label>
               <Field className="input" name="searchingState" type="text" />
+              <div className="has-text-danger is-size-7">
+                <ErrorMessage name="searchingState" />
+              </div>
             </div>
           </div>
 
@@ -87,6 +120,9 @@ export const AddActivityLocationInnerForm = (props: AddFormProps) => (
             <div className="control">
               <label className="label">Address</label>
               <Field className="input" name="address" type="text" />
+              <div className="has-text-danger is-size-7">
+                <ErrorMessage name="address" />
+              </div>
             </div>
           </div>
 
@@ -94,6 +130,9 @@ export const AddActivityLocationInnerForm = (props: AddFormProps) => (
             <div className="control">
               <label className="label">Longitude</label>
               <Field className="input" name="longitude" type="text" />
+              <div className="has-text-danger is-size-7">
+                <ErrorMessage name="longitude" />
+              </div>
             </div>
           </div>
 
@@ -101,6 +140,9 @@ export const AddActivityLocationInnerForm = (props: AddFormProps) => (
             <div className="control">
               <label className="label">latitude</label>
               <Field className="input" name="latitude" type="text" />
+              <div className="has-text-danger is-size-7">
+                <ErrorMessage name="latitude" />
+              </div>
             </div>
           </div>
 

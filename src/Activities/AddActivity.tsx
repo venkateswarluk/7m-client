@@ -39,16 +39,16 @@ export const ActivityFormSchema: () => yup.ObjectSchema<
 > = (): yup.ObjectSchema<ActivityForm> =>
   yup.object({
     activityName: yup.string().required('ActivityName Required'),
-    description: yup.string().required(' Title Required'),
+    description: yup.string().required(' Description Required'),
     stars: yup
       .number()
       .required('Stars Required')
       .moreThan(0, 'Stars Must MoreThan 0'),
-    thumbUrl: yup.string().required(' Thumb Url Required'),
+    thumbUrl: yup.string().required(' Image Url Required'),
     minChildAge: yup
       .number()
       .required()
-      .moreThan(0, 'MinChildAge Must MoreThan 0'),
+      .moreThan(0, 'MinChildAge Must Be MoreThan 0'),
     maxChildAge: yup
       .number()
       .required()
@@ -56,12 +56,24 @@ export const ActivityFormSchema: () => yup.ObjectSchema<
       .lessThan(9, 'MaxChildAge Must lessThan 10'),
     destinationId: yup
       .number()
-      .required()
+      .min(1)
+      .required('Select Destination')
       .moreThan(0, 'Select destination'),
 
-    categoryId: yup.number().required(),
-    activityId: yup.number().required(),
-    optionId: yup.number().required(),
+    categoryId: yup
+      .number()
+      .min(1)
+      .required('Select Category')
+      .moreThan(0, 'Select Category'),
+
+    activityId: yup
+      .number()
+      .min(1)
+      .required(),
+    optionId: yup
+      .number()
+      .min(1)
+      .required(),
   })
 
 export const AddActivityInnerForm = (
@@ -159,7 +171,14 @@ export const AddActivityInnerForm = (
                   ))}
                 </Field>
                 <div className="has-text-danger is-size-7">
-                  <ErrorMessage name="destinationId" />
+                  <ErrorMessage
+                    name="destinationId"
+                    render={() => (
+                      <div className="has-text-danger is-size-7">
+                        Select Destination
+                      </div>
+                    )}
+                  />
                 </div>
               </div>
             </div>
@@ -178,7 +197,14 @@ export const AddActivityInnerForm = (
                   ))}
                 </Field>
                 <div className="has-text-danger is-size-7">
-                  <ErrorMessage name="categoryId" />
+                  <ErrorMessage
+                    name="categoryId"
+                    render={() => (
+                      <div className="has-text-danger is-size-7">
+                        Select Category
+                      </div>
+                    )}
+                  />
                 </div>
               </div>
             </div>

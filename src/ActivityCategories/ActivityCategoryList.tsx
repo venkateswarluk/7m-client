@@ -17,6 +17,9 @@ import {
 } from '../services'
 
 import { mainUrl } from '../config'
+import { Pagination } from 'src/Pagination'
+import { handleSearchSpecific } from 'src/Activities/ActivityList'
+import { SearchField } from 'src/Activities/search'
 
 const url = `${mainUrl}/categories`
 
@@ -43,6 +46,52 @@ export const ActivityCategoryList = () => {
   const [editActivityData, setEditActivityData] = React.useState(
     currentActivity,
   )
+  const [page, setPage] = React.useState(0)
+  const [rowsPerPage] = React.useState(5)
+  const [activityCategorySearch, setActivityCategorySearch] = React.useState('')
+
+  const handleNext = (page: number) => {
+    setPage(page + 1)
+  }
+
+  const handlePrevious = (page: number) => {
+    setPage(page - 1)
+  }
+
+  const handleSpecificPageChange = (page: number) => {
+    const total: number = Math.ceil(activities.length / rowsPerPage)
+    if (page !== total) {
+      setPage(page)
+    }
+  }
+
+  const handleActivityCategorySearch = (activityCategorySearch: string) => {
+    const activities1 = activities.filter(
+      (x: ActivityCategory) =>
+        activityCategorySearch !== ''
+          ? handleSearchSpecific(activityCategorySearch, x.id.toString()) ||
+            handleSearchSpecific(
+              activityCategorySearch,
+              x.serviceType.toString(),
+            ) ||
+            handleSearchSpecific(
+              activityCategorySearch,
+              x.categoryName.toString(),
+            ) ||
+            handleSearchSpecific(
+              activityCategorySearch,
+              x.categoryId.toString(),
+            )
+          : x,
+    )
+    setActivityCategorySearch(activityCategorySearch)
+    setActivities(activities1)
+  }
+
+  const handleRefreshSearch = () => {
+    setActivityCategorySearch('')
+    fetchMealTypeData()
+  }
 
   const fetchMealTypeData = async () => {
     const result = await axios(`${url}`)
@@ -125,6 +174,11 @@ export const ActivityCategoryList = () => {
         Activity Category Details
       </div>
       <div className="field">
+        <SearchField
+          Search={activityCategorySearch}
+          handleRefreshSearch={handleRefreshSearch}
+          handleSearch={handleActivityCategorySearch}
+        />
         <div className="control has-text-right">
           <button className="button is-info " onClick={handleAddMealClick}>
             Add Activity Category
@@ -173,28 +227,30 @@ export const ActivityCategoryList = () => {
               </tr>
             </thead>
             <tbody>
-              {activities.map((activity: ActivityCategory) => (
-                <tr key={activity.id}>
-                  <td>{activity.serviceType}</td>
-                  <td>{activity.categoryId}</td>
-                  <td>{activity.categoryName}</td>
-                  <td>
-                    <span
-                      className="icon"
-                      onClick={() => handleEditActivityClick(activity.id)}
-                    >
-                      <i className="fa fa-edit" />
-                    </span>
+              {activities
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((activity: ActivityCategory) => (
+                  <tr key={activity.id}>
+                    <td>{activity.serviceType}</td>
+                    <td>{activity.categoryId}</td>
+                    <td>{activity.categoryName}</td>
+                    <td>
+                      <span
+                        className="icon"
+                        onClick={() => handleEditActivityClick(activity.id)}
+                      >
+                        <i className="fa fa-edit" />
+                      </span>
 
-                    <span
-                      className="icon"
-                      onClick={() => handleDeleteActivitySubmit(activity.id)}
-                    >
-                      <i className="fa fa-trash" />
-                    </span>
-                  </td>
-                </tr>
-              ))}
+                      <span
+                        className="icon"
+                        onClick={() => handleDeleteActivitySubmit(activity.id)}
+                      >
+                        <i className="fa fa-trash" />
+                      </span>
+                    </td>
+                  </tr>
+                ))}
             </tbody>
           </table>
         ) : (
@@ -203,6 +259,13 @@ export const ActivityCategoryList = () => {
           </div>
         )}
       </div>
+      <Pagination
+        handleSpecificPageChange={handleSpecificPageChange}
+        currentPage={page}
+        totalPages={Math.ceil(activities.length / rowsPerPage)}
+        handleNext={handleNext}
+        handlePrevious={handlePrevious}
+      />
     </div>
   )
 }

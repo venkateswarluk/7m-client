@@ -17,6 +17,9 @@ import {
 } from '../services'
 
 import { mainUrl } from '../config'
+import { Pagination } from 'src/Pagination'
+import { SearchField } from 'src/Activities/search'
+import { handleSearchSpecific } from 'src/Activities/ActivityList'
 
 const url = `${mainUrl}/optionavailabilities`
 
@@ -59,6 +62,52 @@ export const OptionAvailabilityList = () => {
   const [editActivityData, setEditActivityData] = React.useState(
     currentActivityOption,
   )
+
+  const [page, setPage] = React.useState(0)
+  const [rowsPerPage] = React.useState(5)
+  const [Search, setSearch] = React.useState('')
+
+  const handleNext = (page: number) => {
+    setPage(page + 1)
+  }
+
+  const handlePrevious = (page: number) => {
+    setPage(page - 1)
+  }
+
+  const handleSpecificPageChange = (page: number) => {
+    const total: number = Math.ceil(optionAvailabilities.length / rowsPerPage)
+    if (page !== total) {
+      setPage(page)
+    }
+  }
+
+  const handleSearch = (Search: string) => {
+    const activities1 = optionAvailabilities.filter(
+      (x: OptionAvailability) =>
+        Search !== ''
+          ? handleSearchSpecific(Search, x.id.toString()) ||
+            handleSearchSpecific(Search, x.activityId.toString()) ||
+            handleSearchSpecific(Search, x.optionAvailabilityId.toString()) ||
+            handleSearchSpecific(Search, x.maxAdults.toString()) ||
+            handleSearchSpecific(Search, x.maxChilds.toString()) ||
+            handleSearchSpecific(Search, x.childPrice.toString()) ||
+            handleSearchSpecific(Search, x.adultPrice.toString()) ||
+            handleSearchSpecific(Search, x.unitPrice.toString()) ||
+            handleSearchSpecific(Search, x.optionId.toString()) ||
+            handleSearchSpecific(Search, x.fromDate.toString()) ||
+            handleSearchSpecific(Search, x.maxUnits.toString()) ||
+            handleSearchSpecific(Search, x.toDate.toString())
+          : x,
+    )
+    setSearch(Search)
+    setOptionAvailabilities(activities1)
+  }
+
+  const handleRefreshSearch = () => {
+    setSearch('')
+    fetchMealTypeData()
+  }
 
   const fetchMealTypeData = async () => {
     const result = await axios(`${url}`)
@@ -141,6 +190,11 @@ export const OptionAvailabilityList = () => {
         Option Availabilities
       </div>
       <div className="field">
+        <SearchField
+          Search={Search}
+          handleRefreshSearch={handleRefreshSearch}
+          handleSearch={handleSearch}
+        />
         <div className="control has-text-right">
           <button className="button is-info " onClick={handleAddMealClick}>
             Add Option Availability
@@ -193,34 +247,36 @@ export const OptionAvailabilityList = () => {
               </tr>
             </thead>
             <tbody>
-              {optionAvailabilities.map((activity: OptionAvailability) => (
-                <tr key={activity.id}>
-                  <td>{activity.optionAvailabilityId}</td>
-                  <td>{activity.maxAdults}</td>
-                  <td>{activity.maxChilds}</td>
-                  <td>{activity.adultPrice}</td>
-                  <td>{activity.childPrice}</td>
-                  <td>{activity.fromDate}</td>
-                  <td>{activity.toDate}</td>
-                  <td>{activity.optionId}</td>
-                  <td>{activity.activityId}</td>
-                  <td>
-                    <span
-                      className="icon"
-                      onClick={() => handleEditActivityClick(activity.id)}
-                    >
-                      <i className="fa fa-edit" />
-                    </span>
+              {optionAvailabilities
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((activity: OptionAvailability) => (
+                  <tr key={activity.id}>
+                    <td>{activity.optionAvailabilityId}</td>
+                    <td>{activity.maxAdults}</td>
+                    <td>{activity.maxChilds}</td>
+                    <td>{activity.adultPrice}</td>
+                    <td>{activity.childPrice}</td>
+                    <td>{activity.fromDate}</td>
+                    <td>{activity.toDate}</td>
+                    <td>{activity.optionId}</td>
+                    <td>{activity.activityId}</td>
+                    <td>
+                      <span
+                        className="icon"
+                        onClick={() => handleEditActivityClick(activity.id)}
+                      >
+                        <i className="fa fa-edit" />
+                      </span>
 
-                    <span
-                      className="icon"
-                      onClick={() => handleDeleteActivitySubmit(activity.id)}
-                    >
-                      <i className="fa fa-trash" />
-                    </span>
-                  </td>
-                </tr>
-              ))}
+                      <span
+                        className="icon"
+                        onClick={() => handleDeleteActivitySubmit(activity.id)}
+                      >
+                        <i className="fa fa-trash" />
+                      </span>
+                    </td>
+                  </tr>
+                ))}
             </tbody>
           </table>
         ) : (
@@ -229,6 +285,13 @@ export const OptionAvailabilityList = () => {
           </div>
         )}
       </div>
+      <Pagination
+        handleSpecificPageChange={handleSpecificPageChange}
+        currentPage={page}
+        totalPages={Math.ceil(optionAvailabilities.length / rowsPerPage)}
+        handleNext={handleNext}
+        handlePrevious={handlePrevious}
+      />
     </div>
   )
 }

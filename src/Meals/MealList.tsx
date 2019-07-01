@@ -15,6 +15,7 @@ import {
 } from '../services'
 
 import { mainUrl } from '../config'
+import { Pagination } from 'src/Pagination'
 
 const url = `${mainUrl}/mealtypes`
 
@@ -57,6 +58,24 @@ export const MealTypeList = () => {
   const [mealsTypes, setMealsTypes] = React.useState<
     ReadonlyArray<OptionValues & { readonly mealCategory: string }>
   >([])
+
+  const [page, setPage] = React.useState(0)
+  const [rowsPerPage] = React.useState(5)
+
+  const handleNext = (page: number) => {
+    setPage(page + 1)
+  }
+
+  const handlePrevious = (page: number) => {
+    setPage(page - 1)
+  }
+
+  const handleSpecificPageChange = (page: number) => {
+    const total: number = Math.ceil(mealTypes.length / rowsPerPage)
+    if (page !== total) {
+      setPage(page)
+    }
+  }
 
   const fetchMealTypeData = async () => {
     const result = await axios(`${url}`)
@@ -205,32 +224,34 @@ export const MealTypeList = () => {
               </tr>
             </thead>
             <tbody>
-              {mealTypes.map((mealType: MealType) => (
-                <tr key={mealType.id}>
-                  <td>{mealType.name}</td>
-                  <td>{mealType.mealType}</td>
-                  <td>{mealType.mealCategory}</td>
-                  <td>{mealType.description}</td>
-                  <td>{mealType.price}</td>
-                  <td>{mealType.items.join(',')}</td>
-                  <td>{mealType.note}</td>
-                  <td>
-                    <span
-                      className="icon"
-                      onClick={() => handleEditMealClick(mealType.id)}
-                    >
-                      <i className="fa fa-edit" />
-                    </span>
+              {mealTypes
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((mealType: MealType) => (
+                  <tr key={mealType.id}>
+                    <td>{mealType.name}</td>
+                    <td>{mealType.mealType}</td>
+                    <td>{mealType.mealCategory}</td>
+                    <td>{mealType.description}</td>
+                    <td>{mealType.price}</td>
+                    <td>{mealType.items.join(',')}</td>
+                    <td>{mealType.note}</td>
+                    <td>
+                      <span
+                        className="icon"
+                        onClick={() => handleEditMealClick(mealType.id)}
+                      >
+                        <i className="fa fa-edit" />
+                      </span>
 
-                    <span
-                      className="icon"
-                      onClick={() => handleDeleteMealSubmit(mealType.id)}
-                    >
-                      <i className="fa fa-trash" />
-                    </span>
-                  </td>
-                </tr>
-              ))}
+                      <span
+                        className="icon"
+                        onClick={() => handleDeleteMealSubmit(mealType.id)}
+                      >
+                        <i className="fa fa-trash" />
+                      </span>
+                    </td>
+                  </tr>
+                ))}
             </tbody>
           </table>
         ) : (
@@ -239,6 +260,13 @@ export const MealTypeList = () => {
           </div>
         )}
       </div>
+      <Pagination
+        handleSpecificPageChange={handleSpecificPageChange}
+        currentPage={page}
+        totalPages={Math.ceil(mealTypes.length / rowsPerPage)}
+        handleNext={handleNext}
+        handlePrevious={handlePrevious}
+      />
     </div>
   )
 }

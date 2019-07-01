@@ -15,6 +15,8 @@ import {
 import { OptionValues } from '../types'
 
 import { mainUrl } from '../config'
+import { Pagination } from 'src/Pagination'
+import { SearchField } from './search'
 
 // import { PaginationResult } from '../types'
 
@@ -32,6 +34,17 @@ export interface Activity {
   readonly activityId: number
   readonly categoryId: number
   readonly optionId: number
+}
+
+export const handleSearchSpecific = (
+  searchInput: string,
+  middleName?: string,
+) => {
+  if (middleName) {
+    return middleName.toLowerCase().includes(searchInput.toLowerCase())
+  } else {
+    return false
+  }
 }
 
 const currentActivity: Activity = {
@@ -65,6 +78,11 @@ export const ActivityList = () => {
     ReadonlyArray<OptionValues>
   >([])
 
+  const [page, setPage] = React.useState(0)
+  const [rowsPerPage] = React.useState(5)
+
+  const [activitySearch, setActivitySearch] = React.useState('')
+
   const fetchMealTypeData = async () => {
     const result = await axios(`${url}`)
     setActivities(result.data)
@@ -72,10 +90,21 @@ export const ActivityList = () => {
 
   const fetchDestinations = async () => {
     const result = await axios(`${mainUrl}/activityLocations`)
-    const meals = result.data.map((x: any) => ({
-      value: x.locationId,
-      label: x.city,
-    }))
+    const meals = result.data
+      .map((x: any) => ({
+        value: x.locationId,
+        label: x.city,
+      }))
+      .reduce((result: any, elem: any) => {
+        if (!result.some((e: any) => e.label === elem.label)) {
+          result.push(elem)
+        }
+        return result
+      }, [])
+
+    // tslint:disable-next-line:no-console
+    console.log(meals)
+
     setDestinations(meals)
   }
 
@@ -86,6 +115,45 @@ export const ActivityList = () => {
       label: x.categoryName,
     }))
     setCategories(meals)
+  }
+
+  const handleNext = (page: number) => {
+    setPage(page + 1)
+  }
+
+  const handlePrevious = (page: number) => {
+    setPage(page - 1)
+  }
+
+  const handleSpecificPageChange = (page: number) => {
+    const total: number = Math.ceil(activities.length / rowsPerPage)
+    if (page !== total) {
+      setPage(page)
+    }
+  }
+
+  const handleActivitySearch = (activitySearch: string) => {
+    const activities1 = activities.filter(
+      (x: Activity) =>
+        activitySearch !== ''
+          ? x.activityName.includes(activitySearch) ||
+            x.description.includes(activitySearch) ||
+            handleSearchSpecific(activitySearch, x.activityId.toString()) ||
+            handleSearchSpecific(activitySearch, x.optionId.toString()) ||
+            handleSearchSpecific(activitySearch, x.categoryId.toString()) ||
+            handleSearchSpecific(activitySearch, x.minChildAge.toString()) ||
+            handleSearchSpecific(activitySearch, x.maxChildAge.toString()) ||
+            handleSearchSpecific(activitySearch, x.destinationId.toString()) ||
+            handleSearchSpecific(activitySearch, x.stars.toString())
+          : x,
+    )
+    setActivitySearch(activitySearch)
+    setActivities(activities1)
+  }
+
+  const handleRefreshSearch = () => {
+    setActivitySearch('')
+    fetchMealTypeData()
   }
 
   const handleAddMealClick = () => {
@@ -172,6 +240,11 @@ export const ActivityList = () => {
         Activities
       </div>
       <div className="field">
+        <SearchField
+          Search={activitySearch}
+          handleRefreshSearch={handleRefreshSearch}
+          handleSearch={handleActivitySearch}
+        />
         <div className="control has-text-right">
           <button className="button is-info " onClick={handleAddMealClick}>
             Add Activity
@@ -228,35 +301,37 @@ export const ActivityList = () => {
               </tr>
             </thead>
             <tbody>
-              {activities.map((activity: Activity) => (
-                <tr key={activity.id}>
-                  <td>{activity.activityName}</td>
-                  <td>{activity.stars}</td>
-                  <td>{activity.description}</td>
-                  <td>{activity.minChildAge}</td>
-                  <td>{activity.maxChildAge}</td>
-                  <td>{activity.destinationId}</td>
-                  <td>{activity.activityId}</td>
-                  <td>{activity.optionId}</td>
-                  <td>{activity.categoryId}</td>
+              {activities
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((activity: Activity) => (
+                  <tr key={activity.id}>
+                    <td>{activity.activityName}</td>
+                    <td>{activity.stars}</td>
+                    <td>{activity.description}</td>
+                    <td>{activity.minChildAge}</td>
+                    <td>{activity.maxChildAge}</td>
+                    <td>{activity.destinationId}</td>
+                    <td>{activity.activityId}</td>
+                    <td>{activity.optionId}</td>
+                    <td>{activity.categoryId}</td>
 
-                  <td>
-                    <span
-                      className="icon"
-                      onClick={() => handleEditActivityClick(activity.id)}
-                    >
-                      <i className="fa fa-edit" />
-                    </span>
+                    <td>
+                      <span
+                        className="icon"
+                        onClick={() => handleEditActivityClick(activity.id)}
+                      >
+                        <i className="fa fa-edit" />
+                      </span>
 
-                    <span
-                      className="icon"
-                      onClick={() => handleDeleteActivitySubmit(activity.id)}
-                    >
-                      <i className="fa fa-trash" />
-                    </span>
-                  </td>
-                </tr>
-              ))}
+                      <span
+                        className="icon"
+                        onClick={() => handleDeleteActivitySubmit(activity.id)}
+                      >
+                        <i className="fa fa-trash" />
+                      </span>
+                    </td>
+                  </tr>
+                ))}
             </tbody>
           </table>
         ) : (
@@ -265,6 +340,13 @@ export const ActivityList = () => {
           </div>
         )}
       </div>
+      <Pagination
+        handleSpecificPageChange={handleSpecificPageChange}
+        currentPage={page}
+        totalPages={Math.ceil(activities.length / rowsPerPage)}
+        handleNext={handleNext}
+        handlePrevious={handlePrevious}
+      />
     </div>
   )
 }

@@ -19,6 +19,7 @@ import {
 import { OptionValues1 } from '../types'
 
 import { mainUrl } from '../config'
+import { Pagination } from 'src/Pagination'
 
 const url = `${mainUrl}/citybreakdetails`
 
@@ -60,6 +61,24 @@ export const CityBreakDetailsList = () => {
   const [tourNames, setTourNames] = React.useState<
     ReadonlyArray<OptionValues1>
   >([])
+
+  const [page, setPage] = React.useState(0)
+  const [rowsPerPage] = React.useState(5)
+
+  const handleNext = (page: number) => {
+    setPage(page + 1)
+  }
+
+  const handlePrevious = (page: number) => {
+    setPage(page - 1)
+  }
+
+  const handleSpecificPageChange = (page: number) => {
+    const total: number = Math.ceil(cityBreaks.length / rowsPerPage)
+    if (page !== total) {
+      setPage(page)
+    }
+  }
 
   const fetchMealTypeData = async () => {
     const result = await axios(`${url}`)
@@ -222,30 +241,32 @@ export const CityBreakDetailsList = () => {
               </tr>
             </thead>
             <tbody>
-              {cityBreaks.map((cityBreak: CityBreakDetails) => (
-                <tr key={cityBreak.id}>
-                  <td>{cityBreak.cityId}</td>
-                  <td>{cityBreak.days}</td>
-                  <td>{cityBreak.tourName}</td>
-                  <td>{cityBreak.dayNo}</td>
-                  <td>{cityBreak.dayInfo}</td>
-                  <td>
-                    <span
-                      className="icon"
-                      onClick={() => handleEditActivityClick(cityBreak.id)}
-                    >
-                      <i className="fa fa-edit" />
-                    </span>
+              {cityBreaks
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((cityBreak: CityBreakDetails) => (
+                  <tr key={cityBreak.id}>
+                    <td>{cityBreak.cityId}</td>
+                    <td>{cityBreak.days}</td>
+                    <td>{cityBreak.tourName}</td>
+                    <td>{cityBreak.dayNo}</td>
+                    <td>{cityBreak.dayInfo}</td>
+                    <td>
+                      <span
+                        className="icon"
+                        onClick={() => handleEditActivityClick(cityBreak.id)}
+                      >
+                        <i className="fa fa-edit" />
+                      </span>
 
-                    <span
-                      className="icon"
-                      onClick={() => handleDeleteActivitySubmit(cityBreak.id)}
-                    >
-                      <i className="fa fa-trash" />
-                    </span>
-                  </td>
-                </tr>
-              ))}
+                      <span
+                        className="icon"
+                        onClick={() => handleDeleteActivitySubmit(cityBreak.id)}
+                      >
+                        <i className="fa fa-trash" />
+                      </span>
+                    </td>
+                  </tr>
+                ))}
             </tbody>
           </table>
         ) : (
@@ -254,6 +275,13 @@ export const CityBreakDetailsList = () => {
           </div>
         )}
       </div>
+      <Pagination
+        handleSpecificPageChange={handleSpecificPageChange}
+        currentPage={page}
+        totalPages={Math.ceil(cityBreaks.length / rowsPerPage)}
+        handleNext={handleNext}
+        handlePrevious={handlePrevious}
+      />
     </div>
   )
 }

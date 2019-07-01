@@ -16,6 +16,7 @@ import {
 } from '../services'
 
 import { mainUrl } from '../config'
+import { Pagination } from 'src/Pagination'
 
 const url = `${mainUrl}/cityBreakLocations`
 
@@ -50,6 +51,24 @@ export const CityBreakLocationsList = () => {
   const [destinations, setDestinations] = React.useState<
     ReadonlyArray<OptionValues>
   >([])
+
+  const [page, setPage] = React.useState(0)
+  const [rowsPerPage] = React.useState(5)
+
+  const handleNext = (page: number) => {
+    setPage(page + 1)
+  }
+
+  const handlePrevious = (page: number) => {
+    setPage(page - 1)
+  }
+
+  const handleSpecificPageChange = (page: number) => {
+    const total: number = Math.ceil(cityBreakLocations.length / rowsPerPage)
+    if (page !== total) {
+      setPage(page)
+    }
+  }
 
   const fetchMealTypeData = async () => {
     const result = await axios(`${url}`)
@@ -195,28 +214,30 @@ export const CityBreakLocationsList = () => {
               </tr>
             </thead>
             <tbody>
-              {cityBreakLocations.map((cityBreak: CityBreakLocation) => (
-                <tr key={cityBreak.id}>
-                  <td>{cityBreak.cityId}</td>
-                  <td>{cityBreak.city}</td>
-                  <td>{cityBreak.country}</td>
-                  <td>
-                    <span
-                      className="icon"
-                      onClick={() => handleEditActivityClick(cityBreak.id)}
-                    >
-                      <i className="fa fa-edit" />
-                    </span>
+              {cityBreakLocations
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((cityBreak: CityBreakLocation) => (
+                  <tr key={cityBreak.id}>
+                    <td>{cityBreak.cityId}</td>
+                    <td>{cityBreak.city}</td>
+                    <td>{cityBreak.country}</td>
+                    <td>
+                      <span
+                        className="icon"
+                        onClick={() => handleEditActivityClick(cityBreak.id)}
+                      >
+                        <i className="fa fa-edit" />
+                      </span>
 
-                    <span
-                      className="icon"
-                      onClick={() => handleDeleteActivitySubmit(cityBreak.id)}
-                    >
-                      <i className="fa fa-trash" />
-                    </span>
-                  </td>
-                </tr>
-              ))}
+                      <span
+                        className="icon"
+                        onClick={() => handleDeleteActivitySubmit(cityBreak.id)}
+                      >
+                        <i className="fa fa-trash" />
+                      </span>
+                    </td>
+                  </tr>
+                ))}
             </tbody>
           </table>
         ) : (
@@ -225,6 +246,13 @@ export const CityBreakLocationsList = () => {
           </div>
         )}
       </div>
+      <Pagination
+        handleSpecificPageChange={handleSpecificPageChange}
+        currentPage={page}
+        totalPages={Math.ceil(cityBreakLocations.length / rowsPerPage)}
+        handleNext={handleNext}
+        handlePrevious={handlePrevious}
+      />
     </div>
   )
 }

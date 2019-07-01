@@ -17,6 +17,9 @@ import {
 } from '../services'
 
 import { mainUrl } from '../config'
+import { Pagination } from 'src/Pagination'
+import { handleSearchSpecific } from 'src/Activities/ActivityList'
+import { SearchField } from 'src/Activities/search'
 
 const url = `${mainUrl}/activityLocations`
 
@@ -57,6 +60,50 @@ export const ActivityLocationList = () => {
   const [editActivityData, setEditActivityData] = React.useState(
     currentActivity,
   )
+  const [page, setPage] = React.useState(0)
+  const [rowsPerPage] = React.useState(5)
+  const [Search, setSearch] = React.useState('')
+
+  const handleNext = (page: number) => {
+    setPage(page + 1)
+  }
+
+  const handlePrevious = (page: number) => {
+    setPage(page - 1)
+  }
+
+  const handleSpecificPageChange = (page: number) => {
+    const total: number = Math.ceil(activities.length / rowsPerPage)
+    if (page !== total) {
+      setPage(page)
+    }
+  }
+
+  const handleSearch = (Search: string) => {
+    const activities1 = activities.filter(
+      (x: ActivityLocation) =>
+        Search !== ''
+          ? handleSearchSpecific(Search, x.id.toString()) ||
+            handleSearchSpecific(Search, x.locationId.toString()) ||
+            handleSearchSpecific(Search, x.countryCode.toString()) ||
+            handleSearchSpecific(Search, x.stateCode.toString()) ||
+            handleSearchSpecific(Search, x.city.toString()) ||
+            handleSearchSpecific(Search, x.searchingState.toString()) ||
+            handleSearchSpecific(Search, x.location.toString()) ||
+            handleSearchSpecific(Search, x.address.toString()) ||
+            handleSearchSpecific(Search, x.searchingCity.toString()) ||
+            handleSearchSpecific(Search, x.longitude.toString()) ||
+            handleSearchSpecific(Search, x.latitude.toString())
+          : x,
+    )
+    setSearch(Search)
+    setActivities(activities1)
+  }
+
+  const handleRefreshSearch = () => {
+    setSearch('')
+    fetchMealTypeData()
+  }
 
   const fetchMealTypeData = async () => {
     const result = await axios(`${url}`)
@@ -71,21 +118,33 @@ export const ActivityLocationList = () => {
     values: ActivityForm,
     actions: FormikActions<ActivityForm>,
   ) => {
-    postItem(url, values)
-      .then(() => {
-        getAllItems(url)
-          .then(res => {
-            setActivities(res)
-            setAddActivityOpen(!addActivityOpen)
-            actions.setSubmitting(false)
-          })
-          .catch(err => {
-            throw Error(err)
-          })
-      })
-      .catch(err => {
-        throw Error(err)
-      })
+    if (
+      activities.filter((y: ActivityLocation) => y.city === values.city)
+        .length === 0
+    ) {
+      postItem(url, values)
+        .then(() => {
+          getAllItems(url)
+            .then(res => {
+              setActivities(res)
+              setAddActivityOpen(!addActivityOpen)
+              actions.setSubmitting(false)
+            })
+            .catch(err => {
+              throw Error(err)
+            })
+        })
+        .catch(err => {
+          throw Error(err)
+        })
+    } else {
+      // tslint:disable-next-line:no-console
+      console.log(
+        'Already existed',
+        activities.filter((y: ActivityLocation) => y.city === values.city)
+          .length === 0,
+      )
+    }
   }
 
   const handleEditActivityClick = async (id: string) => {
@@ -139,6 +198,11 @@ export const ActivityLocationList = () => {
         Activity Location Details
       </div>
       <div className="field">
+        <SearchField
+          Search={Search}
+          handleRefreshSearch={handleRefreshSearch}
+          handleSearch={handleSearch}
+        />
         <div className="control has-text-right">
           <button className="button is-info " onClick={handleAddMealClick}>
             Add Activity Location
@@ -194,35 +258,37 @@ export const ActivityLocationList = () => {
               </tr>
             </thead>
             <tbody>
-              {activities.map((activity: ActivityLocation) => (
-                <tr key={activity.id}>
-                  <td>{activity.locationId}</td>
-                  <td>{activity.countryCode}</td>
-                  <td>{activity.stateCode}</td>
-                  <td>{activity.city}</td>
-                  <td>{activity.searchingCity}</td>
-                  <td>{activity.searchingState}</td>
-                  <td>{activity.location}</td>
-                  <td>{activity.address}</td>
-                  <td>{activity.longitude}</td>
-                  <td>{activity.latitude}</td>
-                  <td>
-                    <span
-                      className="icon"
-                      onClick={() => handleEditActivityClick(activity.id)}
-                    >
-                      <i className="fa fa-edit" />
-                    </span>
+              {activities
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((activity: ActivityLocation) => (
+                  <tr key={activity.id}>
+                    <td>{activity.locationId}</td>
+                    <td>{activity.countryCode}</td>
+                    <td>{activity.stateCode}</td>
+                    <td>{activity.city}</td>
+                    <td>{activity.searchingCity}</td>
+                    <td>{activity.searchingState}</td>
+                    <td>{activity.location}</td>
+                    <td>{activity.address}</td>
+                    <td>{activity.longitude}</td>
+                    <td>{activity.latitude}</td>
+                    <td>
+                      <span
+                        className="icon"
+                        onClick={() => handleEditActivityClick(activity.id)}
+                      >
+                        <i className="fa fa-edit" />
+                      </span>
 
-                    <span
-                      className="icon"
-                      onClick={() => handleDeleteActivitySubmit(activity.id)}
-                    >
-                      <i className="fa fa-trash" />
-                    </span>
-                  </td>
-                </tr>
-              ))}
+                      <span
+                        className="icon"
+                        onClick={() => handleDeleteActivitySubmit(activity.id)}
+                      >
+                        <i className="fa fa-trash" />
+                      </span>
+                    </td>
+                  </tr>
+                ))}
             </tbody>
           </table>
         ) : (
@@ -231,6 +297,13 @@ export const ActivityLocationList = () => {
           </div>
         )}
       </div>
+      <Pagination
+        handleSpecificPageChange={handleSpecificPageChange}
+        currentPage={page}
+        totalPages={Math.ceil(activities.length / rowsPerPage)}
+        handleNext={handleNext}
+        handlePrevious={handlePrevious}
+      />
     </div>
   )
 }

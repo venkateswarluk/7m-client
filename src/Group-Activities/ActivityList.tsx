@@ -17,6 +17,7 @@ import { OptionValues } from '../types'
 // import { PaginationResult } from '../types'
 
 import { mainUrl } from '../config'
+import { Pagination } from 'src/Pagination'
 
 const url = `${mainUrl}/group-activities`
 
@@ -65,6 +66,23 @@ export const GroupActivityList = () => {
   const [categories, setCategories] = React.useState<
     ReadonlyArray<OptionValues>
   >([])
+
+  const [page, setPage] = React.useState(0)
+  const [rowsPerPage] = React.useState(5)
+
+  const handleNext = (page: number) => {
+    setPage(page + 1)
+  }
+
+  const handlePrevious = (page: number) => {
+    setPage(page - 1)
+  }
+  const handleSpecificPageChange = (page: number) => {
+    const total: number = Math.ceil(activities.length / rowsPerPage)
+    if (page !== total) {
+      setPage(page)
+    }
+  }
 
   const fetchMealTypeData = async () => {
     const result = await axios(`${url}`)
@@ -229,35 +247,37 @@ export const GroupActivityList = () => {
               </tr>
             </thead>
             <tbody>
-              {activities.map((activity: Activity) => (
-                <tr key={activity.id}>
-                  <td>{activity.activityName}</td>
-                  <td>{activity.stars}</td>
-                  <td>{activity.description}</td>
-                  <td>{activity.minChildAge}</td>
-                  <td>{activity.maxChildAge}</td>
-                  <td>{activity.destinationId}</td>
-                  <td>{activity.activityId}</td>
-                  <td>{activity.optionId}</td>
-                  <td>{activity.categoryId}</td>
+              {activities
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((activity: Activity) => (
+                  <tr key={activity.id}>
+                    <td>{activity.activityName}</td>
+                    <td>{activity.stars}</td>
+                    <td>{activity.description}</td>
+                    <td>{activity.minChildAge}</td>
+                    <td>{activity.maxChildAge}</td>
+                    <td>{activity.destinationId}</td>
+                    <td>{activity.activityId}</td>
+                    <td>{activity.optionId}</td>
+                    <td>{activity.categoryId}</td>
 
-                  <td>
-                    <span
-                      className="icon"
-                      onClick={() => handleEditActivityClick(activity.id)}
-                    >
-                      <i className="fa fa-edit" />
-                    </span>
+                    <td>
+                      <span
+                        className="icon"
+                        onClick={() => handleEditActivityClick(activity.id)}
+                      >
+                        <i className="fa fa-edit" />
+                      </span>
 
-                    <span
-                      className="icon"
-                      onClick={() => handleDeleteActivitySubmit(activity.id)}
-                    >
-                      <i className="fa fa-trash" />
-                    </span>
-                  </td>
-                </tr>
-              ))}
+                      <span
+                        className="icon"
+                        onClick={() => handleDeleteActivitySubmit(activity.id)}
+                      >
+                        <i className="fa fa-trash" />
+                      </span>
+                    </td>
+                  </tr>
+                ))}
             </tbody>
           </table>
         ) : (
@@ -266,6 +286,13 @@ export const GroupActivityList = () => {
           </div>
         )}
       </div>
+      <Pagination
+        handleSpecificPageChange={handleSpecificPageChange}
+        currentPage={page}
+        totalPages={Math.ceil(activities.length / rowsPerPage)}
+        handleNext={handleNext}
+        handlePrevious={handlePrevious}
+      />
     </div>
   )
 }

@@ -17,6 +17,7 @@ import {
 } from '../services'
 
 import { mainUrl } from '../config'
+import { Pagination } from 'src/Pagination'
 
 const url = `${mainUrl}/group-optionavailabilities`
 
@@ -59,6 +60,24 @@ export const GroupOptionAvailabilityList = () => {
   const [editActivityData, setEditActivityData] = React.useState(
     currentActivityOption,
   )
+
+  const [page, setPage] = React.useState(0)
+  const [rowsPerPage] = React.useState(5)
+
+  const handleNext = (page: number) => {
+    setPage(page + 1)
+  }
+
+  const handlePrevious = (page: number) => {
+    setPage(page - 1)
+  }
+
+  const handleSpecificPageChange = (page: number) => {
+    const total: number = Math.ceil(optionAvailabilities.length / rowsPerPage)
+    if (page !== total) {
+      setPage(page)
+    }
+  }
 
   const fetchMealTypeData = async () => {
     const result = await axios(`${url}`)
@@ -193,34 +212,36 @@ export const GroupOptionAvailabilityList = () => {
               </tr>
             </thead>
             <tbody>
-              {optionAvailabilities.map((activity: OptionAvailability) => (
-                <tr key={activity.id}>
-                  <td>{activity.optionAvailabilityId}</td>
-                  <td>{activity.maxAdults}</td>
-                  <td>{activity.maxChilds}</td>
-                  <td>{activity.adultPrice}</td>
-                  <td>{activity.childPrice}</td>
-                  <td>{activity.fromDate}</td>
-                  <td>{activity.toDate}</td>
-                  <td>{activity.optionId}</td>
-                  <td>{activity.activityId}</td>
-                  <td>
-                    <span
-                      className="icon"
-                      onClick={() => handleEditActivityClick(activity.id)}
-                    >
-                      <i className="fa fa-edit" />
-                    </span>
+              {optionAvailabilities
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((activity: OptionAvailability) => (
+                  <tr key={activity.id}>
+                    <td>{activity.optionAvailabilityId}</td>
+                    <td>{activity.maxAdults}</td>
+                    <td>{activity.maxChilds}</td>
+                    <td>{activity.adultPrice}</td>
+                    <td>{activity.childPrice}</td>
+                    <td>{activity.fromDate}</td>
+                    <td>{activity.toDate}</td>
+                    <td>{activity.optionId}</td>
+                    <td>{activity.activityId}</td>
+                    <td>
+                      <span
+                        className="icon"
+                        onClick={() => handleEditActivityClick(activity.id)}
+                      >
+                        <i className="fa fa-edit" />
+                      </span>
 
-                    <span
-                      className="icon"
-                      onClick={() => handleDeleteActivitySubmit(activity.id)}
-                    >
-                      <i className="fa fa-trash" />
-                    </span>
-                  </td>
-                </tr>
-              ))}
+                      <span
+                        className="icon"
+                        onClick={() => handleDeleteActivitySubmit(activity.id)}
+                      >
+                        <i className="fa fa-trash" />
+                      </span>
+                    </td>
+                  </tr>
+                ))}
             </tbody>
           </table>
         ) : (
@@ -229,6 +250,13 @@ export const GroupOptionAvailabilityList = () => {
           </div>
         )}
       </div>
+      <Pagination
+        handleSpecificPageChange={handleSpecificPageChange}
+        currentPage={page}
+        totalPages={Math.ceil(optionAvailabilities.length / rowsPerPage)}
+        handleNext={handleNext}
+        handlePrevious={handlePrevious}
+      />
     </div>
   )
 }

@@ -24,20 +24,27 @@ const visiblePages = (current: number, totalPages: number) => {
 export interface PaginationProps {
   readonly currentPage: number
   readonly totalPages: number
+  handleNext(currentPage: number): void
+  handlePrevious(currentPage: number): void
+  handleSpecificPageChange(currentPage: number | string): void
 }
 
 export const Pagination: (
-  { currentPage, totalPages }: PaginationProps,
-) => JSX.Element = ({ currentPage, totalPages }) => {
-  const [cp, setCp] = React.useState(currentPage) // need to refactor
-
-  const handlePrevious = (cp: number) => {
-    setCp(cp - 1)
-  }
-  const handleNext = (cp: number) => {
-    setCp(cp + 1)
-  }
-
+  {
+    currentPage,
+    totalPages,
+    handleNext,
+    handlePrevious,
+    handleSpecificPageChange,
+  }: PaginationProps,
+) => JSX.Element = ({
+  currentPage,
+  totalPages,
+  handleNext,
+  handlePrevious,
+  handleSpecificPageChange,
+}) => {
+  //  const [currentPage] = React.useState(currentPage) // need to refactor
   return (
     <nav
       className="pagination is-centered is-rounded is-small"
@@ -46,8 +53,8 @@ export const Pagination: (
     >
       <button
         className="pagination-previous"
-        onClick={() => handlePrevious(cp)}
-        disabled={cp <= 1 ? true : false}
+        onClick={() => handlePrevious(currentPage)}
+        disabled={currentPage <= 1 ? true : false}
         type="button"
       >
         Previous
@@ -55,23 +62,23 @@ export const Pagination: (
 
       <button
         className="pagination-next"
-        onClick={() => handleNext(cp)}
-        disabled={cp >= totalPages ? true : false}
+        onClick={() => handleNext(currentPage)}
+        disabled={currentPage >= totalPages ? true : false}
         type="button"
       >
         Next
       </button>
 
       <ul className="pagination-list">
-        {visiblePages(cp, totalPages).map(
+        {visiblePages(currentPage, totalPages).map(
           x =>
-            x === cp ? (
+            x === currentPage ? (
               <li>
                 <a
                   className="pagination-link is-current"
                   aria-label={`Goto page ${x}`}
                 >
-                  {x}
+                  {x === 0 ? x + 1 : x}
                 </a>
               </li>
             ) : x === 'e' ? (
@@ -80,7 +87,11 @@ export const Pagination: (
               </li>
             ) : (
               <li>
-                <a className="pagination-link" aria-label={`Goto page ${x}`}>
+                <a
+                  className="pagination-link"
+                  aria-label={`Goto page ${x}`}
+                  onClick={() => handleSpecificPageChange(x)}
+                >
                   {x}
                 </a>
               </li>

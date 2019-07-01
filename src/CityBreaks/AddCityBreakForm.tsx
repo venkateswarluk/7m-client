@@ -29,8 +29,14 @@ export const FormSchema: () => yup.ObjectSchema<
   CityBreakFormValues
 > = (): yup.ObjectSchema<CityBreakFormValues> =>
   yup.object({
-    cityId: yup.number().required('Select City'),
-    days: yup.number().required('days Required'),
+    cityId: yup
+      .number()
+      .min(1)
+      .required('Select City'),
+    days: yup
+      .number()
+      .min(1)
+      .required('days Required'),
     tourName: yup.string().required('TourName required'),
     description: yup.string().required('Description required'),
     price: yup.number().required('Price required'),
@@ -79,7 +85,7 @@ export const AddCityBreakInnerForm = (
                       )
                     })}
                   </Field>
-                  <div>
+                  <div className="has-text-danger is-size-7">
                     <ErrorMessage name="cityId" />
                   </div>
                 </div>
@@ -90,7 +96,7 @@ export const AddCityBreakInnerForm = (
               <div className="control">
                 <label className="label">Days </label>
                 <Field className="input" name="days" type="number" />
-                <div>
+                <div className="has-text-danger is-size-7">
                   <ErrorMessage name="days" />
                 </div>
               </div>
@@ -100,7 +106,7 @@ export const AddCityBreakInnerForm = (
               <div className="control">
                 <label className="label">TourName</label>
                 <Field className="input" name="tourName" type="text" />
-                <div>
+                <div className="has-text-danger is-size-7">
                   <ErrorMessage name="tourName" />
                 </div>
               </div>
@@ -110,7 +116,7 @@ export const AddCityBreakInnerForm = (
               <div className="control">
                 <label className="label">Description</label>
                 <Field className="input" name="description" type="text" />
-                <div>
+                <div className="has-text-danger is-size-7">
                   <ErrorMessage name="description" />
                 </div>
               </div>
@@ -120,7 +126,7 @@ export const AddCityBreakInnerForm = (
               <div className="control">
                 <label className="label">Price</label>
                 <Field className="input" name="price" type="number" />
-                <div>
+                <div className="has-text-danger is-size-7">
                   <ErrorMessage name="price" />
                 </div>
               </div>
@@ -130,7 +136,7 @@ export const AddCityBreakInnerForm = (
               <div className="control">
                 <label className="label">ImageUrl</label>
                 <Field className="input" name="imageUrl" type="url" />
-                <div>
+                <div className="has-text-danger is-size-7">
                   <ErrorMessage name="imageUrl" />
                 </div>
               </div>
@@ -140,7 +146,7 @@ export const AddCityBreakInnerForm = (
               <div className="control">
                 <label className="label">Phone</label>
                 <Field className="input" name="phone" type="text" />
-                <div>
+                <div className="has-text-danger is-size-7">
                   <ErrorMessage name="phone" />
                 </div>
               </div>
@@ -150,7 +156,7 @@ export const AddCityBreakInnerForm = (
               <div className="control">
                 <label className="label">StarRating</label>
                 <Field className="input" name="starRating" type="number" />
-                <div>
+                <div className="has-text-danger is-size-7">
                   <ErrorMessage name="starRating" />
                 </div>
               </div>

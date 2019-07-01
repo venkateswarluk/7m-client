@@ -15,21 +15,30 @@ export interface CityBreakInclusionFormValues {
   readonly cityId: number
   readonly days: number
   readonly inclusions: string
+  readonly tourName: string
 }
 
 const activityValues: CityBreakInclusionFormValues = {
   cityId: 0,
   days: 0,
   inclusions: '',
+  tourName: '',
 }
 
 export const FormSchema: () => yup.ObjectSchema<
   CityBreakInclusionFormValues
 > = (): yup.ObjectSchema<CityBreakInclusionFormValues> =>
   yup.object({
-    cityId: yup.number().required('Select City'),
-    days: yup.number().required('days Required'),
-    inclusions: yup.string().required('DayInfo required'),
+    cityId: yup
+      .number()
+      .min(1)
+      .required('Select City'),
+    days: yup
+      .number()
+      .min(1)
+      .required('days Required'),
+    inclusions: yup.string().required('inclusions required'),
+    tourName: yup.string().required('TourName Required'),
   })
 
 export const AddCityBreakInclusionInnerForm = (

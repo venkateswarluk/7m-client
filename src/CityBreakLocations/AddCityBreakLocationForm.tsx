@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Field, Formik, Form } from 'formik'
+import { Field, Formik, Form, ErrorMessage } from 'formik'
 import * as yup from 'yup'
 
 export interface CityBreakLocationFormValues {
@@ -18,7 +18,10 @@ export const FormSchema: () => yup.ObjectSchema<
   CityBreakLocationFormValues
 > = (): yup.ObjectSchema<CityBreakLocationFormValues> =>
   yup.object({
-    cityId: yup.number().required('Select City'),
+    cityId: yup
+      .number()
+      .min(1, 'Select City')
+      .required('Select City'),
     city: yup.string().required('City required'),
     country: yup.string().required('Country required'),
   })
@@ -26,7 +29,10 @@ export const AddCityBreakLocationInnerForm = (props: any) => {
   return (
     <div>
       <Formik
-        initialValues={cityBreakLocationValues}
+        initialValues={{
+          ...cityBreakLocationValues,
+          cityId: props.count + 1,
+        }}
         onSubmit={(values: CityBreakLocationFormValues, actions: any) => {
           const submitValues = {
             ...values,
@@ -42,6 +48,9 @@ export const AddCityBreakLocationInnerForm = (props: any) => {
               <div className="control">
                 <label className="label">City</label>
                 <Field className="input" name="city" type="text" />
+                <div className="has-text-danger is-size-7">
+                  <ErrorMessage name="city" />
+                </div>
               </div>
             </div>
 
@@ -49,6 +58,9 @@ export const AddCityBreakLocationInnerForm = (props: any) => {
               <div className="control">
                 <label className="label">Country</label>
                 <Field className="input" name="country" type="text" />
+                <div className="has-text-danger is-size-7">
+                  <ErrorMessage name="country" />
+                </div>
               </div>
             </div>
 

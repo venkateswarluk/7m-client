@@ -95,6 +95,7 @@ export const ActivityCategoryList = () => {
 
   const fetchMealTypeData = async () => {
     const result = await axios(`${url}`)
+    console.log(result.data)
     setActivities(result.data)
   }
 
@@ -106,21 +107,30 @@ export const ActivityCategoryList = () => {
     values: ActivityCategoryForm,
     actions: FormikActions<ActivityCategoryForm>,
   ) => {
-    postItem(url, values)
-      .then(() => {
-        getAllItems(url)
-          .then(res => {
-            setActivities(res)
-            setAddActivityOpen(!addActivityOpen)
-            actions.setSubmitting(false)
-          })
-          .catch(err => {
-            throw Error(err)
-          })
-      })
-      .catch(err => {
-        throw Error(err)
-      })
+    if (
+      activities.filter(
+        (y: ActivityCategory) =>
+          y.categoryName.toLowerCase() === values.categoryName.toLowerCase(),
+      ).length === 0
+    ) {
+      postItem(url, values)
+        .then(() => {
+          getAllItems(url)
+            .then(res => {
+              setActivities(res)
+              setAddActivityOpen(!addActivityOpen)
+              actions.setSubmitting(false)
+            })
+            .catch(err => {
+              throw Error(err)
+            })
+        })
+        .catch(err => {
+          throw Error(err)
+        })
+    } else {
+      actions.setFieldError('categoryName', 'categoryName Already Exists')
+    }
   }
 
   const handleEditActivityClick = async (id: string) => {

@@ -43,14 +43,14 @@ export const FormSchema: () => yup.ObjectSchema<
   yup.object({
     locationId: yup
       .number()
-      .min(1)
-      .required(),
+      .min(1, 'locationId Required')
+      .required('locationId Required'),
     countryCode: yup.string().required(),
     stateCode: yup.string().required(),
     city: yup.string().required(),
-    searchingCity: yup.string().required(),
+    searchingCity: yup.string(),
     searchingState: yup.string().required(),
-    location: yup.string().required(),
+    location: yup.string(),
     address: yup.string().required(),
     longitude: yup.string().required(),
     latitude: yup.string().required(),
@@ -59,7 +59,12 @@ export const FormSchema: () => yup.ObjectSchema<
 export const AddActivityLocationInnerForm = (props: AddFormProps) => (
   <div>
     <Formik
-      initialValues={activityValues}
+      initialValues={{
+        ...activityValues,
+        locationId: props.count + 1,
+        searchingCity: activityValues.city,
+        location: activityValues.city,
+      }}
       onSubmit={(
         values: ActivityForm,
         actions: FormikActions<ActivityForm>,

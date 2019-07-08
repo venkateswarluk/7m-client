@@ -17,7 +17,10 @@ export const FormSchema: () => yup.ObjectSchema<
   CityBreakExclusionFormValues
 > = (): yup.ObjectSchema<CityBreakExclusionFormValues> =>
   yup.object({
-    cityId: yup.number().required('Select City'),
+    cityId: yup
+      .number()
+      .min(1, 'Select City')
+      .required('Select City'),
     exclusions: yup.string().required('Exclusions required'),
   })
 export const AddCityBreakExclusionInnerForm = (

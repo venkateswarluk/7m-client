@@ -31,11 +31,11 @@ export const FormSchema: () => yup.ObjectSchema<
   yup.object({
     cityId: yup
       .number()
-      .min(1)
+      .min(1, 'Select City')
       .required('Select City'),
     days: yup
       .number()
-      .min(1)
+      .min(1, 'Days Required')
       .required('days Required'),
     inclusions: yup.string().required('inclusions required'),
     tourName: yup.string().required('TourName Required'),

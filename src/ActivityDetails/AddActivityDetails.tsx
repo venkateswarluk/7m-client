@@ -29,11 +29,15 @@ export const ActivityDetailFormSchema: () => yup.ObjectSchema<
   yup.object({
     activityDetailId: yup
       .number()
-      .min(1)
+      .integer()
+      .positive()
+      .min(1, 'ActivityDetailId Required')
       .required('ActivityDetailId Required'),
     activityId: yup
       .number()
-      .min(1)
+      .integer()
+      .positive()
+      .min(1, 'ActivityId Required')
       .required('ActivityId Required'),
     shortDescription: yup.string().required(' Short Description Required'),
     longDescription: yup.string().required('Long Description Required'),

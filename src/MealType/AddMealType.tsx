@@ -37,7 +37,7 @@ export const AddMealTypeInnerForm = (props: AddFormProps<MealTypeForm>) => (
       }}
       validationSchema={MealTypeFormSchema}
     >
-      <div className="">
+      <div>
         <Form>
           <div className="field">
             <div className="control">
@@ -67,7 +67,7 @@ export const AddMealTypeInnerForm = (props: AddFormProps<MealTypeForm>) => (
               </div>
             </div>
           </div>
-
+          <br />
           <button className="button is-link" type="submit">
             Submit
           </button>

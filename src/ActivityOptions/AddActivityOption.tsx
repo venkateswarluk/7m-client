@@ -25,10 +25,14 @@ export const FormSchema: () => yup.ObjectSchema<
   yup.object({
     activityOptionId: yup
       .number()
+      .integer()
+      .positive()
       .moreThan(0, 'Must more Than 0')
       .required('ActivityOptionId Required'),
     activityId: yup
       .number()
+      .integer()
+      .positive()
       .moreThan(0, 'Must more Than 0')
       .required('ActivityId Required'),
     typeVal: yup.string().required(' TypeVal Required'),

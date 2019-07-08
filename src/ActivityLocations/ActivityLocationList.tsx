@@ -119,8 +119,10 @@ export const ActivityLocationList = () => {
     actions: FormikActions<ActivityForm>,
   ) => {
     if (
-      activities.filter((y: ActivityLocation) => y.city === values.city)
-        .length === 0
+      activities.filter(
+        (y: ActivityLocation) =>
+          y.city.toLowerCase() === values.city.toLowerCase(),
+      ).length === 0
     ) {
       postItem(url, values)
         .then(() => {
@@ -138,12 +140,7 @@ export const ActivityLocationList = () => {
           throw Error(err)
         })
     } else {
-      // tslint:disable-next-line:no-console
-      console.log(
-        'Already existed',
-        activities.filter((y: ActivityLocation) => y.city === values.city)
-          .length === 0,
-      )
+      actions.setFieldError('city', 'City Already Exists')
     }
   }
 

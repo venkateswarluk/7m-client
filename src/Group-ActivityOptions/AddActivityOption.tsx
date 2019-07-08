@@ -31,7 +31,7 @@ export const FormSchema: () => yup.ObjectSchema<
       .number()
       .moreThan(0, 'Must more Than 0')
       .required('ActivityId Required'),
-    typeVal: yup.string().required(' TipeVal Required'),
+    typeVal: yup.string().required(' TypeVal Required'),
     typeDescription: yup.string().required('TypeDescription Required'),
     name: yup.string().required('Name Required'),
   })

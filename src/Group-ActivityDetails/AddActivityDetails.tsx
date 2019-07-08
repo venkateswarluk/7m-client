@@ -27,12 +27,22 @@ export const ActivityDetailFormSchema: () => yup.ObjectSchema<
   ActivityDetailForm
 > = (): yup.ObjectSchema<ActivityDetailForm> =>
   yup.object({
-    activityDetailId: yup.number().required('ActivityDetailId Required'),
-    activityId: yup.number().required('ActivityId Required'),
+    activityDetailId: yup
+      .number()
+      .integer()
+      .positive()
+      .min(1, 'ActivityDetailId Required')
+      .required('ActivityDetailId Required'),
+    activityId: yup
+      .number()
+      .integer()
+      .positive()
+      .min(1, 'ActivityId Required')
+      .required('ActivityId Required'),
     shortDescription: yup.string().required(' Short Description Required'),
     longDescription: yup.string().required('Long Description Required'),
-    images: yup.string(),
-    videos: yup.string(),
+    images: yup.string().required(),
+    videos: yup.string().required(),
     activityPhone: yup.string().required('Activity Phone Required'),
   })
 

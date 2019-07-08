@@ -45,11 +45,25 @@ export const FormSchema: () => yup.ObjectSchema<
   CityBreakDetailsFormValues
 > = (): yup.ObjectSchema<CityBreakDetailsFormValues> =>
   yup.object({
-    cityId: yup.number().required('Select City'),
-    days: yup.number().required('days Required'),
+    cityId: yup
+      .number()
+      .integer()
+      .positive()
+      .required('Select City'),
+    days: yup
+      .number()
+      .integer()
+      .positive()
+      .min(1, 'Days Required')
+      .required('Days Required'),
     tourName: yup.string().required('TourName required'),
     dayInfo: yup.string().required('DayInfo required'),
-    dayNo: yup.number().required('DayNo required'),
+    dayNo: yup
+      .number()
+      .integer()
+      .positive()
+      .min(1, 'DayNo Required')
+      .required('DayNo required'),
   })
 
 export const tourNamesByCityId = (

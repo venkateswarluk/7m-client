@@ -31,18 +31,28 @@ export const FormSchema: () => yup.ObjectSchema<
   yup.object({
     cityId: yup
       .number()
-      .min(1)
+      .min(1, 'Select City')
       .required('Select City'),
     days: yup
       .number()
-      .min(1)
+      .min(1, 'Days Required')
       .required('days Required'),
     tourName: yup.string().required('TourName required'),
     description: yup.string().required('Description required'),
-    price: yup.number().required('Price required'),
+    price: yup
+      .number()
+      .integer()
+      .positive()
+      .min(1, 'Price required')
+      .required('Price required'),
     imageUrl: yup.string().required('Image required'),
     phone: yup.string().required('Phone required'),
-    starRating: yup.number().required('StarRating required'),
+    starRating: yup
+      .number()
+      .integer()
+      .positive()
+      .min(1, 'StarRating required')
+      .required('StarRating required'),
   })
 export const AddCityBreakInnerForm = (
   props: AddFormProps<CityBreakFormValues> & DestinationProps,

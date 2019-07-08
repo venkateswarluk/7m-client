@@ -30,11 +30,15 @@ const mealTypeValues: MealTypeForm = {
 export const MealTypeFormSchema: yup.ObjectSchema<MealTypeForm> = yup.object({
   name: yup.string().required('Name Required'),
   mealType: yup.string().required('MealType Required'),
-  mealCategory: yup.string(),
+  mealCategory: yup.string().required('MealCategory Required'),
   imageUrl: yup.string().required('ImageUrl Required'),
   description: yup.string().required('Description Required'),
-  price: yup.number().required('Price Required'),
-  items: yup.string(),
+  price: yup
+    .number()
+    .positive()
+    .min(1, 'Price Required')
+    .required('Price Required'),
+  items: yup.string().required('Items Required'),
   note: yup.string().required('Note Required'),
 })
 
@@ -186,7 +190,7 @@ export const AddMealTypeInnerForm = (
             <div className="has-text-danger is-size-7">
               <ErrorMessage name="note" />
             </div>
-
+            <br />
             <button className="button is-link" type="submit">
               Submit
             </button>

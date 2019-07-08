@@ -239,6 +239,7 @@ export const OptionAvailabilityList = () => {
                 <th>MaxChilds</th>
                 <th>AdultPrice</th>
                 <th>ChildPrice</th>
+                <th>unitPrice</th>
                 <th>FromDate</th>
                 <th>ToDate</th>
                 <th>OptionId</th>
@@ -256,6 +257,7 @@ export const OptionAvailabilityList = () => {
                     <td>{activity.maxChilds}</td>
                     <td>{activity.adultPrice}</td>
                     <td>{activity.childPrice}</td>
+                    <td>{activity.unitPrice}</td>
                     <td>{activity.fromDate}</td>
                     <td>{activity.toDate}</td>
                     <td>{activity.optionId}</td>

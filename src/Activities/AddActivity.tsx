@@ -42,18 +42,24 @@ export const ActivityFormSchema: () => yup.ObjectSchema<
     description: yup.string().required(' Description Required'),
     stars: yup
       .number()
+      .integer()
+      .positive()
       .required('Stars Required')
       .moreThan(0, 'Stars Must MoreThan 0'),
     thumbUrl: yup.string().required(' Image Url Required'),
     minChildAge: yup
       .number()
+      .integer()
+      .positive()
       .required()
       .moreThan(0, 'MinChildAge Must Be MoreThan 0'),
     maxChildAge: yup
       .number()
+      .integer()
+      .positive()
       .required()
       .moreThan(0, 'MaxChildAge Must MoreThan 0')
-      .lessThan(9, 'MaxChildAge Must lessThan 10'),
+      .lessThan(10, 'MaxChildAge Must lessThan 10'),
     destinationId: yup
       .number()
       .min(1)
@@ -68,12 +74,16 @@ export const ActivityFormSchema: () => yup.ObjectSchema<
 
     activityId: yup
       .number()
-      .min(1)
-      .required(),
+      .integer()
+      .positive()
+      .min(1, 'ActivityId Required')
+      .required('ActivityId Required'),
     optionId: yup
       .number()
-      .min(1)
-      .required(),
+      .integer()
+      .positive()
+      .min(1, 'OptionId Required')
+      .required('ActivityId Required'),
   })
 
 export const AddActivityInnerForm = (

@@ -87,26 +87,51 @@ export const ActivityFormSchema: () => yup.ObjectSchema<
     description: yup.string().required(' Title Required'),
     stars: yup
       .number()
+      .integer()
+      .positive()
       .required('Stars Required')
       .moreThan(0, 'Stars Must MoreThan 0'),
     thumbUrl: yup.string().required(' Thumb Url Required'),
     minChildAge: yup
       .number()
+      .integer()
+      .positive()
       .required()
       .moreThan(0, 'MinChildAge Must MoreThan 0'),
     maxChildAge: yup
       .number()
+      .integer()
+      .positive()
       .required()
       .moreThan(0, 'MaxChildAge Must MoreThan 0')
       .lessThan(9, 'MaxChildAge Must lessThan 10'),
     destinationId: yup
       .number()
+      .integer()
+      .positive()
       .required()
       .moreThan(0, 'Select destination'),
 
-    categoryId: yup.number().required(),
-    activityId: yup.number().required(),
-    optionId: yup.number().required(),
+    categoryId: yup
+      .number()
+      .integer()
+      .positive()
+      .min(1, 'Select CategoryId')
+      .required('Select CategoryId'),
+    activityId: yup
+      .number()
+      .integer()
+      .positive()
+      .min(1, 'Select ActivityId')
+
+      .required('Select ActivityId'),
+    optionId: yup
+      .number()
+      .integer()
+      .positive()
+      .min(1, 'Select OptionId')
+
+      .required('Select OptionId'),
   })
 
 export const AddActivityInnerForm = (

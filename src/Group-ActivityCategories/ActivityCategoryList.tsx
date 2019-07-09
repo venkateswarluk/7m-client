@@ -18,6 +18,8 @@ import {
 
 import { mainUrl } from '../config'
 import { Pagination } from 'src/Pagination'
+import { handleSearchSpecific } from 'src/Activities/ActivityList'
+import { SearchField } from 'src/Activities/search'
 
 const url = `${mainUrl}/group-categories`
 
@@ -47,6 +49,7 @@ export const GroupActivityCategoryList = () => {
 
   const [page, setPage] = React.useState(0)
   const [rowsPerPage, setRowsPerPage] = React.useState(15)
+  const [Search, setSearch] = React.useState('')
 
   const handleNext = (page: number) => {
     setPage(page + 1)
@@ -65,6 +68,25 @@ export const GroupActivityCategoryList = () => {
 
   const handleRowsPerPage = (event: any) => {
     setRowsPerPage(event.value)
+  }
+
+  const handleSearch = (Search: string) => {
+    const activities1 = activities.filter(
+      (x: ActivityCategory) =>
+        Search !== ''
+          ? handleSearchSpecific(Search, x.id.toString()) ||
+            handleSearchSpecific(Search, x.categoryId.toString()) ||
+            handleSearchSpecific(Search, x.serviceType.toString()) ||
+            handleSearchSpecific(Search, x.categoryName.toString())
+          : x,
+    )
+    setSearch(Search)
+    setActivities(activities1)
+  }
+
+  const handleRefreshSearch = () => {
+    setSearch('')
+    fetchMealTypeData()
   }
 
   const fetchMealTypeData = async () => {
@@ -148,6 +170,11 @@ export const GroupActivityCategoryList = () => {
         Activity Category Details
       </div>
       <div className="field">
+        <SearchField
+          Search={Search}
+          handleRefreshSearch={handleRefreshSearch}
+          handleSearch={handleSearch}
+        />
         <div className="control has-text-right">
           <button className="button is-info " onClick={handleAddMealClick}>
             Add Activity Category

@@ -47,7 +47,7 @@ export const ActivityCategoryList = () => {
     currentActivity,
   )
   const [page, setPage] = React.useState(0)
-  const [rowsPerPage, setRowsPerPage] = React.useState(15)
+  const [rowsPerPage, setRowsPerPage] = React.useState(10)
   const [activityCategorySearch, setActivityCategorySearch] = React.useState('')
 
   const handleNext = (page: number) => {

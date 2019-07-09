@@ -16,6 +16,8 @@ import {
 
 import { mainUrl } from '../config'
 import { Pagination } from 'src/Pagination'
+import { handleSearchSpecific } from 'src/Activities/ActivityList'
+import { SearchField } from 'src/Activities/search'
 
 const url = `${mainUrl}/mealtypes`
 
@@ -60,7 +62,8 @@ export const MealTypeList = () => {
   >([])
 
   const [page, setPage] = React.useState(0)
-  const [rowsPerPage, setRowsPerPage] = React.useState(15)
+  const [rowsPerPage, setRowsPerPage] = React.useState(10)
+  const [Search, setSearch] = React.useState('')
 
   const handleNext = (page: number) => {
     setPage(page + 1)
@@ -79,6 +82,28 @@ export const MealTypeList = () => {
 
   const handleRowsPerPage = (event: any) => {
     setRowsPerPage(event.value)
+  }
+
+  const handleSearch = (Search: string) => {
+    const activities1 = mealTypes.filter(
+      (x: MealType) =>
+        Search !== ''
+          ? handleSearchSpecific(Search, x.id.toString()) ||
+            handleSearchSpecific(Search, x.mealCategory.toString()) ||
+            handleSearchSpecific(Search, x.mealType.toString()) ||
+            handleSearchSpecific(Search, x.imageUrl.toString()) ||
+            handleSearchSpecific(Search, x.description.toString()) ||
+            handleSearchSpecific(Search, x.price.toString()) ||
+            handleSearchSpecific(Search, x.note.toString())
+          : x,
+    )
+    setSearch(Search)
+    setMealTypes(activities1)
+  }
+
+  const handleRefreshSearch = () => {
+    setSearch('')
+    fetchMealTypeData()
   }
 
   const fetchMealTypeData = async () => {
@@ -176,6 +201,11 @@ export const MealTypeList = () => {
         Meal Details
       </div>
       <div className="field">
+        <SearchField
+          Search={Search}
+          handleRefreshSearch={handleRefreshSearch}
+          handleSearch={handleSearch}
+        />
         <div className="control has-text-right">
           <button className="button is-info " onClick={handleAddMealClick}>
             Add Meal

@@ -79,7 +79,7 @@ export const ActivityList = () => {
   >([])
 
   const [page, setPage] = React.useState(0)
-  const [rowsPerPage, setRowsPerPage] = React.useState(15)
+  const [rowsPerPage, setRowsPerPage] = React.useState(10)
 
   const [activitySearch, setActivitySearch] = React.useState('')
 

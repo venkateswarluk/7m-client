@@ -7,18 +7,28 @@ interface SearchProps {
 }
 
 const SearchField = (props: SearchProps) => (
-  <div className="control has-text-left">
-    <input
-      // className="button is-info "
-      type="text"
-      name="activityCategorySearch"
-      value={props.Search}
-      onChange={event => props.handleSearch(event.target.value)}
-    />
-    <div className="control has-text-left">
-      <button className="button is-info " onClick={props.handleRefreshSearch}>
-        Refresh
-      </button>
+  <div className="level-left">
+    <div className="level-item">
+      <div className="field has-addons">
+        <p className="control">
+          <input
+            className="input"
+            type="text"
+            placeholder="Search Text"
+            name="activityCategorySearch"
+            value={props.Search}
+            onChange={event => props.handleSearch(event.target.value)}
+          />
+        </p>
+        <p className="control">
+          <button
+            className="button is-info "
+            onClick={props.handleRefreshSearch}
+          >
+            Refresh
+          </button>
+        </p>
+      </div>
     </div>
   </div>
 )

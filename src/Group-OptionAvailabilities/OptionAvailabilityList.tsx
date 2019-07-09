@@ -18,6 +18,8 @@ import {
 
 import { mainUrl } from '../config'
 import { Pagination } from 'src/Pagination'
+import { SearchField } from 'src/Activities/search'
+import { handleSearchSpecific } from 'src/Activities/ActivityList'
 
 const url = `${mainUrl}/group-optionavailabilities`
 
@@ -62,7 +64,8 @@ export const GroupOptionAvailabilityList = () => {
   )
 
   const [page, setPage] = React.useState(0)
-  const [rowsPerPage, setRowsPerPage] = React.useState(15)
+  const [rowsPerPage, setRowsPerPage] = React.useState(10)
+  const [Search, setSearch] = React.useState('')
 
   const handleNext = (page: number) => {
     setPage(page + 1)
@@ -81,6 +84,33 @@ export const GroupOptionAvailabilityList = () => {
 
   const handleRowsPerPage = (event: any) => {
     setRowsPerPage(event.value)
+  }
+
+  const handleSearch = (Search: string) => {
+    const activities1 = optionAvailabilities.filter(
+      (x: OptionAvailability) =>
+        Search !== ''
+          ? handleSearchSpecific(Search, x.id.toString()) ||
+            handleSearchSpecific(Search, x.optionAvailabilityId.toString()) ||
+            handleSearchSpecific(Search, x.optionId.toString()) ||
+            handleSearchSpecific(Search, x.maxAdults.toString()) ||
+            handleSearchSpecific(Search, x.maxChilds.toString()) ||
+            handleSearchSpecific(Search, x.maxUnits.toString()) ||
+            handleSearchSpecific(Search, x.adultPrice.toString()) ||
+            handleSearchSpecific(Search, x.unitPrice.toString()) ||
+            handleSearchSpecific(Search, x.activityId.toString()) ||
+            handleSearchSpecific(Search, x.childPrice.toString()) ||
+            handleSearchSpecific(Search, x.fromDate.toString()) ||
+            handleSearchSpecific(Search, x.toDate.toString())
+          : x,
+    )
+    setSearch(Search)
+    setOptionAvailabilities(activities1)
+  }
+
+  const handleRefreshSearch = () => {
+    setSearch('')
+    fetchMealTypeData()
   }
 
   const fetchMealTypeData = async () => {
@@ -164,6 +194,11 @@ export const GroupOptionAvailabilityList = () => {
         Option Availabilities
       </div>
       <div className="field">
+        <SearchField
+          Search={Search}
+          handleRefreshSearch={handleRefreshSearch}
+          handleSearch={handleSearch}
+        />
         <div className="control has-text-right">
           <button className="button is-info " onClick={handleAddMealClick}>
             Add Availability

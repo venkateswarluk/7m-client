@@ -18,6 +18,8 @@ import {
 
 import { mainUrl } from '../config'
 import { Pagination } from 'src/Pagination'
+import { SearchField } from 'src/Activities/search'
+import { handleSearchSpecific } from 'src/Activities/ActivityList'
 
 const url = `${mainUrl}/group-activitydetails`
 
@@ -54,7 +56,8 @@ export const GroupActivityDetailsList = () => {
   )
 
   const [page, setPage] = React.useState(0)
-  const [rowsPerPage, setRowsPerPage] = React.useState(15)
+  const [rowsPerPage, setRowsPerPage] = React.useState(10)
+  const [Search, setSearch] = React.useState('')
 
   const handleNext = (page: number) => {
     setPage(page + 1)
@@ -73,6 +76,29 @@ export const GroupActivityDetailsList = () => {
 
   const handleRowsPerPage = (event: any) => {
     setRowsPerPage(event.value)
+  }
+
+  const handleSearch = (Search: string) => {
+    const activities1 = activityDetails.filter(
+      (x: ActivityDetails) =>
+        Search !== ''
+          ? handleSearchSpecific(Search, x.id.toString()) ||
+            handleSearchSpecific(Search, x.activityDetailId.toString()) ||
+            handleSearchSpecific(Search, x.activityId.toString()) ||
+            handleSearchSpecific(Search, x.shortDescription.toString()) ||
+            handleSearchSpecific(Search, x.longDescription.toString()) ||
+            handleSearchSpecific(Search, x.images.toString()) ||
+            handleSearchSpecific(Search, x.videos.toString()) ||
+            handleSearchSpecific(Search, x.activityPhone.toString())
+          : x,
+    )
+    setSearch(Search)
+    setActivityDetails(activities1)
+  }
+
+  const handleRefreshSearch = () => {
+    setSearch('')
+    fetchMealTypeData()
   }
 
   const fetchMealTypeData = async () => {
@@ -156,6 +182,11 @@ export const GroupActivityDetailsList = () => {
         Activity Details
       </div>
       <div className="field">
+        <SearchField
+          Search={Search}
+          handleRefreshSearch={handleRefreshSearch}
+          handleSearch={handleSearch}
+        />
         <div className="control has-text-right">
           <button className="button is-info " onClick={handleAddMealClick}>
             Add Activity Detail

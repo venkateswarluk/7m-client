@@ -18,6 +18,8 @@ import { OptionValues } from '../types'
 
 import { mainUrl } from '../config'
 import { Pagination } from 'src/Pagination'
+import { handleSearchSpecific } from 'src/Activities/ActivityList'
+import { SearchField } from 'src/Activities/search'
 
 const url = `${mainUrl}/group-activities`
 
@@ -68,7 +70,8 @@ export const GroupActivityList = () => {
   >([])
 
   const [page, setPage] = React.useState(0)
-  const [rowsPerPage, setRowsPerPage] = React.useState(15)
+  const [rowsPerPage, setRowsPerPage] = React.useState(10)
+  const [Search, setSearch] = React.useState('')
 
   const handleNext = (page: number) => {
     setPage(page + 1)
@@ -86,6 +89,32 @@ export const GroupActivityList = () => {
 
   const handleRowsPerPage = (event: any) => {
     setRowsPerPage(event.value)
+  }
+
+  const handleSearch = (Search: string) => {
+    const activities1 = activities.filter(
+      (x: Activity) =>
+        Search !== ''
+          ? handleSearchSpecific(Search, x.id.toString()) ||
+            handleSearchSpecific(Search, x.activityId.toString()) ||
+            handleSearchSpecific(Search, x.activityName.toString()) ||
+            handleSearchSpecific(Search, x.maxChildAge.toString()) ||
+            handleSearchSpecific(Search, x.minChildAge.toString()) ||
+            handleSearchSpecific(Search, x.description.toString()) ||
+            handleSearchSpecific(Search, x.destinationId.toString()) ||
+            handleSearchSpecific(Search, x.optionId.toString()) ||
+            handleSearchSpecific(Search, x.categoryId.toString()) ||
+            handleSearchSpecific(Search, x.stars.toString()) ||
+            handleSearchSpecific(Search, x.thumbUrl.toString())
+          : x,
+    )
+    setSearch(Search)
+    setActivities(activities1)
+  }
+
+  const handleRefreshSearch = () => {
+    setSearch('')
+    fetchMealTypeData()
   }
 
   const fetchMealTypeData = async () => {
@@ -195,6 +224,11 @@ export const GroupActivityList = () => {
         Activity Details
       </div>
       <div className="field">
+        <SearchField
+          Search={Search}
+          handleRefreshSearch={handleRefreshSearch}
+          handleSearch={handleSearch}
+        />
         <div className="control has-text-right">
           <button className="button is-info " onClick={handleAddMealClick}>
             Add Activity

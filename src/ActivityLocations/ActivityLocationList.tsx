@@ -61,7 +61,7 @@ export const ActivityLocationList = () => {
     currentActivity,
   )
   const [page, setPage] = React.useState(0)
-  const [rowsPerPage, setRowsPerPage] = React.useState(15)
+  const [rowsPerPage, setRowsPerPage] = React.useState(10)
   const [Search, setSearch] = React.useState('')
 
   const handleNext = (page: number) => {

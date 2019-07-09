@@ -17,6 +17,8 @@ import {
 
 import { mainUrl } from '../config'
 import { Pagination } from 'src/Pagination'
+import { SearchField } from 'src/Activities/search'
+import { handleSearchSpecific } from 'src/Activities/ActivityList'
 
 const url = `${mainUrl}/cityBreakLocations`
 
@@ -53,7 +55,8 @@ export const CityBreakLocationsList = () => {
   >([])
 
   const [page, setPage] = React.useState(0)
-  const [rowsPerPage, setRowsPerPage] = React.useState(15)
+  const [rowsPerPage, setRowsPerPage] = React.useState(10)
+  const [Search, setSearch] = React.useState('')
 
   const handleNext = (page: number) => {
     setPage(page + 1)
@@ -68,6 +71,25 @@ export const CityBreakLocationsList = () => {
     if (page !== total) {
       setPage(page)
     }
+  }
+
+  const handleSearch = (Search: string) => {
+    const activities1 = cityBreakLocations.filter(
+      (x: CityBreakLocation) =>
+        Search !== ''
+          ? handleSearchSpecific(Search, x.id.toString()) ||
+            handleSearchSpecific(Search, x.cityId.toString()) ||
+            handleSearchSpecific(Search, x.country.toString()) ||
+            handleSearchSpecific(Search, x.city.toString())
+          : x,
+    )
+    setSearch(Search)
+    setCityBreaks(activities1)
+  }
+
+  const handleRefreshSearch = () => {
+    setSearch('')
+    fetchMealTypeData()
   }
 
   const handleRowsPerPage = (event: any) => {
@@ -168,6 +190,11 @@ export const CityBreakLocationsList = () => {
         CityBreak Locations
       </div>
       <div className="field">
+        <SearchField
+          Search={Search}
+          handleRefreshSearch={handleRefreshSearch}
+          handleSearch={handleSearch}
+        />
         <div className="control has-text-right">
           <button className="button is-info " onClick={handleAddMealClick}>
             Add CityBreakLocation

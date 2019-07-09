@@ -79,7 +79,7 @@ export const ActivityList = () => {
   >([])
 
   const [page, setPage] = React.useState(0)
-  const [rowsPerPage] = React.useState(5)
+  const [rowsPerPage, setRowsPerPage] = React.useState(15)
 
   const [activitySearch, setActivitySearch] = React.useState('')
 
@@ -132,12 +132,16 @@ export const ActivityList = () => {
     }
   }
 
+  const handleRowsPerPage = (event: any) => {
+    setRowsPerPage(event)
+  }
+
   const handleActivitySearch = (activitySearch: string) => {
     const activities1 = activities.filter(
       (x: Activity) =>
         activitySearch !== ''
-          ? x.activityName.includes(activitySearch) ||
-            x.description.includes(activitySearch) ||
+          ? handleSearchSpecific(activitySearch, x.activityName.toString()) ||
+            handleSearchSpecific(activitySearch, x.description.toString()) ||
             handleSearchSpecific(activitySearch, x.activityId.toString()) ||
             handleSearchSpecific(activitySearch, x.optionId.toString()) ||
             handleSearchSpecific(activitySearch, x.categoryId.toString()) ||
@@ -300,7 +304,13 @@ export const ActivityList = () => {
                 <th>Actions</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody
+              style={{
+                height: '100px',
+                overflowY: 'auto',
+                overflowX: 'hidden',
+              }}
+            >
               {activities
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((activity: Activity) => (
@@ -341,6 +351,8 @@ export const ActivityList = () => {
         )}
       </div>
       <Pagination
+        handleRowsPerPageChange={handleRowsPerPage}
+        rowsPerPage={rowsPerPage}
         handleSpecificPageChange={handleSpecificPageChange}
         currentPage={page}
         totalPages={Math.ceil(activities.length / rowsPerPage)}

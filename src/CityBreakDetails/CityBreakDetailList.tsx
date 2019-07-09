@@ -63,7 +63,7 @@ export const CityBreakDetailsList = () => {
   >([])
 
   const [page, setPage] = React.useState(0)
-  const [rowsPerPage] = React.useState(5)
+  const [rowsPerPage, setRowsPerPage] = React.useState(15)
 
   const handleNext = (page: number) => {
     setPage(page + 1)
@@ -80,6 +80,9 @@ export const CityBreakDetailsList = () => {
     }
   }
 
+  const handleRowsPerPage = (event: any) => {
+    setRowsPerPage(event.value)
+  }
   const fetchMealTypeData = async () => {
     const result = await axios(`${url}`)
     setCityBreaks(result.data)
@@ -276,6 +279,8 @@ export const CityBreakDetailsList = () => {
         )}
       </div>
       <Pagination
+        rowsPerPage={rowsPerPage}
+        handleRowsPerPageChange={handleRowsPerPage}
         handleSpecificPageChange={handleSpecificPageChange}
         currentPage={page}
         totalPages={Math.ceil(cityBreaks.length / rowsPerPage)}

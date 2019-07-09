@@ -1,48 +1,54 @@
 import * as React from 'react'
 import 'bulma/css/bulma.css'
 
-const range = (current: number, totalPages: number) => {
-  if (current <= totalPages && totalPages > 5) {
-    return Array.from(Array(5).keys())
-      .map(x => x + current)
-      .filter(x => x <= totalPages)
-  } else {
-    return Array.from(Array(totalPages).keys()).map(x => x + current)
-  }
-}
+// const range = (current: number, totalPages: number) => {
+//   if (current <= totalPages && totalPages > 5) {
+//     return Array.from(Array(5).keys())
+//       .map(x => x + current)
+//       .filter(x => x <= totalPages)
+//   } else {
+//     return Array.from(Array(totalPages).keys()).map(x => x + current)
+//   }
+// }
 
-const visiblePages = (current: number, totalPages: number) => {
-  if (current > 1 && current + 5 < totalPages) {
-    return [1, 'e', ...range(current, totalPages), 'e', totalPages]
-  } else if (current === 1) {
-    return [...range(current, totalPages), 'e', totalPages]
-  } else {
-    return [1, 'e', ...range(current, totalPages)]
-  }
-}
+// const visiblePages = (current: number, totalPages: number) => {
+//   if (current > 1 && current + 5 < totalPages) {
+//     return [1, 'e', ...range(current, totalPages), 'e', totalPages]
+//   } else if (current === 1) {
+//     return [...range(current, totalPages), 'e', totalPages]
+//   } else {
+//     return [1, 'e', ...range(current, totalPages)]
+//   }
+// }
 
 export interface PaginationProps {
   readonly currentPage: number
   readonly totalPages: number
+  readonly rowsPerPage: number
   handleNext(currentPage: number): void
   handlePrevious(currentPage: number): void
   handleSpecificPageChange(currentPage: number | string): void
+  handleRowsPerPageChange(rowsPerPage: number): void
 }
 
 export const Pagination: (
   {
     currentPage,
     totalPages,
+    rowsPerPage,
     handleNext,
     handlePrevious,
     handleSpecificPageChange,
+    handleRowsPerPageChange,
   }: PaginationProps,
 ) => JSX.Element = ({
   currentPage,
   totalPages,
   handleNext,
+  // rowsPerPage,
   handlePrevious,
-  handleSpecificPageChange,
+  // handleSpecificPageChange,
+  // handleRowsPerPageChange,
 }) => {
   //  const [currentPage] = React.useState(currentPage) // need to refactor
   return (
@@ -69,7 +75,28 @@ export const Pagination: (
         Next
       </button>
 
-      <ul className="pagination-list">
+      {/* <div>
+        <select
+          value={rowsPerPage}
+          onClick={() => handleRowsPerPageChange(rowsPerPage)}
+        >
+          <option value="5" className="dropdown-item">
+            5
+          </option>
+          <hr className="dropdown-divider" />
+
+          <option value="10" className="dropdown-item">
+            10
+          </option>
+          <hr className="dropdown-divider" />
+
+          <option value="15" className="dropdown-item">
+            15
+          </option>
+        </select>
+      </div> */}
+
+      {/* <ul className="pagination-list">
         {visiblePages(currentPage, totalPages).map(
           x =>
             x === currentPage ? (
@@ -78,7 +105,7 @@ export const Pagination: (
                   className="pagination-link is-current"
                   aria-label={`Goto page ${x}`}
                 >
-                  {x === 0 ? x + 1 : x}
+                  {x}
                 </a>
               </li>
             ) : x === 'e' ? (
@@ -97,7 +124,7 @@ export const Pagination: (
               </li>
             ),
         )}
-      </ul>
+      </ul> */}
     </nav>
   )
 }

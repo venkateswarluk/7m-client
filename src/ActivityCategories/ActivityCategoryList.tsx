@@ -47,7 +47,7 @@ export const ActivityCategoryList = () => {
     currentActivity,
   )
   const [page, setPage] = React.useState(0)
-  const [rowsPerPage] = React.useState(5)
+  const [rowsPerPage, setRowsPerPage] = React.useState(15)
   const [activityCategorySearch, setActivityCategorySearch] = React.useState('')
 
   const handleNext = (page: number) => {
@@ -65,6 +65,9 @@ export const ActivityCategoryList = () => {
     }
   }
 
+  const handleRowsPerPage = (event: any) => {
+    setRowsPerPage(event.value)
+  }
   const handleActivityCategorySearch = (activityCategorySearch: string) => {
     const activities1 = activities.filter(
       (x: ActivityCategory) =>
@@ -270,6 +273,8 @@ export const ActivityCategoryList = () => {
         )}
       </div>
       <Pagination
+        handleRowsPerPageChange={handleRowsPerPage}
+        rowsPerPage={rowsPerPage}
         handleSpecificPageChange={handleSpecificPageChange}
         currentPage={page}
         totalPages={Math.ceil(activities.length / rowsPerPage)}

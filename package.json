@@ -35,7 +35,7 @@
     "rxjs": "^6.2.1",
     "rxjs-compat": "^6.2.1",
     "tcomb": "^3.2.27",
-    "tslint": "^5.10.0",
+    "tslint": "^5.18.0",
     "tslint-config-prettier": "^1.13.0",
     "tslint-immutable": "^4.6.0",
     "tslint-react": "^3.6.0",

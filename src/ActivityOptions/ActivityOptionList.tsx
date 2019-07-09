@@ -48,7 +48,7 @@ export const ActivityOptionList = () => {
     currentActivityOption,
   )
   const [page, setPage] = React.useState(0)
-  const [rowsPerPage] = React.useState(5)
+  const [rowsPerPage, setRowsPerPage] = React.useState(15)
   const [Search, setSearch] = React.useState('')
 
   const handleNext = (page: number) => {
@@ -64,6 +64,9 @@ export const ActivityOptionList = () => {
     if (page !== total) {
       setPage(page)
     }
+  }
+  const handleRowsPerPage = (event: any) => {
+    setRowsPerPage(event.value)
   }
 
   const handleSearch = (Search: string) => {
@@ -257,6 +260,8 @@ export const ActivityOptionList = () => {
         )}
       </div>
       <Pagination
+        rowsPerPage={rowsPerPage}
+        handleRowsPerPageChange={handleRowsPerPage}
         handleSpecificPageChange={handleSpecificPageChange}
         currentPage={page}
         totalPages={Math.ceil(activityOptions.length / rowsPerPage)}

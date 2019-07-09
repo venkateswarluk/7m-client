@@ -61,7 +61,7 @@ export const ActivityLocationList = () => {
     currentActivity,
   )
   const [page, setPage] = React.useState(0)
-  const [rowsPerPage] = React.useState(5)
+  const [rowsPerPage, setRowsPerPage] = React.useState(15)
   const [Search, setSearch] = React.useState('')
 
   const handleNext = (page: number) => {
@@ -77,6 +77,10 @@ export const ActivityLocationList = () => {
     if (page !== total) {
       setPage(page)
     }
+  }
+
+  const handleRowsPerPage = (event: any) => {
+    setRowsPerPage(event.value)
   }
 
   const handleSearch = (Search: string) => {
@@ -295,6 +299,8 @@ export const ActivityLocationList = () => {
         )}
       </div>
       <Pagination
+        rowsPerPage={rowsPerPage}
+        handleRowsPerPageChange={handleRowsPerPage}
         handleSpecificPageChange={handleSpecificPageChange}
         currentPage={page}
         totalPages={Math.ceil(activities.length / rowsPerPage)}

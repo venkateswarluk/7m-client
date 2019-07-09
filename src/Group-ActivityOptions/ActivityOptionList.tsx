@@ -47,7 +47,7 @@ export const GroupActivityOptionList = () => {
   )
 
   const [page, setPage] = React.useState(0)
-  const [rowsPerPage] = React.useState(5)
+  const [rowsPerPage, setRowsPerPage] = React.useState(15)
 
   const handleNext = (page: number) => {
     setPage(page + 1)
@@ -62,6 +62,9 @@ export const GroupActivityOptionList = () => {
     if (page !== total) {
       setPage(page)
     }
+  }
+  const handleRowsPerPage = (event: any) => {
+    setRowsPerPage(event.value)
   }
 
   const fetchMealTypeData = async () => {
@@ -229,6 +232,8 @@ export const GroupActivityOptionList = () => {
         )}
       </div>
       <Pagination
+        rowsPerPage={rowsPerPage}
+        handleRowsPerPageChange={handleRowsPerPage}
         handleSpecificPageChange={handleSpecificPageChange}
         currentPage={page}
         totalPages={Math.ceil(activityOptions.length / rowsPerPage)}

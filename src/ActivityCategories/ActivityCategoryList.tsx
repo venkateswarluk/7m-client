@@ -37,6 +37,22 @@ const currentActivity: ActivityCategory = {
   categoryId: 0,
 }
 
+export const random = (min: number, max: number) =>
+  Math.floor(Math.random() * (max - min)) + min
+
+export const unique = (arr: ReadonlyArray<number>): number => {
+  const val = random(1, arr.length * 3)
+  let i = 0
+  while (i < arr.length) {
+    if (arr[i] === val) {
+      return unique(arr)
+    } else {
+      i++
+    }
+  }
+  return val
+}
+
 export const ActivityCategoryList = () => {
   const [activities, setActivities] = React.useState<
     ReadonlyArray<ActivityCategory>
@@ -98,7 +114,6 @@ export const ActivityCategoryList = () => {
 
   const fetchMealTypeData = async () => {
     const result = await axios(`${url}`)
-    console.log(result.data)
     setActivities(result.data)
   }
 
@@ -206,7 +221,7 @@ export const ActivityCategoryList = () => {
       >
         {
           <AddActivityCategoryForm
-            count={activities.length}
+            count={unique(activities.map(y => y.categoryId))}
             handleAddSubmit={handleAddActivitySubmit}
             handleCloseClick={handleAddMealClick}
           />
@@ -220,7 +235,7 @@ export const ActivityCategoryList = () => {
       >
         {
           <EditActivityCategoryForm
-            count={activities.length}
+            count={editActivityData.categoryId}
             currentItem={editActivityData}
             handleEditSubmit={handleEditActivitySubmit}
             handleCloseClick={handleEditActivityCloseClick}

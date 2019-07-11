@@ -17,7 +17,7 @@ export const EditActivityCategoryInnerForm = (props: EditFormProps) => (
     <Formik
       initialValues={props.currentItem}
       onSubmit={(values: ActivityCategoryForm, actions: any) => {
-        const submitValues = { ...values, categoryId: props.count + 1 }
+        const submitValues = { ...values, categoryId: props.count }
         props.handleEditSubmit(submitValues, actions)
       }}
       validationSchema={FormSchema}

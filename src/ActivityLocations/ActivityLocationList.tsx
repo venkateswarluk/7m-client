@@ -20,6 +20,7 @@ import { mainUrl } from '../config'
 import { Pagination } from 'src/Pagination'
 import { handleSearchSpecific } from 'src/Activities/ActivityList'
 import { SearchField } from 'src/Activities/search'
+import { unique } from 'src/ActivityCategories/ActivityCategoryList'
 
 const url = `${mainUrl}/activityLocations`
 
@@ -218,7 +219,7 @@ export const ActivityLocationList = () => {
       >
         {
           <AddActivityLocationForm
-            count={activities.length}
+            count={unique(activities.map(y => y.locationId))}
             handleAddSubmit={handleAddActivitySubmit}
             handleCloseClick={handleAddMealClick}
           />
@@ -232,7 +233,7 @@ export const ActivityLocationList = () => {
       >
         {
           <EditActivityLocationForm
-            count={activities.length}
+            count={editActivityData.locationId}
             currentItem={editActivityData}
             handleEditSubmit={handleEditActivitySubmit}
             handleCloseClick={handleEditActivityCloseClick}

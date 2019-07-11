@@ -291,7 +291,11 @@ export const GroupActivityList = () => {
                   <tr key={activity.id}>
                     <td>{activity.activityName}</td>
                     <td>{activity.stars}</td>
-                    <td>{activity.description}</td>
+                    <td>
+                      <div className="hero-body scrollable">
+                        {activity.description}
+                      </div>
+                    </td>
                     <td>{activity.minChildAge}</td>
                     <td>{activity.maxChildAge}</td>
                     <td>{activity.destinationId}</td>

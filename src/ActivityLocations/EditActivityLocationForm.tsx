@@ -19,7 +19,7 @@ export const EditActivityLocationInnerForm = (props: EditFormProps) => (
       onSubmit={(values: ActivityForm, actions: any) => {
         const submitValues = {
           ...values,
-          locationId: props.count + 1,
+          locationId: values.locationId,
           searchingCity: values.city,
           location: values.city,
         }

@@ -61,7 +61,7 @@ export const AddActivityLocationInnerForm = (props: AddFormProps) => (
     <Formik
       initialValues={{
         ...activityValues,
-        locationId: props.count + 1,
+        locationId: props.count,
         searchingCity: activityValues.city,
         location: activityValues.city,
       }}
@@ -71,7 +71,7 @@ export const AddActivityLocationInnerForm = (props: AddFormProps) => (
       ) => {
         const submitValues = {
           ...values,
-          locationId: props.count + 1,
+          locationId: props.count,
           searchingCity: values.city,
           location: values.city,
         }

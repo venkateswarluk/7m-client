@@ -19,6 +19,7 @@ import { mainUrl } from '../config'
 import { Pagination } from 'src/Pagination'
 import { SearchField } from 'src/Activities/search'
 import { handleSearchSpecific } from 'src/Activities/ActivityList'
+import { unique } from 'src/ActivityCategories/ActivityCategoryList'
 
 const url = `${mainUrl}/cityBreakLocations`
 
@@ -209,7 +210,7 @@ export const CityBreakLocationsList = () => {
       >
         {
           <AddCityBreakLocationForm
-            count={cityBreakLocations.length}
+            count={unique(cityBreakLocations.map(y => y.cityId))}
             destinations={destinations}
             handleAddMealTypeSubmit={handleAddActivitySubmit}
             handleCloseClick={handleAddMealClick}
@@ -224,7 +225,7 @@ export const CityBreakLocationsList = () => {
       >
         {
           <EditCityBreakLocationForm
-            count={cityBreakLocations.length}
+            count={editCityBreakData.cityId}
             destinations={destinations}
             cityBreakLocations={editCityBreakData}
             handleEditMealTypeSubmit={handleEditActivitySubmit}

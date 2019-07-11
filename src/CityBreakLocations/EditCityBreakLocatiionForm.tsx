@@ -14,7 +14,7 @@ export const EditCityBreakLocationInnerForm = (props: any) => {
         onSubmit={(values: CityBreakLocationFormValues, actions: any) => {
           const submitValues = {
             ...values,
-            cityId: props.count + 1,
+            cityId: props.count,
           }
           props.onSubmit(submitValues, actions)
         }}

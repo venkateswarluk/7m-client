@@ -58,16 +58,16 @@ export const Pagination: (
       aria-label="pagination"
     >
       <button
-        className="pagination-previous"
+        className="pagination-previous button is-info "
         onClick={() => handlePrevious(currentPage)}
-        disabled={currentPage <= 1 ? true : false}
+        disabled={currentPage < 1 ? true : false}
         type="button"
       >
         Previous
       </button>
 
       <button
-        className="pagination-next"
+        className="pagination-next button is-info"
         onClick={() => handleNext(currentPage)}
         disabled={currentPage >= totalPages ? true : false}
         type="button"

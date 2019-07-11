@@ -31,12 +31,12 @@ export const AddCityBreakLocationInnerForm = (props: any) => {
       <Formik
         initialValues={{
           ...cityBreakLocationValues,
-          cityId: props.count + 1,
+          cityId: props.count,
         }}
         onSubmit={(values: CityBreakLocationFormValues, actions: any) => {
           const submitValues = {
             ...values,
-            cityId: props.count + 1,
+            cityId: props.count,
           }
           props.onSubmit(submitValues, actions)
         }}

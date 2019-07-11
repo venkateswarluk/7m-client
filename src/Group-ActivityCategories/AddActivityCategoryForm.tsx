@@ -33,7 +33,7 @@ export const AddActivityCategoryInnerForm = (props: AddActivityFormProps) => (
     <Formik
       initialValues={activityValues}
       onSubmit={(values: ActivityCategoryForm, actions: any) => {
-        const submitValues = { ...values, categoryId: props.count + 1 }
+        const submitValues = { ...values, categoryId: props.count }
         props.handleAddSubmit(submitValues, actions)
       }}
       validationSchema={FormSchema}

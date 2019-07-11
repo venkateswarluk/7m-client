@@ -20,6 +20,7 @@ import { mainUrl } from '../config'
 import { Pagination } from 'src/Pagination'
 import { handleSearchSpecific } from 'src/Activities/ActivityList'
 import { SearchField } from 'src/Activities/search'
+import { unique } from 'src/ActivityCategories/ActivityCategoryList'
 
 const url = `${mainUrl}/group-categories`
 
@@ -189,7 +190,7 @@ export const GroupActivityCategoryList = () => {
       >
         {
           <AddActivityCategoryForm
-            count={activities.length}
+            count={unique(activities.map(y => y.categoryId))}
             handleAddSubmit={handleAddActivitySubmit}
             handleCloseClick={handleAddMealClick}
           />
@@ -203,7 +204,7 @@ export const GroupActivityCategoryList = () => {
       >
         {
           <EditActivityCategoryForm
-            count={activities.length}
+            count={editActivityData.categoryId}
             currentItem={editActivityData}
             handleEditSubmit={handleEditActivitySubmit}
             handleCloseClick={handleEditActivityCloseClick}

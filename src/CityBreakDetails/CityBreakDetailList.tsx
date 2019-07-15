@@ -223,7 +223,7 @@ export const CityBreakDetailsList = () => {
         />
         <div className="control has-text-right">
           <button className="button is-info " onClick={handleAddMealClick}>
-            Add CityBreakDetail
+            Add City Break Detail
           </button>
         </div>
       </div>
@@ -231,7 +231,7 @@ export const CityBreakDetailsList = () => {
       <Modal
         closeModal={handleAddMealClick}
         modalState={addCityBreakOpen}
-        title="CityBreakDetail Form"
+        title="CityBreak Detail Form"
       >
         {
           <AddCityBreakDetailForm
@@ -246,7 +246,7 @@ export const CityBreakDetailsList = () => {
       <Modal
         closeModal={handleEditActivityCloseClick}
         modalState={editCityBreakOpen}
-        title="CityBreakDetail Form"
+        title="CityBreak Detail Form"
       >
         {
           <EditCityBreakDetailForm

@@ -47,8 +47,6 @@ export const FormSchema: () => yup.ObjectSchema<
   yup.object({
     cityId: yup
       .number()
-      .integer()
-      .positive()
       .min(1, 'Select City')
       .required('Select City'),
     days: yup
@@ -118,7 +116,10 @@ export const AddCityBreakDateailInnerForm = (
                     ))}
                   </Field>
                   <div className="has-text-danger is-size-7">
-                    <ErrorMessage name="cityId" />
+                    <ErrorMessage
+                      name="cityId"
+                      render={() => <div> City Id Required</div>}
+                    />
                   </div>
                 </div>
               </div>

@@ -215,7 +215,7 @@ export const CityBreakLocationsList = () => {
         />
         <div className="control has-text-right">
           <button className="button is-info " onClick={handleAddMealClick}>
-            Add CityBreakLocation
+            Add CityBreak Location
           </button>
         </div>
       </div>

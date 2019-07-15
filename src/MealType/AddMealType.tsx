@@ -17,7 +17,15 @@ const mealTypeValues: MealTypeForm = {
 
 export const MealTypeFormSchema: yup.ObjectSchema<MealTypeForm> = yup.object({
   mealType: yup.string().required('MealType Required'),
-  mealCategory: yup.string().required('MealCategory Required'),
+  mealCategory: yup
+    .string()
+    .required('Meal Category Required')
+    .test('mealCategory', 'Meal Category Required', value => {
+      if (value === '' || value === 'Select MealCategory') {
+        return false
+      }
+      return true
+    }),
 })
 
 export const mealTypes: ReadonlyArray<OptionValues> = [
@@ -51,7 +59,7 @@ export const AddMealTypeInnerForm = (props: AddFormProps<MealTypeForm>) => (
 
           <div className="field">
             <div className="control">
-              <label className="label">Meal Type</label>
+              <label className="label">Meal Category</label>
               <div className="select">
                 <Field name="mealCategory" component="select">
                   <option>Select MealCategory</option>

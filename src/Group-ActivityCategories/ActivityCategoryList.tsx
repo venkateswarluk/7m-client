@@ -103,21 +103,32 @@ export const GroupActivityCategoryList = () => {
     values: ActivityCategoryForm,
     actions: FormikActions<ActivityCategoryForm>,
   ) => {
-    postItem(url, values)
-      .then(() => {
-        getAllItems(url)
-          .then(res => {
-            setActivities(res)
-            setAddActivityOpen(!addActivityOpen)
-            actions.setSubmitting(false)
-          })
-          .catch(err => {
-            throw Error(err)
-          })
-      })
-      .catch(err => {
-        throw Error(err)
-      })
+    if (values.serviceType !== 'null' && values.categoryName !== 'null') {
+      postItem(url, values)
+        .then(() => {
+          getAllItems(url)
+            .then(res => {
+              setActivities(res)
+              setAddActivityOpen(!addActivityOpen)
+              actions.setSubmitting(false)
+            })
+            .catch(err => {
+              throw Error(err)
+            })
+        })
+        .catch(err => {
+          throw Error(err)
+        })
+    } else {
+      if (values.serviceType === 'null') {
+        actions.setFieldError('serviceType', 'Please Give a Valid ServiceType')
+      } else if (values.categoryName === 'null') {
+        actions.setFieldError(
+          'categoryName',
+          'Please Give a Valid CategoryName',
+        )
+      }
+    }
   }
 
   const handleEditActivityClick = async (id: string) => {

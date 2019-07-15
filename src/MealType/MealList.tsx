@@ -170,7 +170,7 @@ export const MealsTypeList = () => {
         />
         <div className="control has-text-right">
           <button className="button is-info " onClick={handleAddMealClick}>
-            Add MealType
+            Add Meal Type
           </button>
         </div>
       </div>

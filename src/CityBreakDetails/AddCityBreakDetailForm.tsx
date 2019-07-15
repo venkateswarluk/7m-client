@@ -49,6 +49,7 @@ export const FormSchema: () => yup.ObjectSchema<
       .number()
       .integer()
       .positive()
+      .min(1, 'Select City')
       .required('Select City'),
     days: yup
       .number()

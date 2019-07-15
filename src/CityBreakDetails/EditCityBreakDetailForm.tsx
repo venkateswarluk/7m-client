@@ -131,7 +131,6 @@ export const EditCityBreakDateailInnerForm = (
 ) => {
   return (
     <div>
-      <h1>My Example</h1>
       <Formik
         initialValues={props.currentItem}
         onSubmit={(

@@ -119,21 +119,38 @@ export const CityBreakLocationsList = () => {
     values: CityBreakLocationFormValues,
     actions: any,
   ) => {
-    postItem(url, values)
-      .then(() => {
-        getAllItems(url)
-          .then(res => {
-            setCityBreaks(res)
-            setAddCityBreakOpen(!addCityBreakOpen)
-            actions.setSubmitting(false)
-          })
-          .catch(err => {
-            throw Error(err)
-          })
-      })
-      .catch(err => {
-        throw Error(err)
-      })
+    if (
+      values.city !== 'null' &&
+      values.country !== 'null' &&
+      cityBreakLocations.filter(
+        (y: CityBreakLocation) =>
+          y.city.toLowerCase() === values.city.toLowerCase(),
+      ).length === 0
+    ) {
+      postItem(url, values)
+        .then(() => {
+          getAllItems(url)
+            .then(res => {
+              setCityBreaks(res)
+              setAddCityBreakOpen(!addCityBreakOpen)
+              actions.setSubmitting(false)
+            })
+            .catch(err => {
+              throw Error(err)
+            })
+        })
+        .catch(err => {
+          throw Error(err)
+        })
+    } else {
+      if (values.city === 'null') {
+        actions.setFieldError('city', 'Please Give a Valid City')
+      } else if (values.country === 'null') {
+        actions.setFieldError('country', 'Please Give a Valid Country')
+      } else {
+        actions.setFieldError('city', 'City Already Exists')
+      }
+    }
   }
 
   const handleEditActivityClick = async (id: string) => {

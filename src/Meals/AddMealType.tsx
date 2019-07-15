@@ -29,8 +29,25 @@ const mealTypeValues: MealTypeForm = {
 
 export const MealTypeFormSchema: yup.ObjectSchema<MealTypeForm> = yup.object({
   name: yup.string().required('Name Required'),
-  mealType: yup.string().required('MealType Required'),
-  mealCategory: yup.string().required('MealCategory Required'),
+  mealType: yup
+    .string()
+    .required('Meal Type Required')
+    .test('mealType', 'Meal Type Required', value => {
+      if (value === '' || value === 'Select MealType') {
+        return false
+      }
+      return true
+    }),
+
+  mealCategory: yup
+    .string()
+    .required('Meal Category Required')
+    .test('mealCategory', 'Meal Category Required', value => {
+      if (value === '' || value === 'Select MealCategory') {
+        return false
+      }
+      return true
+    }),
   imageUrl: yup.string().required('ImageUrl Required'),
   description: yup.string().required('Description Required'),
   price: yup
@@ -49,9 +66,11 @@ export const mealCategories: ReadonlyArray<OptionValues> = [
 
 export const mealTypesByCategory = (category: string, mealTypes: any) => {
   return category
-    ? category == 'FIT'
-      ? mealTypes.filter((x: any) => x.mealCategory == 'FIT')
-      : mealTypes.filter((x: any) => x.mealCategory == 'Group')
+    ? category === 'FIT'
+      ? mealTypes.filter((x: any) => x.mealCategory === 'FIT')
+      : category === 'Group'
+        ? mealTypes.filter((x: any) => x.mealCategory === 'Group')
+        : mealTypes
     : mealTypes
 }
 

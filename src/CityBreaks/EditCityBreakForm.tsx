@@ -26,6 +26,9 @@ export const EditCityBreakInnerForm = (
           price: parseFloat(values.price.toString()),
         }
 
+        // tslint:disable-next-line:no-console
+        console.log(props.destinations)
+
         props.handleEditSubmit(submitValues, actions)
       }}
       validationSchema={FormSchema}

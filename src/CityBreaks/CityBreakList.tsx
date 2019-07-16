@@ -165,9 +165,10 @@ export const CityBreakList = () => {
     values: CityBreak,
     actions: FormikActions<CityBreakFormValues>,
   ) => {
-    // tslint:disable-next-line:no-console
-    console.log(values)
-    const updateMealType = await putItem(url, values)
+    const city = destinations
+      .filter(y => y.value === values.cityId)
+      .map(y => y.label)[0]
+    const updateMealType = await putItem(url, { ...values, city })
     const meals = await getAllItems(url)
     if (updateMealType.status === 200) {
       setCityBreaks(meals)

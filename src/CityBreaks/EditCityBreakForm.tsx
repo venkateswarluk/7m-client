@@ -58,7 +58,7 @@ export const EditCityBreakInnerForm = (
           <div className="field">
             <div className="control">
               <label className="label">TourName</label>
-              <Field className="input" name="tourname" type="text" />
+              <Field className="input" name="tourName" type="text" />
             </div>
           </div>
 

@@ -165,6 +165,8 @@ export const CityBreakList = () => {
     values: CityBreak,
     actions: FormikActions<CityBreakFormValues>,
   ) => {
+    // tslint:disable-next-line:no-console
+    console.log(values)
     const updateMealType = await putItem(url, values)
     const meals = await getAllItems(url)
     if (updateMealType.status === 200) {

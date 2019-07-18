@@ -258,6 +258,8 @@ export const CityBreakInclusionsList = () => {
       </Modal>
 
       <div className="box">
+        {/* tslint:disable-next-line:no-console */}
+        {console.log(cityBreaks)}
         {cityBreaks.length > 0 ? (
           <table className="table is-bordered is-striped is-narrow is-hoverable is-fullwidth is-responsive">
             <thead>

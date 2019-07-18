@@ -17,6 +17,9 @@ import {
 } from '../services'
 
 import { mainUrl } from '../config'
+import { Pagination } from 'src/Pagination'
+import { handleSearchSpecific } from 'src/Activities/ActivityList'
+import { SearchField } from 'src/Activities/search'
 
 const url = `${mainUrl}/cityBreakExclusions`
 
@@ -49,7 +52,46 @@ export const CityBreakExclusionsList = () => {
   const [destinations, setDestinations] = React.useState<
     ReadonlyArray<OptionValues>
   >([])
+  const [page, setPage] = React.useState(0)
+  const [rowsPerPage, setRowsPerPage] = React.useState(10)
+  const [Search, setSearch] = React.useState('')
 
+  const handleNext = (page: number) => {
+    setPage(page + 1)
+  }
+
+  const handlePrevious = (page: number) => {
+    setPage(page - 1)
+  }
+
+  const handleSpecificPageChange = (page: number) => {
+    const total: number = Math.ceil(cityBreaks.length / rowsPerPage)
+    if (page !== total) {
+      setPage(page)
+    }
+  }
+
+  const handleRowsPerPage = (event: any) => {
+    setRowsPerPage(event.value)
+  }
+
+  const handleSearch = (Search: string) => {
+    const activities1 = cityBreaks.filter(
+      (x: CityBreakExclusion) =>
+        Search !== ''
+          ? handleSearchSpecific(Search, x.id.toString()) ||
+            handleSearchSpecific(Search, x.cityId.toString()) ||
+            handleSearchSpecific(Search, x.exclusions.toString())
+          : x,
+    )
+    setSearch(Search)
+    setCityBreaks(activities1)
+  }
+
+  const handleRefreshSearch = () => {
+    setSearch('')
+    fetchMealTypeData()
+  }
   const fetchMealTypeData = async () => {
     const result = await axios(`${url}`)
     setCityBreaks(result.data)
@@ -144,6 +186,11 @@ export const CityBreakExclusionsList = () => {
         CityBreak Exclusions
       </div>
       <div className="field">
+        <SearchField
+          Search={Search}
+          handleRefreshSearch={handleRefreshSearch}
+          handleSearch={handleSearch}
+        />
         <div className="control has-text-right">
           <button className="button is-info " onClick={handleAddMealClick}>
             Add CityBreakExclusion
@@ -191,27 +238,29 @@ export const CityBreakExclusionsList = () => {
               </tr>
             </thead>
             <tbody>
-              {cityBreaks.map((cityBreak: CityBreakExclusion) => (
-                <tr key={cityBreak.id}>
-                  <td>{cityBreak.cityId}</td>
-                  <td>{cityBreak.exclusions}</td>
-                  <td>
-                    <span
-                      className="icon"
-                      onClick={() => handleEditActivityClick(cityBreak.id)}
-                    >
-                      <i className="fa fa-edit" />
-                    </span>
+              {cityBreaks
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((cityBreak: CityBreakExclusion) => (
+                  <tr key={cityBreak.id}>
+                    <td>{cityBreak.cityId}</td>
+                    <td>{cityBreak.exclusions}</td>
+                    <td>
+                      <span
+                        className="icon"
+                        onClick={() => handleEditActivityClick(cityBreak.id)}
+                      >
+                        <i className="fa fa-edit" />
+                      </span>
 
-                    <span
-                      className="icon"
-                      onClick={() => handleDeleteActivitySubmit(cityBreak.id)}
-                    >
-                      <i className="fa fa-trash" />
-                    </span>
-                  </td>
-                </tr>
-              ))}
+                      <span
+                        className="icon"
+                        onClick={() => handleDeleteActivitySubmit(cityBreak.id)}
+                      >
+                        <i className="fa fa-trash" />
+                      </span>
+                    </td>
+                  </tr>
+                ))}
             </tbody>
           </table>
         ) : (
@@ -220,6 +269,15 @@ export const CityBreakExclusionsList = () => {
           </div>
         )}
       </div>
+      <Pagination
+        rowsPerPage={rowsPerPage}
+        handleRowsPerPageChange={handleRowsPerPage}
+        handleSpecificPageChange={handleSpecificPageChange}
+        currentPage={page}
+        totalPages={Math.ceil(cityBreaks.length / rowsPerPage)}
+        handleNext={handleNext}
+        handlePrevious={handlePrevious}
+      />
     </div>
   )
 }

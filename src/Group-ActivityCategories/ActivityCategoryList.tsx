@@ -71,11 +71,6 @@ export const GroupActivityCategoryList = () => {
     setRowsPerPage(event.value)
   }
 
-  const handleRefreshSearch = () => {
-    setSearch('')
-    fetchMealTypeData()
-  }
-
   const fetchMealTypeData = async () => {
     const result = await axios(`${url}`)
     setActivities(result.data)
@@ -168,11 +163,7 @@ export const GroupActivityCategoryList = () => {
         Activity Category Details
       </div>
       <div className="field">
-        <SearchField
-          Search={Search}
-          handleRefreshSearch={handleRefreshSearch}
-          handleSearch={setSearch}
-        />
+        <SearchField Search={Search} handleSearch={setSearch} />
         <div className="control has-text-right">
           <button className="button is-info " onClick={handleAddMealClick}>
             Add Activity Category

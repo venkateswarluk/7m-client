@@ -74,11 +74,6 @@ export const CityBreakLocationsList = () => {
     }
   }
 
-  const handleRefreshSearch = () => {
-    setSearch('')
-    fetchMealTypeData()
-  }
-
   const handleRowsPerPage = (event: any) => {
     setRowsPerPage(event.value)
   }
@@ -194,11 +189,7 @@ export const CityBreakLocationsList = () => {
         CityBreak Locations
       </div>
       <div className="field">
-        <SearchField
-          Search={Search}
-          handleRefreshSearch={handleRefreshSearch}
-          handleSearch={setSearch}
-        />
+        <SearchField Search={Search} handleSearch={setSearch} />
         <div className="control has-text-right">
           <button className="button is-info " onClick={handleAddMealClick}>
             Add CityBreak Location

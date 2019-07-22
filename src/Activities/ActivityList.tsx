@@ -134,11 +134,6 @@ export const ActivityList = () => {
     setRowsPerPage(event)
   }
 
-  const handleRefreshSearch = () => {
-    setActivitySearch('')
-    fetchMealTypeData()
-  }
-
   const handleAddMealClick = () => {
     setAddActivityOpen(!addActivityOpen)
   }
@@ -223,11 +218,7 @@ export const ActivityList = () => {
         Activities
       </div>
       <div className="field">
-        <SearchField
-          Search={activitySearch}
-          handleRefreshSearch={handleRefreshSearch}
-          handleSearch={setActivitySearch}
-        />
+        <SearchField Search={activitySearch} handleSearch={setActivitySearch} />
 
         <div className="control has-text-right">
           <button className="button is-info " onClick={handleAddMealClick}>

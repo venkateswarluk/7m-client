@@ -107,11 +107,6 @@ export const ActivityCategoryList = () => {
   //   setActivities(activities1)
   // }
 
-  const handleRefreshSearch = () => {
-    setActivityCategorySearch('')
-    fetchMealTypeData()
-  }
-
   const fetchMealTypeData = async () => {
     const result = await axios(`${url}`)
     setActivities(result.data)
@@ -204,7 +199,6 @@ export const ActivityCategoryList = () => {
       <div className="field">
         <SearchField
           Search={activityCategorySearch}
-          handleRefreshSearch={handleRefreshSearch}
           handleSearch={setActivityCategorySearch}
         />
         <div className="control has-text-right">

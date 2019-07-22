@@ -69,11 +69,6 @@ export const ActivityOptionList = () => {
     setRowsPerPage(event.value)
   }
 
-  const handleRefreshSearch = () => {
-    setSearch('')
-    fetchMealTypeData()
-  }
-
   const fetchMealTypeData = async () => {
     const result = await axios(`${url}`)
     setActivityOptions(result.data)
@@ -155,11 +150,7 @@ export const ActivityOptionList = () => {
         Activity Options
       </div>
       <div className="field">
-        <SearchField
-          Search={Search}
-          handleRefreshSearch={handleRefreshSearch}
-          handleSearch={setSearch}
-        />
+        <SearchField Search={Search} handleSearch={setSearch} />
         <div className="control has-text-right">
           <button className="button is-info " onClick={handleAddMealClick}>
             Add Activity Option

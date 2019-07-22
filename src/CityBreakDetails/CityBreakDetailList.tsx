@@ -87,11 +87,6 @@ export const CityBreakDetailsList = () => {
     setRowsPerPage(event.value)
   }
 
-  const handleRefreshSearch = () => {
-    setSearch('')
-    fetchMealTypeData()
-  }
-
   const fetchMealTypeData = async () => {
     const result = await axios(`${url}`)
     setCityBreaks(result.data)
@@ -201,11 +196,7 @@ export const CityBreakDetailsList = () => {
         CityBreak Details
       </div>
       <div className="field">
-        <SearchField
-          Search={Search}
-          handleRefreshSearch={handleRefreshSearch}
-          handleSearch={setSearch}
-        />
+        <SearchField Search={Search} handleSearch={setSearch} />
         <div className="control has-text-right">
           <button className="button is-info " onClick={handleAddMealClick}>
             Add City Break Detail

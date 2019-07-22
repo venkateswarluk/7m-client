@@ -3,7 +3,6 @@ import * as React from 'react'
 interface SearchProps {
   readonly Search: string
   handleSearch(Search: string): void
-  handleRefreshSearch(): void
 }
 
 const SearchField = (props: SearchProps) => (
@@ -19,15 +18,6 @@ const SearchField = (props: SearchProps) => (
             value={props.Search}
             onChange={event => props.handleSearch(event.target.value)}
           />
-        </p>
-
-        <p className="control">
-          <button
-            className="button is-info "
-            onClick={props.handleRefreshSearch}
-          >
-            Refresh
-          </button>
         </p>
       </div>
     </div>

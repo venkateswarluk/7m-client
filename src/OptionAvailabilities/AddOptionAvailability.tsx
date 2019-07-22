@@ -2,6 +2,7 @@ import * as React from 'react'
 import { Field, Formik, Form, FormikActions, ErrorMessage } from 'formik'
 import * as yup from 'yup'
 import { AddFormProps } from '../types'
+import { buttonDisableProps } from 'src/Activities/AddActivity'
 
 export interface OptionAvailabilityForm {
   readonly optionAvailabilityId: number
@@ -78,7 +79,7 @@ export const FormSchema: () => yup.ObjectSchema<
   })
 
 export const AddOptionAvailabilityInnerForm = (
-  props: AddFormProps<OptionAvailabilityForm>,
+  props: AddFormProps<OptionAvailabilityForm> & buttonDisableProps,
 ) => (
   <div>
     <Formik
@@ -216,7 +217,11 @@ export const AddOptionAvailabilityInnerForm = (
             </div>
           </div>
 
-          <button className="button is-link" type="submit">
+          <button
+            className="button is-link"
+            type="submit"
+            disabled={props.buttonDisable}
+          >
             Submit
           </button>
           <button
@@ -233,11 +238,12 @@ export const AddOptionAvailabilityInnerForm = (
 )
 
 export const AddOptionAvailabilityForm = (
-  props: AddFormProps<OptionAvailabilityForm>,
+  props: AddFormProps<OptionAvailabilityForm> & buttonDisableProps,
 ) => {
   return (
     <div>
       <AddOptionAvailabilityInnerForm
+        buttonDisable={props.buttonDisable}
         handleAddSubmit={props.handleAddSubmit}
         handleCloseClick={props.handleCloseClick}
       />

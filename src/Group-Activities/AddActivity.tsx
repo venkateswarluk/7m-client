@@ -2,6 +2,7 @@ import * as React from 'react'
 import { ErrorMessage, Field, Formik, Form, FormikActions } from 'formik'
 import * as yup from 'yup'
 import { AddFormProps, DestinationProps, CategoryProps } from '../types'
+import { buttonDisableProps } from 'src/Activities/AddActivity'
 
 export interface ActivityForm {
   readonly activityName: string
@@ -137,7 +138,10 @@ export const ActivityFormSchema: () => yup.ObjectSchema<
   })
 
 export const AddActivityInnerForm = (
-  props: AddFormProps<ActivityForm> & DestinationProps & CategoryProps,
+  props: AddFormProps<ActivityForm> &
+    DestinationProps &
+    CategoryProps &
+    buttonDisableProps,
 ) => (
   <div>
     <Formik
@@ -275,7 +279,11 @@ export const AddActivityInnerForm = (
             </div>
           </div>
 
-          <button className="button is-link" type="submit">
+          <button
+            className="button is-link"
+            type="submit"
+            disabled={props.buttonDisable}
+          >
             Submit
           </button>
           <button
@@ -292,11 +300,15 @@ export const AddActivityInnerForm = (
 )
 
 export const AddActivityForm = (
-  props: AddFormProps<ActivityForm> & DestinationProps & CategoryProps,
+  props: AddFormProps<ActivityForm> &
+    DestinationProps &
+    CategoryProps &
+    buttonDisableProps,
 ) => {
   return (
     <div>
       <AddActivityInnerForm
+        buttonDisable={props.buttonDisable}
         destinations={props.destinations}
         categories={props.categories}
         handleAddSubmit={props.handleAddSubmit}

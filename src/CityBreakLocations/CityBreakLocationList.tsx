@@ -57,6 +57,8 @@ export const CityBreakLocationsList = () => {
 
   const [page, setPage] = React.useState(0)
   const [rowsPerPage, setRowsPerPage] = React.useState(10)
+  const [buttonDisable, setButtonDisable] = React.useState(false)
+
   const [Search, setSearch] = React.useState('')
 
   const handleNext = (page: number) => {
@@ -100,6 +102,7 @@ export const CityBreakLocationsList = () => {
     values: CityBreakLocationFormValues,
     actions: any,
   ) => {
+    setButtonDisable(true)
     if (
       values.city !== 'null' &&
       values.country !== 'null' &&
@@ -114,22 +117,31 @@ export const CityBreakLocationsList = () => {
             .then(res => {
               setCityBreaks(res)
               setAddCityBreakOpen(!addCityBreakOpen)
+              setButtonDisable(false)
+
               actions.setSubmitting(false)
             })
             .catch(err => {
+              setButtonDisable(false)
+
               throw Error(err)
             })
         })
         .catch(err => {
+          setButtonDisable(false)
+
           throw Error(err)
         })
     } else {
       if (values.city === 'null') {
         actions.setFieldError('city', 'Please Give a Valid City')
+        setButtonDisable(false)
       } else if (values.country === 'null') {
         actions.setFieldError('country', 'Please Give a Valid Country')
+        setButtonDisable(false)
       } else {
         actions.setFieldError('city', 'City Already Exists')
+        setButtonDisable(false)
       }
     }
   }
@@ -204,6 +216,7 @@ export const CityBreakLocationsList = () => {
       >
         {
           <AddCityBreakLocationForm
+            buttonDisable={buttonDisable}
             count={unique(cityBreakLocations.map(y => y.cityId))}
             destinations={destinations}
             handleAddMealTypeSubmit={handleAddActivitySubmit}

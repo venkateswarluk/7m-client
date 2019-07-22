@@ -15,6 +15,7 @@ import {
   TourProps,
   OptionValues1,
 } from '../types'
+import { buttonDisableProps } from 'src/Activities/AddActivity'
 
 export interface CityBreakDetailsFormValues {
   readonly cityId: number
@@ -78,7 +79,8 @@ export const tourNamesByCityId = (
 export const AddCityBreakDateailInnerForm = (
   props: AddFormProps<CityBreakDetailsFormValues> &
     DestinationProps &
-    TourProps,
+    TourProps &
+    buttonDisableProps,
 ) => {
   return (
     <div>
@@ -188,7 +190,11 @@ export const AddCityBreakDateailInnerForm = (
               </div>
             </div>
 
-            <button className="button is-link" type="submit">
+            <button
+              className="button is-link"
+              type="submit"
+              disabled={props.buttonDisable}
+            >
               Submit
             </button>
             <button
@@ -208,11 +214,13 @@ export const AddCityBreakDateailInnerForm = (
 export const AddCityBreakDetailForm = (
   props: AddFormProps<CityBreakDetailsFormValues> &
     DestinationProps &
-    TourProps,
+    TourProps &
+    buttonDisableProps,
 ) => {
   return (
     <div>
       <AddCityBreakDateailInnerForm
+        buttonDisable={props.buttonDisable}
         tourNames={props.tourNames}
         destinations={props.destinations}
         handleAddSubmit={props.handleAddSubmit}

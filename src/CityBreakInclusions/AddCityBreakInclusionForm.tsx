@@ -10,6 +10,7 @@ import {
 import * as yup from 'yup'
 import { AddFormProps, DestinationProps, TourProps } from '../types'
 import { tourNamesByCityId } from '../CityBreakDetails/AddCityBreakDetailForm'
+import { buttonDisableProps } from 'src/Activities/AddActivity'
 
 export interface CityBreakInclusionFormValues {
   readonly cityId: number
@@ -44,7 +45,8 @@ export const FormSchema: () => yup.ObjectSchema<
 export const AddCityBreakInclusionInnerForm = (
   props: AddFormProps<CityBreakInclusionFormValues> &
     DestinationProps &
-    TourProps,
+    TourProps &
+    buttonDisableProps,
 ) => {
   return (
     <div>
@@ -126,7 +128,11 @@ export const AddCityBreakInclusionInnerForm = (
               </div>
             </div>
 
-            <button className="button is-link" type="submit">
+            <button
+              className="button is-link"
+              type="submit"
+              disabled={props.buttonDisable}
+            >
               Submit
             </button>
             <button
@@ -146,11 +152,13 @@ export const AddCityBreakInclusionInnerForm = (
 export const AddCityBreakInclusionForm = (
   props: AddFormProps<CityBreakInclusionFormValues> &
     DestinationProps &
-    TourProps,
+    TourProps &
+    buttonDisableProps,
 ) => {
   return (
     <div>
       <AddCityBreakInclusionInnerForm
+        buttonDisable={props.buttonDisable}
         tourNames={props.tourNames}
         destinations={props.destinations}
         handleAddSubmit={props.handleAddSubmit}

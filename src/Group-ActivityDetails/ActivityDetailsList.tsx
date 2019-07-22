@@ -57,6 +57,8 @@ export const GroupActivityDetailsList = () => {
 
   const [page, setPage] = React.useState(0)
   const [rowsPerPage, setRowsPerPage] = React.useState(10)
+  const [buttonDisable, setButtonDisable] = React.useState(false)
+
   const [Search, setSearch] = React.useState('')
 
   const handleNext = (page: number) => {
@@ -91,19 +93,27 @@ export const GroupActivityDetailsList = () => {
     values: ActivityDetailForm,
     actions: FormikActions<ActivityDetailForm>,
   ) => {
+    setButtonDisable(true)
+
     postItem(url, values)
       .then(() => {
         getAllItems(url)
           .then(res => {
             setActivityDetails(res)
             setAddActivityOpen(!addActivityOpen)
+            setButtonDisable(false)
+
             actions.setSubmitting(false)
           })
           .catch(err => {
+            setButtonDisable(false)
+
             throw Error(err)
           })
       })
       .catch(err => {
+        setButtonDisable(false)
+
         throw Error(err)
       })
   }
@@ -174,6 +184,7 @@ export const GroupActivityDetailsList = () => {
       >
         {
           <AddActivityDetailsForm
+            buttonDisable={buttonDisable}
             handleAddSubmit={handleAddActivitySubmit}
             handleCloseClick={handleAddMealClick}
           />

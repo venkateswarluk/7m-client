@@ -2,6 +2,7 @@ import * as React from 'react'
 import { ErrorMessage, Field, Formik, Form, FormikActions } from 'formik'
 import * as yup from 'yup'
 import { AddFormProps, DestinationProps, OptionValues } from '../types'
+import { buttonDisableProps } from 'src/Activities/AddActivity'
 
 export interface CityBreakExclusionFormValues {
   readonly cityId: number
@@ -24,7 +25,9 @@ export const FormSchema: () => yup.ObjectSchema<
     exclusions: yup.string().required('Exclusions required'),
   })
 export const AddCityBreakExclusionInnerForm = (
-  props: AddFormProps<CityBreakExclusionFormValues> & DestinationProps,
+  props: AddFormProps<CityBreakExclusionFormValues> &
+    DestinationProps &
+    buttonDisableProps,
 ) => {
   return (
     <div>
@@ -79,7 +82,11 @@ export const AddCityBreakExclusionInnerForm = (
               </div>
             </div>
 
-            <button className="button is-link" type="submit">
+            <button
+              className="button is-link"
+              type="submit"
+              disabled={props.buttonDisable}
+            >
               Submit
             </button>
             <button
@@ -97,11 +104,14 @@ export const AddCityBreakExclusionInnerForm = (
 }
 
 export const AddCityBreakExclusionForm = (
-  props: AddFormProps<CityBreakExclusionFormValues> & DestinationProps,
+  props: AddFormProps<CityBreakExclusionFormValues> &
+    DestinationProps &
+    buttonDisableProps,
 ) => {
   return (
     <div>
       <AddCityBreakExclusionInnerForm
+        buttonDisable={props.buttonDisable}
         destinations={props.destinations}
         handleAddSubmit={props.handleAddSubmit}
         handleCloseClick={props.handleCloseClick}

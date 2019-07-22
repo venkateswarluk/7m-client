@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { ErrorMessage, Field, Formik, FormikActions, Form } from 'formik'
 import * as yup from 'yup'
+import { buttonDisableProps } from 'src/Activities/AddActivity'
 
 export interface ActivityCategoryForm {
   readonly serviceType: string
@@ -28,7 +29,9 @@ export const FormSchema: yup.ObjectSchema<ActivityCategoryForm> = yup.object({
   categoryName: yup.string().required('Required'),
 })
 
-export const AddActivityCategoryInnerForm = (props: AddActivityFormProps) => (
+export const AddActivityCategoryInnerForm = (
+  props: AddActivityFormProps & buttonDisableProps,
+) => (
   <div>
     <Formik
       initialValues={activityValues}
@@ -60,7 +63,11 @@ export const AddActivityCategoryInnerForm = (props: AddActivityFormProps) => (
             </div>
           </div>
 
-          <button className="button is-link" type="submit">
+          <button
+            className="button is-link"
+            type="submit"
+            disabled={props.buttonDisable}
+          >
             Submit
           </button>
           <button
@@ -76,10 +83,13 @@ export const AddActivityCategoryInnerForm = (props: AddActivityFormProps) => (
   </div>
 )
 
-export const AddActivityCategoryForm = (props: AddActivityFormProps) => {
+export const AddActivityCategoryForm = (
+  props: AddActivityFormProps & buttonDisableProps,
+) => {
   return (
     <div>
       <AddActivityCategoryInnerForm
+        buttonDisable={props.buttonDisable}
         count={props.count}
         handleAddSubmit={props.handleAddSubmit}
         handleCloseClick={props.handleCloseClick}

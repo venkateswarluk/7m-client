@@ -49,7 +49,9 @@ export const GroupActivityCategoryList = () => {
   )
 
   const [page, setPage] = React.useState(0)
-  const [rowsPerPage, setRowsPerPage] = React.useState(15)
+  const [rowsPerPage, setRowsPerPage] = React.useState(10)
+  const [buttonDisable, setButtonDisable] = React.useState(false)
+
   const [Search, setSearch] = React.useState('')
 
   const handleNext = (page: number) => {
@@ -84,6 +86,7 @@ export const GroupActivityCategoryList = () => {
     values: ActivityCategoryForm,
     actions: FormikActions<ActivityCategoryForm>,
   ) => {
+    setButtonDisable(true)
     if (values.serviceType !== 'null' && values.categoryName !== 'null') {
       postItem(url, values)
         .then(() => {
@@ -91,19 +94,28 @@ export const GroupActivityCategoryList = () => {
             .then(res => {
               setActivities(res)
               setAddActivityOpen(!addActivityOpen)
+              setButtonDisable(false)
+
               actions.setSubmitting(false)
             })
             .catch(err => {
+              setButtonDisable(false)
+
               throw Error(err)
             })
         })
         .catch(err => {
+          setButtonDisable(false)
+
           throw Error(err)
         })
     } else {
       if (values.serviceType === 'null') {
+        setButtonDisable(false)
+
         actions.setFieldError('serviceType', 'Please Give a Valid ServiceType')
       } else if (values.categoryName === 'null') {
+        setButtonDisable(false)
         actions.setFieldError(
           'categoryName',
           'Please Give a Valid CategoryName',
@@ -178,6 +190,7 @@ export const GroupActivityCategoryList = () => {
       >
         {
           <AddActivityCategoryForm
+            buttonDisable={buttonDisable}
             count={unique(activities.map(y => y.categoryId))}
             handleAddSubmit={handleAddActivitySubmit}
             handleCloseClick={handleAddMealClick}

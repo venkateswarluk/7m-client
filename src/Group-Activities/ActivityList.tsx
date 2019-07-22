@@ -71,6 +71,8 @@ export const GroupActivityList = () => {
 
   const [page, setPage] = React.useState(0)
   const [rowsPerPage, setRowsPerPage] = React.useState(10)
+  const [buttonDisable, setButtonDisable] = React.useState(false)
+
   const [Search, setSearch] = React.useState('')
 
   const handleNext = (page: number) => {
@@ -122,19 +124,26 @@ export const GroupActivityList = () => {
     values: ActivityForm,
     actions: FormikActions<ActivityForm>,
   ) => {
+    setButtonDisable(true)
     postItem(url, values)
       .then(() => {
         getAllItems(url)
           .then((res: any) => {
             setActivities(res)
             setAddActivityOpen(!addActivityOpen)
+            setButtonDisable(false)
+
             actions.setSubmitting(false)
           })
           .catch((err: string) => {
+            setButtonDisable(false)
+
             throw Error(err)
           })
       })
       .catch(err => {
+        setButtonDisable(false)
+
         return Error(err)
       })
   }
@@ -213,6 +222,7 @@ export const GroupActivityList = () => {
       >
         {
           <AddActivityForm
+            buttonDisable={buttonDisable}
             destinations={destinations}
             categories={categories}
             handleAddSubmit={handleAddActivitySubmit}

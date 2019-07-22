@@ -50,6 +50,8 @@ export const GroupActivityOptionList = () => {
 
   const [page, setPage] = React.useState(0)
   const [rowsPerPage, setRowsPerPage] = React.useState(10)
+  const [buttonDisable, setButtonDisable] = React.useState(false)
+
   const [Search, setSearch] = React.useState('')
 
   const handleNext = (page: number) => {
@@ -83,19 +85,26 @@ export const GroupActivityOptionList = () => {
     values: ActivityOptionForm,
     actions: FormikActions<ActivityOption>,
   ) => {
+    setButtonDisable(true)
     postItem(url, values)
       .then(() => {
         getAllItems(url)
           .then(res => {
             setActivityOptions(res)
             setAddActivityOpen(!addActivityOpen)
+            setButtonDisable(false)
+
             actions.setSubmitting(false)
           })
           .catch(err => {
+            setButtonDisable(false)
+
             throw Error(err)
           })
       })
       .catch(err => {
+        setButtonDisable(false)
+
         throw Error(err)
       })
   }
@@ -166,6 +175,7 @@ export const GroupActivityOptionList = () => {
       >
         {
           <AddActivityOptionForm
+            buttonDisable={buttonDisable}
             handleAddSubmit={handleAddActivitySubmit}
             handleCloseClick={handleAddMealClick}
           />

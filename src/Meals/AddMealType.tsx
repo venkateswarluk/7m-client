@@ -4,6 +4,7 @@ import * as yup from 'yup'
 
 import { AddFormProps, MealTypeProps } from '../types'
 import { OptionValues } from '../CityBreakLocations/CityBreakLocationList'
+import { buttonDisableProps } from 'src/Activities/AddActivity'
 
 export interface MealTypeForm {
   readonly name: string
@@ -75,7 +76,7 @@ export const mealTypesByCategory = (category: string, mealTypes: any) => {
 }
 
 export const AddMealTypeInnerForm = (
-  props: AddFormProps<MealTypeForm> & MealTypeProps,
+  props: AddFormProps<MealTypeForm> & MealTypeProps & buttonDisableProps,
 ) => {
   const [currentMealCategory, setCurrentMealCategory] = React.useState('')
   return (
@@ -210,7 +211,11 @@ export const AddMealTypeInnerForm = (
               <ErrorMessage name="note" />
             </div>
             <br />
-            <button className="button is-link" type="submit">
+            <button
+              className="button is-link"
+              type="submit"
+              disabled={props.buttonDisable}
+            >
               Submit
             </button>
             <button
@@ -228,11 +233,12 @@ export const AddMealTypeInnerForm = (
 }
 
 export const AddMealTypeForm = (
-  props: AddFormProps<MealTypeForm> & MealTypeProps,
+  props: AddFormProps<MealTypeForm> & MealTypeProps & buttonDisableProps,
 ) => {
   return (
     <div>
       <AddMealTypeInnerForm
+        buttonDisable={props.buttonDisable}
         handleAddSubmit={props.handleAddSubmit}
         handleCloseClick={props.handleCloseClick}
         mealTypes={props.mealTypes}

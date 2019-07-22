@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { Field, Formik, Form, FormikActions, ErrorMessage } from 'formik'
 import * as yup from 'yup'
+import { buttonDisableProps } from 'src/Activities/AddActivity'
 
 export interface ActivityForm {
   readonly locationId: number
@@ -56,7 +57,9 @@ export const FormSchema: () => yup.ObjectSchema<
     latitude: yup.string().required(),
   })
 
-export const AddActivityLocationInnerForm = (props: AddFormProps) => (
+export const AddActivityLocationInnerForm = (
+  props: AddFormProps & buttonDisableProps,
+) => (
   <div>
     <Formik
       initialValues={{
@@ -151,7 +154,11 @@ export const AddActivityLocationInnerForm = (props: AddFormProps) => (
             </div>
           </div>
 
-          <button className="button is-link" type="submit">
+          <button
+            className="button is-link"
+            type="submit"
+            disabled={props.buttonDisable}
+          >
             Submit
           </button>
           <button
@@ -167,10 +174,13 @@ export const AddActivityLocationInnerForm = (props: AddFormProps) => (
   </div>
 )
 
-export const AddActivityLocationForm = (props: AddFormProps) => {
+export const AddActivityLocationForm = (
+  props: AddFormProps & buttonDisableProps,
+) => {
   return (
     <div>
       <AddActivityLocationInnerForm
+        buttonDisable={props.buttonDisable}
         count={props.count}
         handleAddSubmit={props.handleAddSubmit}
         handleCloseClick={props.handleCloseClick}

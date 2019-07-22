@@ -65,6 +65,8 @@ export const OptionAvailabilityList = () => {
 
   const [page, setPage] = React.useState(0)
   const [rowsPerPage, setRowsPerPage] = React.useState(10)
+  const [buttonDisable, setButtonDisable] = React.useState(false)
+
   const [Search, setSearch] = React.useState('')
 
   const handleNext = (page: number) => {
@@ -99,19 +101,25 @@ export const OptionAvailabilityList = () => {
     values: OptionAvailabilityForm,
     actions: FormikActions<OptionAvailabilityForm>,
   ) => {
+    setButtonDisable(true)
     postItem(url, values)
       .then(() => {
         getAllItems(url)
           .then(res => {
             setOptionAvailabilities(res)
             setAddActivityOpen(!addActivityOpen)
+            setButtonDisable(false)
             actions.setSubmitting(false)
           })
           .catch(err => {
+            setButtonDisable(false)
+
             throw Error(err)
           })
       })
       .catch(err => {
+        setButtonDisable(false)
+
         throw Error(err)
       })
   }
@@ -182,6 +190,7 @@ export const OptionAvailabilityList = () => {
       >
         {
           <AddOptionAvailabilityForm
+            buttonDisable={buttonDisable}
             handleAddSubmit={handleAddActivitySubmit}
             handleCloseClick={handleAddMealClick}
           />

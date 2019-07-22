@@ -34,6 +34,10 @@ export interface OptionValues {
   readonly label: string
 }
 
+export interface buttonDisableProps {
+  readonly buttonDisable: boolean
+}
+
 export const ActivityFormSchema: () => yup.ObjectSchema<
   ActivityForm
 > = (): yup.ObjectSchema<ActivityForm> =>
@@ -91,7 +95,10 @@ export const ActivityFormSchema: () => yup.ObjectSchema<
   })
 
 export const AddActivityInnerForm = (
-  props: AddFormProps<ActivityForm> & DestinationProps & CategoryProps,
+  props: AddFormProps<ActivityForm> &
+    DestinationProps &
+    CategoryProps &
+    buttonDisableProps,
 ) => (
   <div>
     <Formik
@@ -243,7 +250,11 @@ export const AddActivityInnerForm = (
             </div>
           </div>
 
-          <button className="button is-link" type="submit">
+          <button
+            className="button is-link"
+            type="submit"
+            disabled={props.buttonDisable}
+          >
             Submit
           </button>
           <button
@@ -260,11 +271,15 @@ export const AddActivityInnerForm = (
 )
 
 export const AddActivityForm = (
-  props: AddFormProps<ActivityForm> & DestinationProps & CategoryProps,
+  props: AddFormProps<ActivityForm> &
+    DestinationProps &
+    CategoryProps &
+    buttonDisableProps,
 ) => {
   return (
     <div>
       <AddActivityInnerForm
+        buttonDisable={props.buttonDisable}
         categories={props.categories}
         destinations={props.destinations}
         handleAddSubmit={props.handleAddSubmit}

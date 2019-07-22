@@ -64,6 +64,8 @@ export const CityBreakInclusionsList = () => {
 
   const [page, setPage] = React.useState(0)
   const [rowsPerPage, setRowsPerPage] = React.useState(10)
+  const [buttonDisable, setButtonDisable] = React.useState(false)
+
   const [Search, setSearch] = React.useState('')
 
   const handleNext = (page: number) => {
@@ -118,19 +120,27 @@ export const CityBreakInclusionsList = () => {
     values: CityBreakInclusionFormValues,
     actions: FormikActions<CityBreakInclusionFormValues>,
   ) => {
+    setButtonDisable(true)
+
     postItem(url, values)
       .then(() => {
         getAllItems(url)
           .then(res => {
             setCityBreaks(res)
             setAddCityBreakOpen(!addCityBreakOpen)
+            setButtonDisable(false)
+
             actions.setSubmitting(false)
           })
           .catch(err => {
+            setButtonDisable(false)
+
             throw Error(err)
           })
       })
       .catch(err => {
+        setButtonDisable(false)
+
         throw Error(err)
       })
   }
@@ -209,6 +219,7 @@ export const CityBreakInclusionsList = () => {
       >
         {
           <AddCityBreakInclusionForm
+            buttonDisable={buttonDisable}
             tourNames={tourNames}
             destinations={destinations}
             handleAddSubmit={handleAddActivitySubmit}

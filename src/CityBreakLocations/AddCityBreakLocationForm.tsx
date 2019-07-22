@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { Field, Formik, Form, ErrorMessage } from 'formik'
 import * as yup from 'yup'
+import { buttonDisableProps } from 'src/Activities/AddActivity'
 
 export interface CityBreakLocationFormValues {
   readonly city: string
@@ -25,7 +26,9 @@ export const FormSchema: () => yup.ObjectSchema<
     city: yup.string().required('City required'),
     country: yup.string().required('Country required'),
   })
-export const AddCityBreakLocationInnerForm = (props: any) => {
+export const AddCityBreakLocationInnerForm = (
+  props: any & buttonDisableProps,
+) => {
   return (
     <div>
       <Formik
@@ -64,7 +67,11 @@ export const AddCityBreakLocationInnerForm = (props: any) => {
               </div>
             </div>
 
-            <button className="button is-link" type="submit">
+            <button
+              className="button is-link"
+              type="submit"
+              disabled={props.buttonDisable}
+            >
               Submit
             </button>
             <button
@@ -81,10 +88,11 @@ export const AddCityBreakLocationInnerForm = (props: any) => {
   )
 }
 
-export const AddCityBreakLocationForm = (props: any) => {
+export const AddCityBreakLocationForm = (props: any & buttonDisableProps) => {
   return (
     <div>
       <AddCityBreakLocationInnerForm
+        buttonDisable={props.buttonDisable}
         count={props.count}
         destinations={props.destinations}
         onSubmit={props.handleAddMealTypeSubmit}

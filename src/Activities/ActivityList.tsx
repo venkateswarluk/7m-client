@@ -78,6 +78,7 @@ export const ActivityList = () => {
 
   const [page, setPage] = React.useState(0)
   const [rowsPerPage, setRowsPerPage] = React.useState(10)
+  const [buttonDisable, setButtonDisable] = React.useState(false)
 
   const [activitySearch, setActivitySearch] = React.useState('')
 
@@ -142,19 +143,23 @@ export const ActivityList = () => {
     values: ActivityForm,
     actions: FormikActions<ActivityForm>,
   ) => {
+    setButtonDisable(true)
     postItem(url, values)
       .then(() => {
         getAllItems(url)
           .then((res: any) => {
             setActivities(res)
             setAddActivityOpen(!addActivityOpen)
+            setButtonDisable(false)
             actions.setSubmitting(false)
           })
           .catch((err: string) => {
+            setButtonDisable(false)
             throw Error(err)
           })
       })
       .catch(err => {
+        setButtonDisable(false)
         return Error(err)
       })
   }
@@ -175,12 +180,16 @@ export const ActivityList = () => {
     values: Activity,
     action: FormikActions<ActivityForm>,
   ) => {
+    setButtonDisable(true)
     const updateMealType = await putItem(url, values)
     const meals = await getAllItems(url)
     if (updateMealType.status === 200) {
       setActivities(meals)
       setEditActivityOpen(!editActivityOpen)
+      setButtonDisable(false)
       action.setSubmitting(false)
+    } else {
+      setButtonDisable(false)
     }
   }
 
@@ -234,6 +243,7 @@ export const ActivityList = () => {
       >
         {
           <AddActivityForm
+            buttonDisable={buttonDisable}
             categories={categories}
             destinations={destinations}
             handleAddSubmit={handleAddActivitySubmit}

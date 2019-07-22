@@ -4,6 +4,7 @@ import * as yup from 'yup'
 
 import { AddFormProps } from '../types'
 import { OptionValues } from '../CityBreakLocations/CityBreakLocationList'
+import { buttonDisableProps } from 'src/Activities/AddActivity'
 
 export interface MealTypeForm {
   readonly mealType: string
@@ -33,7 +34,9 @@ export const mealTypes: ReadonlyArray<OptionValues> = [
   { value: 2, label: 'Group' },
 ]
 
-export const AddMealTypeInnerForm = (props: AddFormProps<MealTypeForm>) => (
+export const AddMealTypeInnerForm = (
+  props: AddFormProps<MealTypeForm> & buttonDisableProps,
+) => (
   <div>
     <Formik
       initialValues={mealTypeValues}
@@ -76,7 +79,11 @@ export const AddMealTypeInnerForm = (props: AddFormProps<MealTypeForm>) => (
             </div>
           </div>
           <br />
-          <button className="button is-link" type="submit">
+          <button
+            className="button is-link"
+            type="submit"
+            disabled={props.buttonDisable}
+          >
             Submit
           </button>
           <button
@@ -92,10 +99,13 @@ export const AddMealTypeInnerForm = (props: AddFormProps<MealTypeForm>) => (
   </div>
 )
 
-export const AddMealTypeForm = (props: AddFormProps<MealTypeForm>) => {
+export const AddMealTypeForm = (
+  props: AddFormProps<MealTypeForm> & buttonDisableProps,
+) => {
   return (
     <div>
       <AddMealTypeInnerForm
+        buttonDisable={props.buttonDisable}
         handleAddSubmit={props.handleAddSubmit}
         handleCloseClick={props.handleCloseClick}
       />

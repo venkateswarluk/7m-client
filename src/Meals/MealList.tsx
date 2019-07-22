@@ -63,6 +63,8 @@ export const MealTypeList = () => {
 
   const [page, setPage] = React.useState(0)
   const [rowsPerPage, setRowsPerPage] = React.useState(10)
+  const [buttonDisable, setButtonDisable] = React.useState(false)
+
   const [Search, setSearch] = React.useState('')
 
   const handleNext = (page: number) => {
@@ -107,19 +109,26 @@ export const MealTypeList = () => {
     values: MealTypeForm,
     actions: FormikActions<MealTypeForm>,
   ) => {
+    setButtonDisable(true)
+
     postItem(url, values)
       .then(() => {
         getAllItems(url)
           .then(res => {
             setMealTypes(res)
             setAddMealOpen(!addMealOpen)
+            setButtonDisable(false)
+
             actions.setSubmitting(false)
           })
           .catch(err => {
+            setButtonDisable(false)
+
             throw Error(err)
           })
       })
       .catch(err => {
+        setButtonDisable(false)
         throw Error(err)
       })
   }
@@ -194,6 +203,7 @@ export const MealTypeList = () => {
       >
         {
           <AddMealTypeForm
+            buttonDisable={buttonDisable}
             handleAddSubmit={handleAddMealTypeSubmit}
             handleCloseClick={handleAddMealClick}
             mealTypes={mealsTypes}

@@ -63,6 +63,8 @@ export const ActivityLocationList = () => {
   )
   const [page, setPage] = React.useState(0)
   const [rowsPerPage, setRowsPerPage] = React.useState(10)
+  const [buttonDisable, setButtonDisable] = React.useState(false)
+
   const [Search, setSearch] = React.useState('')
 
   const handleNext = (page: number) => {
@@ -103,19 +105,27 @@ export const ActivityLocationList = () => {
           y.city.toLowerCase() === values.city.toLowerCase(),
       ).length === 0
     ) {
+      setButtonDisable(true)
+
       postItem(url, values)
         .then(() => {
           getAllItems(url)
             .then(res => {
               setActivities(res)
               setAddActivityOpen(!addActivityOpen)
+              setButtonDisable(false)
+
               actions.setSubmitting(false)
             })
             .catch(err => {
+              setButtonDisable(false)
+
               throw Error(err)
             })
         })
         .catch(err => {
+          setButtonDisable(false)
+
           throw Error(err)
         })
     } else {
@@ -189,6 +199,7 @@ export const ActivityLocationList = () => {
       >
         {
           <AddActivityLocationForm
+            buttonDisable={buttonDisable}
             count={unique(activities.map(y => y.locationId))}
             handleAddSubmit={handleAddActivitySubmit}
             handleCloseClick={handleAddMealClick}

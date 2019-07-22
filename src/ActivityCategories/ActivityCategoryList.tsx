@@ -64,6 +64,8 @@ export const ActivityCategoryList = () => {
   )
   const [page, setPage] = React.useState(0)
   const [rowsPerPage, setRowsPerPage] = React.useState(10)
+  const [buttonDisable, setButtonDisable] = React.useState(false)
+
   const [activityCategorySearch, setActivityCategorySearch] = React.useState('')
 
   const handleNext = (page: number) => {
@@ -120,6 +122,8 @@ export const ActivityCategoryList = () => {
     values: ActivityCategoryForm,
     actions: FormikActions<ActivityCategoryForm>,
   ) => {
+    setButtonDisable(true)
+
     if (
       activities.filter(
         (y: ActivityCategory) =>
@@ -132,17 +136,22 @@ export const ActivityCategoryList = () => {
             .then(res => {
               setActivities(res)
               setAddActivityOpen(!addActivityOpen)
+              setButtonDisable(false)
+
               actions.setSubmitting(false)
             })
             .catch(err => {
               throw Error(err)
+              setButtonDisable(false)
             })
         })
         .catch(err => {
+          setButtonDisable(false)
           throw Error(err)
         })
     } else {
       actions.setFieldError('categoryName', 'categoryName Already Exists')
+      setButtonDisable(false)
     }
   }
 
@@ -162,12 +171,17 @@ export const ActivityCategoryList = () => {
     values: ActivityCategory,
     action: FormikActions<ActivityCategoryForm>,
   ) => {
+    setButtonDisable(true)
     const updateMealType = await putItem(url, values)
     const meals = await getAllItems(url)
     if (updateMealType.status === 200) {
       setActivities(meals)
       setEditActivityOpen(!editActivityOpen)
+      setButtonDisable(false)
+
       action.setSubmitting(false)
+    } else {
+      setButtonDisable(false)
     }
   }
 
@@ -215,6 +229,7 @@ export const ActivityCategoryList = () => {
       >
         {
           <AddActivityCategoryForm
+            buttonDisable={buttonDisable}
             count={unique(activities.map(y => y.categoryId))}
             handleAddSubmit={handleAddActivitySubmit}
             handleCloseClick={handleAddMealClick}

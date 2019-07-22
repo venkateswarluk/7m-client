@@ -105,8 +105,9 @@ export const ActivityDetailsList = () => {
             actions.setSubmitting(false)
           })
           .catch(err => {
-            throw Error(err)
             setButtonDisable(false)
+
+            throw Error(err)
           })
       })
       .catch(err => {

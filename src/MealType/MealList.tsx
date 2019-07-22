@@ -86,7 +86,7 @@ export const MealsTypeList = () => {
           .then(res => {
             setMealTypes(res)
             setAddMealOpen(!addMealOpen)
-            setButtonDisable(true)
+            setButtonDisable(false)
             actions.setSubmitting(false)
           })
           .catch(err => {

@@ -52,6 +52,7 @@ export const FormSchema: () => yup.ObjectSchema<
       .integer()
       .positive()
       .min(1, 'StarRating required')
+      .max(5, 'StarRating required')
       .required('StarRating required'),
   })
 export const AddCityBreakInnerForm = (

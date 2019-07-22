@@ -89,6 +89,8 @@ export const ActivityFormSchema: () => yup.ObjectSchema<
       .number()
       .integer()
       .positive()
+      .min(1, 'Stars Required')
+      .max(5, 'Stars Required')
       .required('Stars Required')
       .moreThan(0, 'Stars Must MoreThan 0'),
     thumbUrl: yup.string().required(' Thumb Url Required'),

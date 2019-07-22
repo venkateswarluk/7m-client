@@ -20,6 +20,7 @@ import { mainUrl } from '../config'
 import { Pagination } from 'src/Pagination'
 import { handleSearchSpecific } from 'src/Activities/ActivityList'
 import { SearchField } from 'src/Activities/search'
+import { unique } from 'src/ActivityCategories/ActivityCategoryList'
 
 const url = `${mainUrl}/activitydetails`
 
@@ -182,6 +183,9 @@ export const ActivityDetailsList = () => {
       >
         {
           <AddActivityDetailsForm
+            activityDetailId={unique(
+              activityDetails.map(y => y.activityDetailId),
+            )}
             buttonDisable={buttonDisable}
             handleAddSubmit={handleAddActivitySubmit}
             handleCloseClick={handleAddMealClick}
@@ -218,7 +222,6 @@ export const ActivityDetailsList = () => {
             </thead>
             <tbody>
               {activityDetails
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .filter(
                   (x: ActivityDetails) =>
                     Search !== ''
@@ -239,6 +242,8 @@ export const ActivityDetailsList = () => {
                         handleSearchSpecific(Search, x.activityPhone.toString())
                       : x,
                 )
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+
                 .map((activity: ActivityDetails) => (
                   <tr key={activity.id}>
                     <td>{activity.activityDetailId}</td>

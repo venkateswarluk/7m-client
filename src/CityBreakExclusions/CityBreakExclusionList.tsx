@@ -227,7 +227,6 @@ export const CityBreakExclusionsList = () => {
             </thead>
             <tbody>
               {cityBreaks
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .filter(
                   (x: CityBreakExclusion) =>
                     Search !== ''
@@ -236,6 +235,8 @@ export const CityBreakExclusionsList = () => {
                         handleSearchSpecific(Search, x.exclusions.toString())
                       : x,
                 )
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+
                 .map((cityBreak: CityBreakExclusion) => (
                   <tr key={cityBreak.id}>
                     <td>{cityBreak.cityId}</td>

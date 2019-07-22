@@ -52,28 +52,74 @@ export const FormSchema: () => yup.ObjectSchema<
       .required('OptionId Required'),
     maxAdults: yup
       .number()
-      .min(1, 'MaxAdults Required')
-      .required('Required'),
+      .notRequired()
+      .when('maxUnits', {
+        is: val => Number(val) === 0,
+        then: yup
+          .number()
+          .min(1, 'MaxAdults Required')
+          .required('MaxAdults Required'),
+        // tslint:disable-next-line:object-literal-sort-keys
+        otherwise: yup.number().notRequired(),
+      }),
     maxChilds: yup
       .number()
-      .min(1, 'MaxChilds Required')
-      .required(),
-    maxUnits: yup
-      .number()
-      .min(1, 'MaxUnits Required')
-      .required(),
+      .notRequired()
+      .when('maxUnits', {
+        is: val => Number(val) === 0,
+        then: yup
+          .number()
+          .min(1, 'MaxChilds Required')
+          .required('MaxChilds Required'),
+        // tslint:disable-next-line:object-literal-sort-keys
+        otherwise: yup.number().notRequired(),
+      }),
+    maxUnits: yup.number().notRequired(),
+    // .when('maxChilds', {
+    //   is: val => val === 0,
+    //   then: yup
+    //     .number()
+    //     .min(1, 'MaxUnits Required')
+    //     .required('MaxUnits Required'),
+    //   // tslint:disable-next-line:object-literal-sort-keys
+    //   otherwise: yup.number().notRequired(),
+    // }),
     adultPrice: yup
       .number()
-      .min(1, 'AdultPrice Required')
-      .required(' Required'),
+      .notRequired()
+      .when('maxUnits', {
+        is: val => Number(val) === 0,
+        then: yup
+          .number()
+          .min(1, 'AdultPrice Required')
+          .required('adultPrice Required'),
+        // tslint:disable-next-line:object-literal-sort-keys
+        otherwise: yup.number().notRequired(),
+      }),
     childPrice: yup
       .number()
-      .min(1, 'ChildPrice Required')
-      .required(' Required'),
+      .notRequired()
+      .when('maxUnits', {
+        is: val => Number(val) === 0,
+        then: yup
+          .number()
+          .min(1, 'ChildPrice Required')
+          .required('ChildPrice Required'),
+        // tslint:disable-next-line:object-literal-sort-keys
+        otherwise: yup.number().notRequired(),
+      }),
     unitPrice: yup
       .number()
-      .min(1, 'UnitPrice Required')
-      .required(' Required'),
+      .notRequired()
+      .when('maxAdults', {
+        is: val => val === 0,
+        then: yup
+          .number()
+          .min(1, 'UnitPrice Required')
+          .required('UnitPrice Required'),
+        // tslint:disable-next-line:object-literal-sort-keys
+        otherwise: yup.number().notRequired(),
+      }),
     fromDate: yup.string().required('Required'),
     toDate: yup.string().required('Required'),
   })

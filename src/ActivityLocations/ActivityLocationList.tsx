@@ -106,7 +106,6 @@ export const ActivityLocationList = () => {
       ).length === 0
     ) {
       setButtonDisable(true)
-
       postItem(url, values)
         .then(() => {
           getAllItems(url)
@@ -242,7 +241,6 @@ export const ActivityLocationList = () => {
             </thead>
             <tbody>
               {activities
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .filter(
                   (x: ActivityLocation) =>
                     Search !== ''
@@ -268,6 +266,8 @@ export const ActivityLocationList = () => {
                         handleSearchSpecific(Search, x.latitude.toString())
                       : x,
                 )
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+
                 .map((activity: ActivityLocation) => (
                   <tr key={activity.id}>
                     <td>{activity.locationId}</td>

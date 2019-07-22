@@ -266,7 +266,6 @@ export const GroupActivityList = () => {
             </thead>
             <tbody>
               {activities
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .filter(
                   (x: Activity) =>
                     Search !== ''
@@ -298,6 +297,7 @@ export const GroupActivityList = () => {
                         handleSearchSpecific(Search, x.thumbUrl.toString())
                       : x,
                 )
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((activity: Activity) => (
                   <tr key={activity.id}>
                     <td>{activity.activityName}</td>

@@ -211,7 +211,6 @@ export const GroupActivityOptionList = () => {
             </thead>
             <tbody>
               {activityOptions
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .filter(
                   (x: ActivityOption) =>
                     Search !== ''
@@ -229,6 +228,8 @@ export const GroupActivityOptionList = () => {
                         handleSearchSpecific(Search, x.name.toString())
                       : x,
                 )
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+
                 .map((activity: ActivityOption) => (
                   <tr key={activity.id}>
                     <td>{activity.activityOptionId}</td>

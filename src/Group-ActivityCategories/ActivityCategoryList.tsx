@@ -226,7 +226,6 @@ export const GroupActivityCategoryList = () => {
             </thead>
             <tbody>
               {activities
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .filter(
                   (x: ActivityCategory) =>
                     Search !== ''
@@ -239,6 +238,7 @@ export const GroupActivityCategoryList = () => {
                         handleSearchSpecific(Search, x.categoryName.toString())
                       : x,
                 )
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((activity: ActivityCategory) => (
                   <tr key={activity.id}>
                     <td>{activity.serviceType}</td>

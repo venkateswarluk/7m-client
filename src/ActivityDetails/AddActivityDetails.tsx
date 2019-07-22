@@ -14,6 +14,10 @@ export interface ActivityDetailForm {
   readonly activityPhone: string
 }
 
+export interface DetailsProps {
+  readonly activityDetailId: number
+}
+
 const activityValues: ActivityDetailForm = {
   activityDetailId: 0,
   activityId: 0,
@@ -48,14 +52,18 @@ export const ActivityDetailFormSchema: () => yup.ObjectSchema<
   })
 
 export const AddActivityDetailsInnerForm = (
-  props: AddFormProps<ActivityDetailForm> & buttonDisableProps,
+  props: AddFormProps<ActivityDetailForm> & buttonDisableProps & DetailsProps,
 ) => (
   <div>
     <Formik
-      initialValues={activityValues}
+      initialValues={{
+        ...activityValues,
+        activityDetailId: props.activityDetailId,
+      }}
       onSubmit={(values: ActivityDetailForm, actions: FormikActions<any>) => {
         const submitValues = {
           ...values,
+          activityDetailId: props.activityDetailId,
           images:
             typeof values.images === 'string'
               ? values.images.split(',')
@@ -162,11 +170,12 @@ export const AddActivityDetailsInnerForm = (
 )
 
 export const AddActivityDetailsForm = (
-  props: AddFormProps<ActivityDetailForm> & buttonDisableProps,
+  props: AddFormProps<ActivityDetailForm> & buttonDisableProps & DetailsProps,
 ) => {
   return (
     <div>
       <AddActivityDetailsInnerForm
+        activityDetailId={props.activityDetailId}
         buttonDisable={props.buttonDisable}
         handleAddSubmit={props.handleAddSubmit}
         handleCloseClick={props.handleCloseClick}

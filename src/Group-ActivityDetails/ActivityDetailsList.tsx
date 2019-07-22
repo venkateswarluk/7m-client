@@ -220,7 +220,6 @@ export const GroupActivityDetailsList = () => {
             </thead>
             <tbody>
               {activityDetails
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .filter(
                   (x: ActivityDetails) =>
                     Search !== ''
@@ -243,6 +242,7 @@ export const GroupActivityDetailsList = () => {
                         handleSearchSpecific(Search, x.activityPhone.toString())
                       : x,
                 )
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((activity: ActivityDetails) => (
                   <tr key={activity.id}>
                     <td>{activity.activityDetailId}</td>

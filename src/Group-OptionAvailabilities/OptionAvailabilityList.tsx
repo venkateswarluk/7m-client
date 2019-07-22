@@ -102,7 +102,6 @@ export const GroupOptionAvailabilityList = () => {
     actions: FormikActions<OptionAvailabilityForm>,
   ) => {
     setButtonDisable(true)
-
     postItem(url, values)
       .then(() => {
         getAllItems(url)
@@ -110,18 +109,15 @@ export const GroupOptionAvailabilityList = () => {
             setOptionAvailabilities(res)
             setAddActivityOpen(!addActivityOpen)
             setButtonDisable(false)
-
             actions.setSubmitting(false)
           })
           .catch(err => {
             setButtonDisable(false)
-
             throw Error(err)
           })
       })
       .catch(err => {
         setButtonDisable(false)
-
         throw Error(err)
       })
   }
@@ -232,7 +228,6 @@ export const GroupOptionAvailabilityList = () => {
             </thead>
             <tbody>
               {optionAvailabilities
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .filter(
                   (x: OptionAvailability) =>
                     Search !== ''
@@ -253,6 +248,8 @@ export const GroupOptionAvailabilityList = () => {
                         handleSearchSpecific(Search, x.toDate.toString())
                       : x,
                 )
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+
                 .map((activity: OptionAvailability) => (
                   <tr key={activity.id}>
                     <td>{activity.optionAvailabilityId}</td>

@@ -119,7 +119,6 @@ export const OptionAvailabilityList = () => {
       })
       .catch(err => {
         setButtonDisable(false)
-
         throw Error(err)
       })
   }
@@ -231,7 +230,6 @@ export const OptionAvailabilityList = () => {
             </thead>
             <tbody>
               {optionAvailabilities
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .filter(
                   (x: OptionAvailability) =>
                     Search !== ''
@@ -252,6 +250,7 @@ export const OptionAvailabilityList = () => {
                         handleSearchSpecific(Search, x.toDate.toString())
                       : x,
                 )
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((activity: OptionAvailability) => (
                   <tr key={activity.id}>
                     <td>{activity.optionAvailabilityId}</td>

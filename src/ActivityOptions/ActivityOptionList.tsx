@@ -199,7 +199,7 @@ export const ActivityOptionList = () => {
           <table className="table is-bordered is-striped is-narrow is-hoverable is-fullwidth is-responsive">
             <thead>
               <tr>
-                <th>ActivityOptionId</th>
+                <th>OptionId</th>
                 <th>TypeVal</th>
                 <th>TypeDescription</th>
                 <th>Name</th>
@@ -209,7 +209,6 @@ export const ActivityOptionList = () => {
             </thead>
             <tbody>
               {activityOptions
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .filter(
                   (x: ActivityOption) =>
                     Search !== ''
@@ -227,6 +226,7 @@ export const ActivityOptionList = () => {
                         handleSearchSpecific(Search, x.name.toString())
                       : x,
                 )
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((activity: ActivityOption) => (
                   <tr key={activity.id}>
                     <td>{activity.activityOptionId}</td>

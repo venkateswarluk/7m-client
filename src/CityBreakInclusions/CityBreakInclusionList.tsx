@@ -260,7 +260,6 @@ export const CityBreakInclusionsList = () => {
             </thead>
             <tbody>
               {cityBreaks
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .filter(
                   (x: CityBreakInclusion) =>
                     Search !== ''
@@ -271,6 +270,8 @@ export const CityBreakInclusionsList = () => {
                         handleSearchSpecific(Search, x.inclusions.toString())
                       : x,
                 )
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+
                 .map((cityBreak: CityBreakInclusion) => (
                   <tr key={cityBreak.id}>
                     <td>{cityBreak.cityId}</td>

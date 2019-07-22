@@ -293,7 +293,6 @@ export const ActivityList = () => {
               }}
             >
               {activities
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .filter(
                   (x: Activity) =>
                     activitySearch !== ''
@@ -332,6 +331,8 @@ export const ActivityList = () => {
                         handleSearchSpecific(activitySearch, x.stars.toString())
                       : x,
                 )
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+
                 .map((activity: Activity) => (
                   <tr key={activity.id}>
                     <td>{activity.activityName}</td>

@@ -243,7 +243,6 @@ export const MealTypeList = () => {
             </thead>
             <tbody>
               {mealTypes
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .filter(
                   (x: MealType) =>
                     Search !== ''
@@ -262,6 +261,8 @@ export const MealTypeList = () => {
                         handleSearchSpecific(Search, x.note.toString())
                       : x,
                 )
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+
                 .map((mealType: MealType) => (
                   <tr key={mealType.id}>
                     <td>{mealType.name}</td>

@@ -86,28 +86,6 @@ export const OptionAvailabilityList = () => {
     setRowsPerPage(event.value)
   }
 
-  const handleSearch = (Search: string) => {
-    const activities1 = optionAvailabilities.filter(
-      (x: OptionAvailability) =>
-        Search !== ''
-          ? handleSearchSpecific(Search, x.id.toString()) ||
-            handleSearchSpecific(Search, x.activityId.toString()) ||
-            handleSearchSpecific(Search, x.optionAvailabilityId.toString()) ||
-            handleSearchSpecific(Search, x.maxAdults.toString()) ||
-            handleSearchSpecific(Search, x.maxChilds.toString()) ||
-            handleSearchSpecific(Search, x.childPrice.toString()) ||
-            handleSearchSpecific(Search, x.adultPrice.toString()) ||
-            handleSearchSpecific(Search, x.unitPrice.toString()) ||
-            handleSearchSpecific(Search, x.optionId.toString()) ||
-            handleSearchSpecific(Search, x.fromDate.toString()) ||
-            handleSearchSpecific(Search, x.maxUnits.toString()) ||
-            handleSearchSpecific(Search, x.toDate.toString())
-          : x,
-    )
-    setSearch(Search)
-    setOptionAvailabilities(activities1)
-  }
-
   const handleRefreshSearch = () => {
     setSearch('')
     fetchMealTypeData()
@@ -197,7 +175,7 @@ export const OptionAvailabilityList = () => {
         <SearchField
           Search={Search}
           handleRefreshSearch={handleRefreshSearch}
-          handleSearch={handleSearch}
+          handleSearch={setSearch}
         />
         <div className="control has-text-right">
           <button className="button is-info" onClick={handleAddMealClick}>
@@ -254,6 +232,26 @@ export const OptionAvailabilityList = () => {
             <tbody>
               {optionAvailabilities
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .filter(
+                  (x: OptionAvailability) =>
+                    Search !== ''
+                      ? handleSearchSpecific(Search, x.id.toString()) ||
+                        handleSearchSpecific(Search, x.activityId.toString()) ||
+                        handleSearchSpecific(
+                          Search,
+                          x.optionAvailabilityId.toString(),
+                        ) ||
+                        handleSearchSpecific(Search, x.maxAdults.toString()) ||
+                        handleSearchSpecific(Search, x.maxChilds.toString()) ||
+                        handleSearchSpecific(Search, x.childPrice.toString()) ||
+                        handleSearchSpecific(Search, x.adultPrice.toString()) ||
+                        handleSearchSpecific(Search, x.unitPrice.toString()) ||
+                        handleSearchSpecific(Search, x.optionId.toString()) ||
+                        handleSearchSpecific(Search, x.fromDate.toString()) ||
+                        handleSearchSpecific(Search, x.maxUnits.toString()) ||
+                        handleSearchSpecific(Search, x.toDate.toString())
+                      : x,
+                )
                 .map((activity: OptionAvailability) => (
                   <tr key={activity.id}>
                     <td>{activity.optionAvailabilityId}</td>

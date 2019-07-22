@@ -71,20 +71,6 @@ export const GroupActivityCategoryList = () => {
     setRowsPerPage(event.value)
   }
 
-  const handleSearch = (Search: string) => {
-    const activities1 = activities.filter(
-      (x: ActivityCategory) =>
-        Search !== ''
-          ? handleSearchSpecific(Search, x.id.toString()) ||
-            handleSearchSpecific(Search, x.categoryId.toString()) ||
-            handleSearchSpecific(Search, x.serviceType.toString()) ||
-            handleSearchSpecific(Search, x.categoryName.toString())
-          : x,
-    )
-    setSearch(Search)
-    setActivities(activities1)
-  }
-
   const handleRefreshSearch = () => {
     setSearch('')
     fetchMealTypeData()
@@ -185,7 +171,7 @@ export const GroupActivityCategoryList = () => {
         <SearchField
           Search={Search}
           handleRefreshSearch={handleRefreshSearch}
-          handleSearch={handleSearch}
+          handleSearch={setSearch}
         />
         <div className="control has-text-right">
           <button className="button is-info " onClick={handleAddMealClick}>
@@ -237,6 +223,18 @@ export const GroupActivityCategoryList = () => {
             <tbody>
               {activities
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .filter(
+                  (x: ActivityCategory) =>
+                    Search !== ''
+                      ? handleSearchSpecific(Search, x.id.toString()) ||
+                        handleSearchSpecific(Search, x.categoryId.toString()) ||
+                        handleSearchSpecific(
+                          Search,
+                          x.serviceType.toString(),
+                        ) ||
+                        handleSearchSpecific(Search, x.categoryName.toString())
+                      : x,
+                )
                 .map((activity: ActivityCategory) => (
                   <tr key={activity.id}>
                     <td>{activity.serviceType}</td>

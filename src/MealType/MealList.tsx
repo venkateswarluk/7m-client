@@ -64,19 +64,6 @@ export const MealsTypeList = () => {
     setRowsPerPage(event.value)
   }
 
-  const handleSearch = (Search: string) => {
-    const activities1 = mealTypes.filter(
-      (x: MealType) =>
-        Search !== ''
-          ? handleSearchSpecific(Search, x.id.toString()) ||
-            handleSearchSpecific(Search, x.mealType.toString()) ||
-            handleSearchSpecific(Search, x.mealCategory.toString())
-          : x,
-    )
-    setSearch(Search)
-    setMealTypes(activities1)
-  }
-
   const handleRefreshSearch = () => {
     setSearch('')
     fetchMealTypeData()
@@ -166,7 +153,7 @@ export const MealsTypeList = () => {
         <SearchField
           Search={Search}
           handleRefreshSearch={handleRefreshSearch}
-          handleSearch={handleSearch}
+          handleSearch={setSearch}
         />
         <div className="control has-text-right">
           <button className="button is-info " onClick={handleAddMealClick}>
@@ -216,6 +203,14 @@ export const MealsTypeList = () => {
             <tbody>
               {mealTypes
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .filter(
+                  (x: MealType) =>
+                    Search !== ''
+                      ? handleSearchSpecific(Search, x.id.toString()) ||
+                        handleSearchSpecific(Search, x.mealType.toString()) ||
+                        handleSearchSpecific(Search, x.mealCategory.toString())
+                      : x,
+                )
                 .map((mealType: MealType) => (
                   <tr key={mealType.id}>
                     <td>{mealType.mealType}</td>

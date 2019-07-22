@@ -84,28 +84,28 @@ export const ActivityCategoryList = () => {
   const handleRowsPerPage = (event: any) => {
     setRowsPerPage(event.value)
   }
-  const handleActivityCategorySearch = (activityCategorySearch: string) => {
-    const activities1 = activities.filter(
-      (x: ActivityCategory) =>
-        activityCategorySearch !== ''
-          ? handleSearchSpecific(activityCategorySearch, x.id.toString()) ||
-            handleSearchSpecific(
-              activityCategorySearch,
-              x.serviceType.toString(),
-            ) ||
-            handleSearchSpecific(
-              activityCategorySearch,
-              x.categoryName.toString(),
-            ) ||
-            handleSearchSpecific(
-              activityCategorySearch,
-              x.categoryId.toString(),
-            )
-          : x,
-    )
-    setActivityCategorySearch(activityCategorySearch)
-    setActivities(activities1)
-  }
+  // const handleActivityCategorySearch = (activityCategorySearch: string) => {
+  //   const activities1 = activities.filter(
+  //     (x: ActivityCategory) =>
+  //       activityCategorySearch !== ''
+  //         ? handleSearchSpecific(activityCategorySearch, x.id.toString()) ||
+  //           handleSearchSpecific(
+  //             activityCategorySearch,
+  //             x.serviceType.toString(),
+  //           ) ||
+  //           handleSearchSpecific(
+  //             activityCategorySearch,
+  //             x.categoryName.toString(),
+  //           ) ||
+  //           handleSearchSpecific(
+  //             activityCategorySearch,
+  //             x.categoryId.toString(),
+  //           )
+  //         : x,
+  //   )
+  //   setActivityCategorySearch(activityCategorySearch)
+  //   setActivities(activities1)
+  // }
 
   const handleRefreshSearch = () => {
     setActivityCategorySearch('')
@@ -205,7 +205,7 @@ export const ActivityCategoryList = () => {
         <SearchField
           Search={activityCategorySearch}
           handleRefreshSearch={handleRefreshSearch}
-          handleSearch={handleActivityCategorySearch}
+          handleSearch={setActivityCategorySearch}
         />
         <div className="control has-text-right">
           <button className="button is-info " onClick={handleAddMealClick}>
@@ -257,6 +257,27 @@ export const ActivityCategoryList = () => {
             <tbody>
               {activities
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .filter(
+                  (x: ActivityCategory) =>
+                    activityCategorySearch !== ''
+                      ? handleSearchSpecific(
+                          activityCategorySearch,
+                          x.id.toString(),
+                        ) ||
+                        handleSearchSpecific(
+                          activityCategorySearch,
+                          x.serviceType.toString(),
+                        ) ||
+                        handleSearchSpecific(
+                          activityCategorySearch,
+                          x.categoryName.toString(),
+                        ) ||
+                        handleSearchSpecific(
+                          activityCategorySearch,
+                          x.categoryId.toString(),
+                        )
+                      : x,
+                )
                 .map((activity: ActivityCategory) => (
                   <tr key={activity.id}>
                     <td>{activity.serviceType}</td>

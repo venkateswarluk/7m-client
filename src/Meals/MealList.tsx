@@ -84,23 +84,6 @@ export const MealTypeList = () => {
     setRowsPerPage(event.value)
   }
 
-  const handleSearch = (Search: string) => {
-    const activities1 = mealTypes.filter(
-      (x: MealType) =>
-        Search !== ''
-          ? handleSearchSpecific(Search, x.id.toString()) ||
-            handleSearchSpecific(Search, x.mealCategory.toString()) ||
-            handleSearchSpecific(Search, x.mealType.toString()) ||
-            handleSearchSpecific(Search, x.imageUrl.toString()) ||
-            handleSearchSpecific(Search, x.description.toString()) ||
-            handleSearchSpecific(Search, x.price.toString()) ||
-            handleSearchSpecific(Search, x.note.toString())
-          : x,
-    )
-    setSearch(Search)
-    setMealTypes(activities1)
-  }
-
   const handleRefreshSearch = () => {
     setSearch('')
     fetchMealTypeData()
@@ -204,7 +187,7 @@ export const MealTypeList = () => {
         <SearchField
           Search={Search}
           handleRefreshSearch={handleRefreshSearch}
-          handleSearch={handleSearch}
+          handleSearch={setSearch}
         />
         <div className="control has-text-right">
           <button className="button is-info " onClick={handleAddMealClick}>
@@ -260,6 +243,24 @@ export const MealTypeList = () => {
             <tbody>
               {mealTypes
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .filter(
+                  (x: MealType) =>
+                    Search !== ''
+                      ? handleSearchSpecific(Search, x.id.toString()) ||
+                        handleSearchSpecific(
+                          Search,
+                          x.mealCategory.toString(),
+                        ) ||
+                        handleSearchSpecific(Search, x.mealType.toString()) ||
+                        handleSearchSpecific(Search, x.imageUrl.toString()) ||
+                        handleSearchSpecific(
+                          Search,
+                          x.description.toString(),
+                        ) ||
+                        handleSearchSpecific(Search, x.price.toString()) ||
+                        handleSearchSpecific(Search, x.note.toString())
+                      : x,
+                )
                 .map((mealType: MealType) => (
                   <tr key={mealType.id}>
                     <td>{mealType.name}</td>

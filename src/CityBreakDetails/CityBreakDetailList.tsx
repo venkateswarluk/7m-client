@@ -86,21 +86,6 @@ export const CityBreakDetailsList = () => {
   const handleRowsPerPage = (event: any) => {
     setRowsPerPage(event.value)
   }
-  const handleSearch = (Search: string) => {
-    const activities1 = cityBreaks.filter(
-      (x: CityBreakDetails) =>
-        Search !== ''
-          ? handleSearchSpecific(Search, x.id.toString()) ||
-            handleSearchSpecific(Search, x.cityId.toString()) ||
-            handleSearchSpecific(Search, x.tourName.toString()) ||
-            handleSearchSpecific(Search, x.days.toString()) ||
-            handleSearchSpecific(Search, x.dayInfo.toString()) ||
-            handleSearchSpecific(Search, x.dayNo.toString())
-          : x,
-    )
-    setSearch(Search)
-    setCityBreaks(activities1)
-  }
 
   const handleRefreshSearch = () => {
     setSearch('')
@@ -219,7 +204,7 @@ export const CityBreakDetailsList = () => {
         <SearchField
           Search={Search}
           handleRefreshSearch={handleRefreshSearch}
-          handleSearch={handleSearch}
+          handleSearch={setSearch}
         />
         <div className="control has-text-right">
           <button className="button is-info " onClick={handleAddMealClick}>
@@ -275,6 +260,17 @@ export const CityBreakDetailsList = () => {
             <tbody>
               {cityBreaks
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .filter(
+                  (x: CityBreakDetails) =>
+                    Search !== ''
+                      ? handleSearchSpecific(Search, x.id.toString()) ||
+                        handleSearchSpecific(Search, x.cityId.toString()) ||
+                        handleSearchSpecific(Search, x.tourName.toString()) ||
+                        handleSearchSpecific(Search, x.days.toString()) ||
+                        handleSearchSpecific(Search, x.dayInfo.toString()) ||
+                        handleSearchSpecific(Search, x.dayNo.toString())
+                      : x,
+                )
                 .map((cityBreak: CityBreakDetails) => (
                   <tr key={cityBreak.id}>
                     <td>{cityBreak.cityId}</td>

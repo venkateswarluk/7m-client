@@ -74,20 +74,6 @@ export const CityBreakLocationsList = () => {
     }
   }
 
-  const handleSearch = (Search: string) => {
-    const activities1 = cityBreakLocations.filter(
-      (x: CityBreakLocation) =>
-        Search !== ''
-          ? handleSearchSpecific(Search, x.id.toString()) ||
-            handleSearchSpecific(Search, x.cityId.toString()) ||
-            handleSearchSpecific(Search, x.country.toString()) ||
-            handleSearchSpecific(Search, x.city.toString())
-          : x,
-    )
-    setSearch(Search)
-    setCityBreaks(activities1)
-  }
-
   const handleRefreshSearch = () => {
     setSearch('')
     fetchMealTypeData()
@@ -211,7 +197,7 @@ export const CityBreakLocationsList = () => {
         <SearchField
           Search={Search}
           handleRefreshSearch={handleRefreshSearch}
-          handleSearch={handleSearch}
+          handleSearch={setSearch}
         />
         <div className="control has-text-right">
           <button className="button is-info " onClick={handleAddMealClick}>
@@ -265,6 +251,15 @@ export const CityBreakLocationsList = () => {
             <tbody>
               {cityBreakLocations
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .filter(
+                  (x: CityBreakLocation) =>
+                    Search !== ''
+                      ? handleSearchSpecific(Search, x.id.toString()) ||
+                        handleSearchSpecific(Search, x.cityId.toString()) ||
+                        handleSearchSpecific(Search, x.country.toString()) ||
+                        handleSearchSpecific(Search, x.city.toString())
+                      : x,
+                )
                 .map((cityBreak: CityBreakLocation) => (
                   <tr key={cityBreak.id}>
                     <td>{cityBreak.cityId}</td>

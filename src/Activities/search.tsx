@@ -20,6 +20,7 @@ const SearchField = (props: SearchProps) => (
             onChange={event => props.handleSearch(event.target.value)}
           />
         </p>
+
         <p className="control">
           <button
             className="button is-info "

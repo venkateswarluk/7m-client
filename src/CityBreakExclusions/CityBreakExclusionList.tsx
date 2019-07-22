@@ -75,19 +75,6 @@ export const CityBreakExclusionsList = () => {
     setRowsPerPage(event.value)
   }
 
-  const handleSearch = (Search: string) => {
-    const activities1 = cityBreaks.filter(
-      (x: CityBreakExclusion) =>
-        Search !== ''
-          ? handleSearchSpecific(Search, x.id.toString()) ||
-            handleSearchSpecific(Search, x.cityId.toString()) ||
-            handleSearchSpecific(Search, x.exclusions.toString())
-          : x,
-    )
-    setSearch(Search)
-    setCityBreaks(activities1)
-  }
-
   const handleRefreshSearch = () => {
     setSearch('')
     fetchMealTypeData()
@@ -189,7 +176,7 @@ export const CityBreakExclusionsList = () => {
         <SearchField
           Search={Search}
           handleRefreshSearch={handleRefreshSearch}
-          handleSearch={handleSearch}
+          handleSearch={setSearch}
         />
         <div className="control has-text-right">
           <button className="button is-info " onClick={handleAddMealClick}>
@@ -240,6 +227,14 @@ export const CityBreakExclusionsList = () => {
             <tbody>
               {cityBreaks
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .filter(
+                  (x: CityBreakExclusion) =>
+                    Search !== ''
+                      ? handleSearchSpecific(Search, x.id.toString()) ||
+                        handleSearchSpecific(Search, x.cityId.toString()) ||
+                        handleSearchSpecific(Search, x.exclusions.toString())
+                      : x,
+                )
                 .map((cityBreak: CityBreakExclusion) => (
                   <tr key={cityBreak.id}>
                     <td>{cityBreak.cityId}</td>

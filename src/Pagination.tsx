@@ -69,7 +69,7 @@ export const Pagination: (
       <button
         className="pagination-next button is-info"
         onClick={() => handleNext(currentPage)}
-        disabled={currentPage >= totalPages ? true : false}
+        disabled={currentPage >= totalPages - 1 ? true : false}
         type="button"
       >
         Next

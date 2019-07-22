@@ -84,27 +84,6 @@ export const ActivityLocationList = () => {
     setRowsPerPage(event.value)
   }
 
-  const handleSearch = (Search: string) => {
-    const activities1 = activities.filter(
-      (x: ActivityLocation) =>
-        Search !== ''
-          ? handleSearchSpecific(Search, x.id.toString()) ||
-            handleSearchSpecific(Search, x.locationId.toString()) ||
-            handleSearchSpecific(Search, x.countryCode.toString()) ||
-            handleSearchSpecific(Search, x.stateCode.toString()) ||
-            handleSearchSpecific(Search, x.city.toString()) ||
-            handleSearchSpecific(Search, x.searchingState.toString()) ||
-            handleSearchSpecific(Search, x.location.toString()) ||
-            handleSearchSpecific(Search, x.address.toString()) ||
-            handleSearchSpecific(Search, x.searchingCity.toString()) ||
-            handleSearchSpecific(Search, x.longitude.toString()) ||
-            handleSearchSpecific(Search, x.latitude.toString())
-          : x,
-    )
-    setSearch(Search)
-    setActivities(activities1)
-  }
-
   const handleRefreshSearch = () => {
     setSearch('')
     fetchMealTypeData()
@@ -203,7 +182,7 @@ export const ActivityLocationList = () => {
         <SearchField
           Search={Search}
           handleRefreshSearch={handleRefreshSearch}
-          handleSearch={handleSearch}
+          handleSearch={setSearch}
         />
         <div className="control has-text-right">
           <button className="button is-info " onClick={handleAddMealClick}>
@@ -262,6 +241,31 @@ export const ActivityLocationList = () => {
             <tbody>
               {activities
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .filter(
+                  (x: ActivityLocation) =>
+                    Search !== ''
+                      ? handleSearchSpecific(Search, x.id.toString()) ||
+                        handleSearchSpecific(Search, x.locationId.toString()) ||
+                        handleSearchSpecific(
+                          Search,
+                          x.countryCode.toString(),
+                        ) ||
+                        handleSearchSpecific(Search, x.stateCode.toString()) ||
+                        handleSearchSpecific(Search, x.city.toString()) ||
+                        handleSearchSpecific(
+                          Search,
+                          x.searchingState.toString(),
+                        ) ||
+                        handleSearchSpecific(Search, x.location.toString()) ||
+                        handleSearchSpecific(Search, x.address.toString()) ||
+                        handleSearchSpecific(
+                          Search,
+                          x.searchingCity.toString(),
+                        ) ||
+                        handleSearchSpecific(Search, x.longitude.toString()) ||
+                        handleSearchSpecific(Search, x.latitude.toString())
+                      : x,
+                )
                 .map((activity: ActivityLocation) => (
                   <tr key={activity.id}>
                     <td>{activity.locationId}</td>

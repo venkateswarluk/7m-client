@@ -76,21 +76,6 @@ export const ActivityDetailsList = () => {
   const handleRowsPerPage = (event: any) => {
     setRowsPerPage(event.value)
   }
-  const handleActivityDetailsSearch = (Search: string) => {
-    const activities1 = activityDetails.filter(
-      (x: ActivityDetails) =>
-        Search !== ''
-          ? handleSearchSpecific(Search, x.id.toString()) ||
-            handleSearchSpecific(Search, x.activityDetailId.toString()) ||
-            handleSearchSpecific(Search, x.activityId.toString()) ||
-            handleSearchSpecific(Search, x.longDescription.toString()) ||
-            handleSearchSpecific(Search, x.shortDescription.toString()) ||
-            handleSearchSpecific(Search, x.activityPhone.toString())
-          : x,
-    )
-    setSearch(Search)
-    setActivityDetails(activities1)
-  }
 
   const handleRefreshSearch = () => {
     setSearch('')
@@ -181,7 +166,7 @@ export const ActivityDetailsList = () => {
         <SearchField
           Search={Search}
           handleRefreshSearch={handleRefreshSearch}
-          handleSearch={handleActivityDetailsSearch}
+          handleSearch={setSearch}
         />
         <div className="control has-text-right">
           <button className="button is-info " onClick={handleAddMealClick}>
@@ -233,6 +218,26 @@ export const ActivityDetailsList = () => {
             <tbody>
               {activityDetails
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .filter(
+                  (x: ActivityDetails) =>
+                    Search !== ''
+                      ? handleSearchSpecific(Search, x.id.toString()) ||
+                        handleSearchSpecific(
+                          Search,
+                          x.activityDetailId.toString(),
+                        ) ||
+                        handleSearchSpecific(Search, x.activityId.toString()) ||
+                        handleSearchSpecific(
+                          Search,
+                          x.longDescription.toString(),
+                        ) ||
+                        handleSearchSpecific(
+                          Search,
+                          x.shortDescription.toString(),
+                        ) ||
+                        handleSearchSpecific(Search, x.activityPhone.toString())
+                      : x,
+                )
                 .map((activity: ActivityDetails) => (
                   <tr key={activity.id}>
                     <td>{activity.activityDetailId}</td>

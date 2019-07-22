@@ -18,8 +18,6 @@ import { mainUrl } from '../config'
 import { Pagination } from 'src/Pagination'
 import { SearchField } from './search'
 
-// import { PaginationResult } from '../types'
-
 const url = `${mainUrl}/activities`
 
 export interface Activity {
@@ -136,25 +134,6 @@ export const ActivityList = () => {
     setRowsPerPage(event)
   }
 
-  const handleActivitySearch = (activitySearch: string) => {
-    const activities1 = activities.filter(
-      (x: Activity) =>
-        activitySearch !== ''
-          ? handleSearchSpecific(activitySearch, x.activityName.toString()) ||
-            handleSearchSpecific(activitySearch, x.description.toString()) ||
-            handleSearchSpecific(activitySearch, x.activityId.toString()) ||
-            handleSearchSpecific(activitySearch, x.optionId.toString()) ||
-            handleSearchSpecific(activitySearch, x.categoryId.toString()) ||
-            handleSearchSpecific(activitySearch, x.minChildAge.toString()) ||
-            handleSearchSpecific(activitySearch, x.maxChildAge.toString()) ||
-            handleSearchSpecific(activitySearch, x.destinationId.toString()) ||
-            handleSearchSpecific(activitySearch, x.stars.toString())
-          : x,
-    )
-    setActivitySearch(activitySearch)
-    setActivities(activities1)
-  }
-
   const handleRefreshSearch = () => {
     setActivitySearch('')
     fetchMealTypeData()
@@ -247,8 +226,9 @@ export const ActivityList = () => {
         <SearchField
           Search={activitySearch}
           handleRefreshSearch={handleRefreshSearch}
-          handleSearch={handleActivitySearch}
+          handleSearch={setActivitySearch}
         />
+
         <div className="control has-text-right">
           <button className="button is-info " onClick={handleAddMealClick}>
             Add Activity
@@ -313,6 +293,44 @@ export const ActivityList = () => {
             >
               {activities
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .filter(
+                  (x: Activity) =>
+                    activitySearch !== ''
+                      ? handleSearchSpecific(
+                          activitySearch,
+                          x.activityName.toString(),
+                        ) ||
+                        handleSearchSpecific(
+                          activitySearch,
+                          x.description.toString(),
+                        ) ||
+                        handleSearchSpecific(
+                          activitySearch,
+                          x.activityId.toString(),
+                        ) ||
+                        handleSearchSpecific(
+                          activitySearch,
+                          x.optionId.toString(),
+                        ) ||
+                        handleSearchSpecific(
+                          activitySearch,
+                          x.categoryId.toString(),
+                        ) ||
+                        handleSearchSpecific(
+                          activitySearch,
+                          x.minChildAge.toString(),
+                        ) ||
+                        handleSearchSpecific(
+                          activitySearch,
+                          x.maxChildAge.toString(),
+                        ) ||
+                        handleSearchSpecific(
+                          activitySearch,
+                          x.destinationId.toString(),
+                        ) ||
+                        handleSearchSpecific(activitySearch, x.stars.toString())
+                      : x,
+                )
                 .map((activity: Activity) => (
                   <tr key={activity.id}>
                     <td>{activity.activityName}</td>

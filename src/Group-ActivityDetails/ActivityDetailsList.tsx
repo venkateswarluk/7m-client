@@ -78,24 +78,6 @@ export const GroupActivityDetailsList = () => {
     setRowsPerPage(event.value)
   }
 
-  const handleSearch = (Search: string) => {
-    const activities1 = activityDetails.filter(
-      (x: ActivityDetails) =>
-        Search !== ''
-          ? handleSearchSpecific(Search, x.id.toString()) ||
-            handleSearchSpecific(Search, x.activityDetailId.toString()) ||
-            handleSearchSpecific(Search, x.activityId.toString()) ||
-            handleSearchSpecific(Search, x.shortDescription.toString()) ||
-            handleSearchSpecific(Search, x.longDescription.toString()) ||
-            handleSearchSpecific(Search, x.images.toString()) ||
-            handleSearchSpecific(Search, x.videos.toString()) ||
-            handleSearchSpecific(Search, x.activityPhone.toString())
-          : x,
-    )
-    setSearch(Search)
-    setActivityDetails(activities1)
-  }
-
   const handleRefreshSearch = () => {
     setSearch('')
     fetchMealTypeData()
@@ -185,7 +167,7 @@ export const GroupActivityDetailsList = () => {
         <SearchField
           Search={Search}
           handleRefreshSearch={handleRefreshSearch}
-          handleSearch={handleSearch}
+          handleSearch={setSearch}
         />
         <div className="control has-text-right">
           <button className="button is-info " onClick={handleAddMealClick}>
@@ -237,6 +219,28 @@ export const GroupActivityDetailsList = () => {
             <tbody>
               {activityDetails
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .filter(
+                  (x: ActivityDetails) =>
+                    Search !== ''
+                      ? handleSearchSpecific(Search, x.id.toString()) ||
+                        handleSearchSpecific(
+                          Search,
+                          x.activityDetailId.toString(),
+                        ) ||
+                        handleSearchSpecific(Search, x.activityId.toString()) ||
+                        handleSearchSpecific(
+                          Search,
+                          x.shortDescription.toString(),
+                        ) ||
+                        handleSearchSpecific(
+                          Search,
+                          x.longDescription.toString(),
+                        ) ||
+                        handleSearchSpecific(Search, x.images.toString()) ||
+                        handleSearchSpecific(Search, x.videos.toString()) ||
+                        handleSearchSpecific(Search, x.activityPhone.toString())
+                      : x,
+                )
                 .map((activity: ActivityDetails) => (
                   <tr key={activity.id}>
                     <td>{activity.activityDetailId}</td>

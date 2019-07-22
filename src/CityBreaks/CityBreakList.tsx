@@ -85,26 +85,6 @@ export const CityBreakList = () => {
     setRowsPerPage(event.value)
   }
 
-  const handleSearch = (Search: string) => {
-    const activities1 = cityBreaks.filter(
-      (x: CityBreak) =>
-        Search !== ''
-          ? handleSearchSpecific(Search, x.id.toString()) ||
-            handleSearchSpecific(Search, x.cityId.toString()) ||
-            handleSearchSpecific(Search, x.city.toString()) ||
-            handleSearchSpecific(Search, x.tourName.toString()) ||
-            handleSearchSpecific(Search, x.days.toString()) ||
-            handleSearchSpecific(Search, x.description.toString()) ||
-            handleSearchSpecific(Search, x.price.toString()) ||
-            handleSearchSpecific(Search, x.imageUrl.toString()) ||
-            handleSearchSpecific(Search, x.starRating.toString()) ||
-            handleSearchSpecific(Search, x.phone.toString())
-          : x,
-    )
-    setSearch(Search)
-    setCityBreaks(activities1)
-  }
-
   const handleRefreshSearch = () => {
     setSearch('')
     fetchMealTypeData()
@@ -210,7 +190,7 @@ export const CityBreakList = () => {
         <SearchField
           Search={Search}
           handleRefreshSearch={handleRefreshSearch}
-          handleSearch={handleSearch}
+          handleSearch={setSearch}
         />
         <div className="control has-text-right">
           <button className="button is-info " onClick={handleAddMealClick}>
@@ -266,6 +246,24 @@ export const CityBreakList = () => {
             <tbody>
               {cityBreaks
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .filter(
+                  (x: CityBreak) =>
+                    Search !== ''
+                      ? handleSearchSpecific(Search, x.id.toString()) ||
+                        handleSearchSpecific(Search, x.cityId.toString()) ||
+                        handleSearchSpecific(Search, x.city.toString()) ||
+                        handleSearchSpecific(Search, x.tourName.toString()) ||
+                        handleSearchSpecific(Search, x.days.toString()) ||
+                        handleSearchSpecific(
+                          Search,
+                          x.description.toString(),
+                        ) ||
+                        handleSearchSpecific(Search, x.price.toString()) ||
+                        handleSearchSpecific(Search, x.imageUrl.toString()) ||
+                        handleSearchSpecific(Search, x.starRating.toString()) ||
+                        handleSearchSpecific(Search, x.phone.toString())
+                      : x,
+                )
                 .map((cityBreak: CityBreak) => (
                   <tr key={cityBreak.id}>
                     <td>{cityBreak.city}</td>

@@ -91,27 +91,6 @@ export const GroupActivityList = () => {
     setRowsPerPage(event.value)
   }
 
-  const handleSearch = (Search: string) => {
-    const activities1 = activities.filter(
-      (x: Activity) =>
-        Search !== ''
-          ? handleSearchSpecific(Search, x.id.toString()) ||
-            handleSearchSpecific(Search, x.activityId.toString()) ||
-            handleSearchSpecific(Search, x.activityName.toString()) ||
-            handleSearchSpecific(Search, x.maxChildAge.toString()) ||
-            handleSearchSpecific(Search, x.minChildAge.toString()) ||
-            handleSearchSpecific(Search, x.description.toString()) ||
-            handleSearchSpecific(Search, x.destinationId.toString()) ||
-            handleSearchSpecific(Search, x.optionId.toString()) ||
-            handleSearchSpecific(Search, x.categoryId.toString()) ||
-            handleSearchSpecific(Search, x.stars.toString()) ||
-            handleSearchSpecific(Search, x.thumbUrl.toString())
-          : x,
-    )
-    setSearch(Search)
-    setActivities(activities1)
-  }
-
   const handleRefreshSearch = () => {
     setSearch('')
     fetchMealTypeData()
@@ -227,7 +206,7 @@ export const GroupActivityList = () => {
         <SearchField
           Search={Search}
           handleRefreshSearch={handleRefreshSearch}
-          handleSearch={handleSearch}
+          handleSearch={setSearch}
         />
         <div className="control has-text-right">
           <button className="button is-info " onClick={handleAddMealClick}>
@@ -287,6 +266,37 @@ export const GroupActivityList = () => {
             <tbody>
               {activities
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .filter(
+                  (x: Activity) =>
+                    Search !== ''
+                      ? handleSearchSpecific(Search, x.id.toString()) ||
+                        handleSearchSpecific(Search, x.activityId.toString()) ||
+                        handleSearchSpecific(
+                          Search,
+                          x.activityName.toString(),
+                        ) ||
+                        handleSearchSpecific(
+                          Search,
+                          x.maxChildAge.toString(),
+                        ) ||
+                        handleSearchSpecific(
+                          Search,
+                          x.minChildAge.toString(),
+                        ) ||
+                        handleSearchSpecific(
+                          Search,
+                          x.description.toString(),
+                        ) ||
+                        handleSearchSpecific(
+                          Search,
+                          x.destinationId.toString(),
+                        ) ||
+                        handleSearchSpecific(Search, x.optionId.toString()) ||
+                        handleSearchSpecific(Search, x.categoryId.toString()) ||
+                        handleSearchSpecific(Search, x.stars.toString()) ||
+                        handleSearchSpecific(Search, x.thumbUrl.toString())
+                      : x,
+                )
                 .map((activity: Activity) => (
                   <tr key={activity.id}>
                     <td>{activity.activityName}</td>

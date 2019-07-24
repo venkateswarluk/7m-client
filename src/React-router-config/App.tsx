@@ -25,6 +25,7 @@ import { GroupActivityDetailsList } from '../Group-ActivityDetails/ActivityDetai
 import { GroupActivityOptionList } from '../Group-ActivityOptions/ActivityOptionList'
 import { GroupOptionAvailabilityList } from '../Group-OptionAvailabilities/OptionAvailabilityList'
 import { GroupActivityCategoryList } from '../Group-ActivityCategories/ActivityCategoryList'
+import { LoginList } from 'src/Login/LoginPage'
 const Root = ({ route }: RouteConfigComponentProps) => (
   <div>{renderRoutes(route && route.routes)}</div>
 )
@@ -33,6 +34,11 @@ const routes: ReadonlyArray<RouteConfig> = [
   {
     component: Root,
     routes: [
+      {
+        path: '/login',
+        exact: true,
+        component: LoginList,
+      },
       {
         path: '/activity',
         exact: true,

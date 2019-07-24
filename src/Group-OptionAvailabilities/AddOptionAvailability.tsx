@@ -124,6 +124,28 @@ export const FormSchema: () => yup.ObjectSchema<
     toDate: yup.string().required('Required'),
   })
 
+const isValidDate = (startDate: Date, endDate: Date) => {
+  const startDay = startDate.getDate()
+  const startMonth = startDate.getMonth()
+  const startYear = startDate.getFullYear()
+
+  const endDay = endDate.getDate()
+  const endMonth = endDate.getMonth()
+  const endYear = endDate.getFullYear()
+  if (startMonth === endMonth && startYear === endYear) {
+    if (startDay < endDay) {
+      return false
+    } else {
+      return true
+    }
+  } else if (startMonth < endMonth && startYear === endYear) {
+    return false
+  } else if (startYear < endYear) {
+    return false
+  }
+  return true
+}
+
 export const AddOptionAvailabilityInnerForm = (
   props: AddFormProps<OptionAvailabilityForm> & buttonDisableProps,
 ) => (
@@ -226,7 +248,17 @@ export const AddOptionAvailabilityInnerForm = (
           <div className="field">
             <div className="control">
               <label className="label">FromDate</label>
-              <Field className="input" name="fromDate" type="date" />
+              <Field
+                className="input"
+                name="fromDate"
+                type="date"
+                err={
+                  !isValidDate(
+                    new Date(optionAvailabilitiesValues.fromDate),
+                    new Date(),
+                  )
+                }
+              />
               <div className="has-text-danger is-size-7">
                 <ErrorMessage name="fromDate" />
               </div>
@@ -236,9 +268,31 @@ export const AddOptionAvailabilityInnerForm = (
           <div className="field">
             <div className="control">
               <label className="label">ToDate</label>
-              <Field className="input" name="toDate" type="date" />
+              <Field
+                className="input"
+                name="toDate"
+                type="date"
+                err={
+                  !isValidDate(
+                    new Date(optionAvailabilitiesValues.toDate),
+                    new Date(optionAvailabilitiesValues.fromDate),
+                  )
+                }
+              />
               <div className="has-text-danger is-size-7">
-                <ErrorMessage name="toDate" />
+                <ErrorMessage
+                  name="toDate"
+                  render={() => {
+                    return !isValidDate(
+                      new Date(optionAvailabilitiesValues.toDate),
+                      new Date(optionAvailabilitiesValues.fromDate),
+                    ) ? (
+                      <div>please enter Valid Date</div>
+                    ) : (
+                      <div>Required</div>
+                    )
+                  }}
+                />
               </div>
             </div>
           </div>

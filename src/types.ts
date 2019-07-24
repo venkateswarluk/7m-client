@@ -47,3 +47,7 @@ export interface PaginationResult<T> {
   readonly result: T
   readonly total: number
 }
+
+export interface LoginFormProps<T> {
+  handleLoginSubmit(values: T, actions: FormikActions<T>): void
+}

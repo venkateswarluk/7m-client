@@ -20,6 +20,7 @@ import { mainUrl } from '../config'
 import { Pagination } from 'src/Pagination'
 import { handleSearchSpecific } from 'src/Activities/ActivityList'
 import { SearchField } from 'src/Activities/search'
+import { HandleSearch } from 'src/Activities/SearchHandler'
 
 const url = `${mainUrl}/categories`
 
@@ -86,6 +87,7 @@ export const ActivityCategoryList = () => {
   const handleRowsPerPage = (event: any) => {
     setRowsPerPage(event.value)
   }
+
   // const handleActivityCategorySearch = (activityCategorySearch: string) => {
   //   const activities1 = activities.filter(
   //     (x: ActivityCategory) =>
@@ -214,7 +216,13 @@ export const ActivityCategoryList = () => {
       <div className="field">
         <SearchField
           Search={activityCategorySearch}
-          handleSearch={setActivityCategorySearch}
+          handleSearch={(activityCategorySearch: string) =>
+            HandleSearch(
+              activityCategorySearch,
+              setActivityCategorySearch,
+              setPage,
+            )
+          }
         />
         <div className="control has-text-right">
           <button className="button is-info " onClick={handleAddMealClick}>

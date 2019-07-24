@@ -43,7 +43,7 @@ export const ActivityDetailFormSchema: () => yup.ObjectSchema<
     shortDescription: yup.string().required(' Short Description Required'),
     longDescription: yup.string().required('Long Description Required'),
     images: yup.string().required(),
-    videos: yup.string().required(),
+    videos: yup.string().notRequired(),
     activityPhone: yup.string().required('Activity Phone Required'),
   })
 

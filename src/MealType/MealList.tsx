@@ -18,6 +18,7 @@ import { mainUrl } from '../config'
 import { Pagination } from 'src/Pagination'
 import { handleSearchSpecific } from 'src/Activities/ActivityList'
 import { SearchField } from 'src/Activities/search'
+import { HandleSearch } from 'src/Activities/SearchHandler'
 
 const url = `${mainUrl}/mealstypes`
 
@@ -151,7 +152,12 @@ export const MealsTypeList = () => {
         MealType Details
       </div>
       <div className="field">
-        <SearchField Search={Search} handleSearch={setSearch} />
+        <SearchField
+          Search={Search}
+          handleSearch={(SearchText: string) =>
+            HandleSearch(SearchText, setSearch, setPage)
+          }
+        />
         <div className="control has-text-right">
           <button className="button is-info " onClick={handleAddMealClick}>
             Add Meal Type

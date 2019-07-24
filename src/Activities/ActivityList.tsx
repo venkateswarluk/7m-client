@@ -17,6 +17,7 @@ import { OptionValues } from '../types'
 import { mainUrl } from '../config'
 import { Pagination } from 'src/Pagination'
 import { SearchField } from './search'
+import { HandleSearch } from './SearchHandler'
 
 const url = `${mainUrl}/activities`
 
@@ -131,6 +132,11 @@ export const ActivityList = () => {
     }
   }
 
+  // const handleSearch = (activitySearch: string) => {
+  //   setActivitySearch(activitySearch)
+  //   setPage(0)
+  // }
+
   const handleRowsPerPage = (event: any) => {
     setRowsPerPage(event)
   }
@@ -227,7 +233,12 @@ export const ActivityList = () => {
         Activities
       </div>
       <div className="field">
-        <SearchField Search={activitySearch} handleSearch={setActivitySearch} />
+        <SearchField
+          Search={activitySearch}
+          handleSearch={(activitySearch: string) =>
+            HandleSearch(activitySearch, setActivitySearch, setPage)
+          }
+        />
 
         <div className="control has-text-right">
           <button className="button is-info " onClick={handleAddMealClick}>

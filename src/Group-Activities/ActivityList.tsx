@@ -247,7 +247,7 @@ export const GroupActivityList = () => {
         }
       </Modal>
 
-      <div>
+      <div style={{ overflowX: 'auto' }}>
         {activities && activities.length > 0 ? (
           <table className="table is-bordered is-striped is-narrow is-hoverable  is-responsive">
             <thead>

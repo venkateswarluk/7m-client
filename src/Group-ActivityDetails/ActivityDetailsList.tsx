@@ -205,7 +205,7 @@ export const GroupActivityDetailsList = () => {
         }
       </Modal>
 
-      <div className="box">
+      <div style={{ overflowX: 'auto' }} className="box">
         {activityDetails.length > 0 ? (
           <table className="table is-bordered is-striped is-narrow is-hoverable is-fullwidth is-responsive">
             <thead>

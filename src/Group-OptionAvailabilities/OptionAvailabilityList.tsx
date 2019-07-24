@@ -209,7 +209,7 @@ export const GroupOptionAvailabilityList = () => {
         }
       </Modal>
 
-      <div className="box">
+      <div style={{ overflowX: 'auto' }} className="box">
         {optionAvailabilities.length > 0 ? (
           <table className="table is-bordered is-striped is-narrow is-hoverable is-fullwidth is-responsive">
             <thead>

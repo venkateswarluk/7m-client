@@ -100,14 +100,15 @@ export const ActivityFormSchema: () => yup.ObjectSchema<
       .integer()
       .positive()
       .required()
-      .moreThan(0, 'MinChildAge Must MoreThan 0'),
+      .moreThan(0, 'MinChildAge Must Be MoreThan 0')
+      .lessThan(12, 'MaxChildAge Must lessThan 12'),
     maxChildAge: yup
       .number()
       .integer()
       .positive()
       .required()
-      .moreThan(0, 'MaxChildAge Must MoreThan 0')
-      .lessThan(9, 'MaxChildAge Must lessThan 10'),
+      .moreThan(0, 'MinChildAge Must Be MoreThan 0')
+      .lessThan(12, 'MaxChildAge Must lessThan 12'),
     destinationId: yup
       .number()
       .integer()

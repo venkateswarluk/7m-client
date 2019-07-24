@@ -25,7 +25,6 @@ import { GroupActivityDetailsList } from '../Group-ActivityDetails/ActivityDetai
 import { GroupActivityOptionList } from '../Group-ActivityOptions/ActivityOptionList'
 import { GroupOptionAvailabilityList } from '../Group-OptionAvailabilities/OptionAvailabilityList'
 import { GroupActivityCategoryList } from '../Group-ActivityCategories/ActivityCategoryList'
-
 const Root = ({ route }: RouteConfigComponentProps) => (
   <div>{renderRoutes(route && route.routes)}</div>
 )

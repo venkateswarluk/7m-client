@@ -244,7 +244,7 @@ export const CityBreakInclusionsList = () => {
         }
       </Modal>
 
-      <div className="box">
+      <div style={{ overflowX: 'auto' }} className="box">
         {/* tslint:disable-next-line:no-console */}
         {console.log(cityBreaks)}
         {cityBreaks.length > 0 ? (

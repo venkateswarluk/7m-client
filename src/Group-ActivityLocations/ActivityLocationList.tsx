@@ -22,7 +22,7 @@ import { handleSearchSpecific } from 'src/Activities/ActivityList'
 import { SearchField } from 'src/Activities/search'
 import { unique } from 'src/ActivityCategories/ActivityCategoryList'
 
-const url = `${mainUrl}/activityLocations`
+const url = `${mainUrl}/group-activity-locations`
 
 export interface ActivityLocation {
   readonly id: string
@@ -52,7 +52,7 @@ const currentActivity: ActivityLocation = {
   latitude: '',
 }
 
-export const ActivityLocationList = () => {
+export const GroupActivityLocationList = () => {
   const [activities, setActivities] = React.useState<
     ReadonlyArray<ActivityLocation>
   >([])

@@ -22,14 +22,16 @@ export const EditCityBreakInclusionInnerForm = (
   return (
     <div>
       <Formik
-        initialValues={props.currentItem}
+        initialValues={{
+          ...props.currentItem,
+          tourName: props.currentItem.tourName,
+        }}
         onSubmit={(
           values: CityBreakInclusionFormValues,
           actions: FormikActions<CityBreakInclusionFormValues>,
         ) => {
           const submitValues = {
             ...values,
-
             cityId: parseInt(values.cityId.toString(), 10),
           }
 

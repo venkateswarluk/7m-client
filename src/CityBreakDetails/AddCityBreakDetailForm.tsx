@@ -71,8 +71,10 @@ export const tourNamesByCityId = (
   cityId: number,
   days: number,
 ) => {
+  // tslint:disable-next-line:no-console
+  console.log('cityId:', cityId, 'days:', days, 'tours:', tours)
   return cityId && days
-    ? tours.filter((x: any) => x.cityId == cityId && x.days == days)
+    ? tours.filter((x: any) => x.cityId === cityId && x.days === days)
     : []
 }
 

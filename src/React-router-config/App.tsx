@@ -130,151 +130,150 @@ const routes: ReadonlyArray<RouteConfig> = [
         exact: true,
         component: GroupActivityCategoryList,
       },
-      {
-        path: '/logout',
-        exact: true,
-        component: LoginList,
-      },
     ],
   },
 ]
 
-export const AppRoutes = () => (
-  <BrowserRouter>
-    <div className="main-content columns ">
-      <aside className="column is-2 ">
-        <div className="has-text-info is-size-5">Activities</div>
-        <ul className="menu-list">
-          <li>
-            <NavLink activeClassName="active" to="/activity">
-              Activity
-            </NavLink>
-          </li>
-          <li>
-            <NavLink activeClassName="active" to="/activity-details">
-              ActivityDetails
-            </NavLink>
-          </li>
-          <li>
-            <NavLink activeClassName="active" to="/activity-option">
-              ActivityOption
-            </NavLink>
-          </li>
+export const AppRoutes = () => {
+  return (
+    <BrowserRouter>
+      <div className="main-content columns ">
+        <aside className="column is-2 ">
+          <div className="has-text-info is-size-5">Activities</div>
+          <ul className="menu-list">
+            <li>
+              <NavLink activeClassName="active" to="/activity">
+                Activity
+              </NavLink>
+            </li>
+            <li>
+              <NavLink activeClassName="active" to="/activity-details">
+                ActivityDetails
+              </NavLink>
+            </li>
+            <li>
+              <NavLink activeClassName="active" to="/activity-option">
+                ActivityOption
+              </NavLink>
+            </li>
 
-          <li>
-            <NavLink activeClassName="active" to="/option-availability">
-              OptionAvailability
-            </NavLink>
-          </li>
-          <li>
-            <NavLink activeClassName="active" to="/activity-location">
-              ActivityLocation
-            </NavLink>
-          </li>
-          <li>
-            <NavLink activeClassName="active" to="/activity-category">
-              ActivityCategory
-            </NavLink>
-          </li>
-        </ul>
-        <div className="has-text-info is-size-5">Meals</div>
-        <ul className="menu-list">
-          <li>
-            <NavLink exact={true} activeClassName="active" to="/meals">
-              Meals
-            </NavLink>
-          </li>
-          <li>
-            <NavLink exact={true} activeClassName="active" to="/meal-types">
-              MealTypes
-            </NavLink>
-          </li>
-        </ul>
+            <li>
+              <NavLink activeClassName="active" to="/option-availability">
+                OptionAvailability
+              </NavLink>
+            </li>
+            <li>
+              <NavLink activeClassName="active" to="/activity-location">
+                ActivityLocation
+              </NavLink>
+            </li>
+            <li>
+              <NavLink activeClassName="active" to="/activity-category">
+                ActivityCategory
+              </NavLink>
+            </li>
+          </ul>
+          <div className="has-text-info is-size-5">Meals</div>
+          <ul className="menu-list">
+            <li>
+              <NavLink exact={true} activeClassName="active" to="/meals">
+                Meals
+              </NavLink>
+            </li>
+            <li>
+              <NavLink exact={true} activeClassName="active" to="/meal-types">
+                MealTypes
+              </NavLink>
+            </li>
+          </ul>
 
-        <div className="has-text-info is-size-5">CityBreaks</div>
-        <ul className="menu-list">
-          <li>
-            <NavLink exact={true} activeClassName="active" to="/city-break">
-              CityBreak
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              exact={true}
-              activeClassName="active"
-              to="/city-break-details"
-            >
-              CityBreakDetails
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              exact={true}
-              activeClassName="active"
-              to="/city-break-inclusions"
-            >
-              CityBreakInclusions
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              exact={true}
-              activeClassName="active"
-              to="/city-break-exclusions"
-            >
-              CityBreakExclusions
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              exact={true}
-              activeClassName="active"
-              to="/city-break-locations"
-            >
-              CityBreakLocations
-            </NavLink>
-          </li>
-        </ul>
+          <div className="has-text-info is-size-5">CityBreaks</div>
+          <ul className="menu-list">
+            <li>
+              <NavLink exact={true} activeClassName="active" to="/city-break">
+                CityBreak
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                exact={true}
+                activeClassName="active"
+                to="/city-break-details"
+              >
+                CityBreakDetails
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                exact={true}
+                activeClassName="active"
+                to="/city-break-inclusions"
+              >
+                CityBreakInclusions
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                exact={true}
+                activeClassName="active"
+                to="/city-break-exclusions"
+              >
+                CityBreakExclusions
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                exact={true}
+                activeClassName="active"
+                to="/city-break-locations"
+              >
+                CityBreakLocations
+              </NavLink>
+            </li>
+          </ul>
 
-        <div className="has-text-info is-size-5">Group Activities</div>
-        <ul className="menu-list">
-          <li>
-            <NavLink activeClassName="active" to="/group-activity">
-              GroupActivity
-            </NavLink>
-          </li>
-          <li>
-            <NavLink activeClassName="active" to="/group-activity-details">
-              GroupActivityDetails
-            </NavLink>
-          </li>
-          <li>
-            <NavLink activeClassName="active" to="/group-activity-option">
-              GroupActivityOption
-            </NavLink>
-          </li>
+          <div className="has-text-info is-size-5">Group Activities</div>
+          <ul className="menu-list">
+            <li>
+              <NavLink activeClassName="active" to="/group-activity">
+                GroupActivity
+              </NavLink>
+            </li>
+            <li>
+              <NavLink activeClassName="active" to="/group-activity-details">
+                GroupActivityDetails
+              </NavLink>
+            </li>
+            <li>
+              <NavLink activeClassName="active" to="/group-activity-option">
+                GroupActivityOption
+              </NavLink>
+            </li>
 
-          <li>
-            <NavLink activeClassName="active" to="/group-option-availability">
-              GroupOptionAvailability
+            <li>
+              <NavLink activeClassName="active" to="/group-option-availability">
+                GroupOptionAvailability
+              </NavLink>
+            </li>
+            <li>
+              <NavLink activeClassName="active" to="/group-activity-category">
+                GroupActivityCategory
+              </NavLink>
+            </li>
+          </ul>
+        </aside>
+        <aside className="column is-10">
+          <div className="has-text-info is-size-5">
+            <NavLink activeClassName="active" to="/logout">
+              LogOut
             </NavLink>
-          </li>
-          <li>
-            <NavLink activeClassName="active" to="/group-activity-category">
-              GroupActivityCategory
-            </NavLink>
-          </li>
-        </ul>
-        <li>
-          <NavLink activeClassName="active" to="/logout">
-            LogOut
-          </NavLink>
-        </li>
-      </aside>
+          </div>
+        </aside>
 
-      <div className="container column is-10">
-        {renderRoutes(routes as RouteConfig[])}
+        <div className="container column is-10">
+          {renderRoutes(routes as RouteConfig[])}
+        </div>
       </div>
-    </div>
-  </BrowserRouter>
-)
+    </BrowserRouter>
+  )
+}

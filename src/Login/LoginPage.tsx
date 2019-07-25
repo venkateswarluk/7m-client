@@ -7,9 +7,10 @@ import { FormikActions } from 'formik'
 
 // import { mainUrl } from '../config'
 import { LoginForm } from './LoginForm'
-import { Route } from 'react-router'
-import { BrowserRouter } from 'react-router-dom'
-import { AppRoutes } from 'src/React-router-config/App'
+// import { Route } from 'react-router'
+// import { BrowserRouter } from 'react-router-dom'
+// import { AppRoutes } from 'src/React-router-config/App'
+import { createBrowserHistory } from 'history'
 
 // const url = `${mainUrl}/activities`
 
@@ -19,13 +20,13 @@ export interface Login {
   readonly password: string
 }
 
-export const LoginList = () => {
+// tslint:disable-next-line:typedef
+export function LoginList() {
   const [loginValues, setLoginValues] = React.useState<Login>({
     id: 0,
     userName: '',
     password: '',
   })
-  const [isAuthenticate, setAuthenticate] = React.useState(false)
 
   // const fetchMealTypeData = async () => {
   //   const result = await axios(`${mainUrl}/user`)
@@ -41,43 +42,32 @@ export const LoginList = () => {
     ) {
       setLoginValues(values)
       actions.setSubmitting(false)
-      setAuthenticate(true)
+      localStorage.setItem('isLoggedIn', 'true')
+      const history = createBrowserHistory()
+      history.push('/home')
     } else {
-      throw Error()
+      if (values.password !== '8097403106') {
+        actions.setFieldError('password', 'Password is incorrect')
+      } else if (values.userName !== 'sandeep@7mtours.com') {
+        actions.setFieldError('userName', 'UserName is incorrect')
+      }
     }
-    // postItem(url, values)
-    //   .then(() => {
-    //     getAllItems(url)
-    //       .then((res: any) => {
-    //         setLoginValues(res)
-    //         actions.setSubmitting(false)
-    //       })
-    //       .catch((err: string) => {
-    //         throw Error(err)
-    //       })
-    //   })
-    //   .catch(err => {
-    //     return Error(err)
-    //   })
   }
 
-  // React.useEffect(() => {
-  //   fetchMealTypeData()
-  // }, [])
-
+  // const isLoggedIn = localStorage.getItem('isLoggedIn')
   return (
-    <div>
-      <BrowserRouter>
-        {isAuthenticate ? (
-          <AppRoutes />
-        ) : (
-          <Route
-            path="/"
-            exact={true}
-            render={() => <LoginForm handleLoginSubmit={handleLoginSubmit} />}
-          />
-        )}
-      </BrowserRouter>
-    </div>
+    // <BrowserRouter>
+    //   {isLoggedIn ? (
+    //     <Route path="/home" exact={true} render={() => <AppRoutes />} />
+    //   ) : (
+    //     <Route
+    //       path="/"
+    //       exact={true}
+    //    render={() =>
+    <LoginForm handleLoginSubmit={handleLoginSubmit} />
+    // }
+    //     />
+    //   )}
+    // </BrowserRouter>
   )
 }

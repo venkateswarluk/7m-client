@@ -61,8 +61,21 @@ export const LoginInnerForm = (props: LoginFormProps<LoginForm>) => (
 
 export const LoginForm = (props: LoginFormProps<LoginForm>) => {
   return (
-    <div>
-      <LoginInnerForm handleLoginSubmit={props.handleLoginSubmit} />
-    </div>
+    <nav className="panel">
+      <div className="card">
+        <div className="level">
+          <div className="level-item has-text-centered">
+            <div>
+              <header className="card-header">
+                <p className="card-header-title">Login</p>
+              </header>
+              <div className="card-content">
+                <LoginInnerForm handleLoginSubmit={props.handleLoginSubmit} />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
   )
 }

@@ -20,7 +20,11 @@ export const MealTypeFormSchema: yup.ObjectSchema<MealTypeForm> = yup.object({
   mealType: yup.string().required('MealType Required'),
   imageUrl: yup.string().required('ImageUrl Required'),
   description: yup.string().required('Description Required'),
-  price: yup.number().required('Price Required'),
+  price: yup
+    .number()
+    .positive()
+    .min(1, 'Price Required')
+    .required('Price Required'),
   items: yup.string(),
   note: yup.string().required('Note Required'),
 })

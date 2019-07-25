@@ -86,6 +86,7 @@ export const FormSchema: () => yup.ObjectSchema<
     // }),
     adultPrice: yup
       .number()
+      .positive()
       .notRequired()
       .when('maxUnits', {
         is: val => Number(val) === 0,
@@ -98,6 +99,7 @@ export const FormSchema: () => yup.ObjectSchema<
       }),
     childPrice: yup
       .number()
+      .positive()
       .notRequired()
       .when('maxUnits', {
         is: val => Number(val) === 0,
@@ -110,6 +112,7 @@ export const FormSchema: () => yup.ObjectSchema<
       }),
     unitPrice: yup
       .number()
+      .positive()
       .notRequired()
       .when('maxAdults', {
         is: val => val === 0,
@@ -136,11 +139,9 @@ export const AddOptionAvailabilityInnerForm = (
       ) => {
         const submitValues = {
           ...values,
-          adultPrice: parseInt(values.adultPrice.toString(), 10),
-          childPrice: parseInt(values.childPrice.toString(), 10),
-          unitPrice: values.unitPrice
-            ? parseInt(values.unitPrice.toString(), 10)
-            : 0,
+          // adultPrice: values.adultPrice,
+          // childPrice: values.childPrice,
+          unitPrice: values.unitPrice ? values.unitPrice : 0,
         }
 
         props.handleAddSubmit(submitValues, actions)

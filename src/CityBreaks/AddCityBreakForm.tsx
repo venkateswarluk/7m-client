@@ -42,7 +42,6 @@ export const FormSchema: () => yup.ObjectSchema<
     description: yup.string().required('Description required'),
     price: yup
       .number()
-      .integer()
       .positive()
       .min(1, 'Price required')
       .required('Price required'),

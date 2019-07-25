@@ -130,6 +130,11 @@ const routes: ReadonlyArray<RouteConfig> = [
         exact: true,
         component: GroupActivityCategoryList,
       },
+      {
+        path: '/logout',
+        exact: true,
+        component: LoginList,
+      },
     ],
   },
 ]
@@ -260,7 +265,13 @@ export const AppRoutes = () => (
             </NavLink>
           </li>
         </ul>
+        <li>
+          <NavLink activeClassName="active" to="/logout">
+            LogOut
+          </NavLink>
+        </li>
       </aside>
+
       <div className="container column is-10">
         {renderRoutes(routes as RouteConfig[])}
       </div>

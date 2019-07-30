@@ -18,6 +18,7 @@ export const App = () => {
   return (
     <BrowserRouter>
       <Switch>
+        <Route path="/" exact={true} component={LoginList} />
         <Route path="/login" exact={true} component={LoginList} />
         <Route path="/home" render={otherRoutes} />
         <Route path="/logout" exact={true} render={LogOutList} />

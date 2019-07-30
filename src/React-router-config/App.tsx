@@ -262,13 +262,13 @@ export const AppRoutes = () => {
             </li>
           </ul>
         </aside>
-        <aside className="column is-10">
+        {/* <aside className="column is-10">
           <div className="has-text-info is-size-5">
             <NavLink activeClassName="active" to="/logout">
               LogOut
             </NavLink>
           </div>
-        </aside>
+        </aside> */}
 
         <div className="container column is-10">
           {renderRoutes(routes as RouteConfig[])}

@@ -158,9 +158,11 @@ export const AddOptionAvailabilityInnerForm = (
       ) => {
         const submitValues = {
           ...values,
-          // adultPrice: parseInt(values.adultPrice.toString(), 10),
-          // childPrice: parseInt(values.childPrice.toString(), 10),
-          unitPrice: values.unitPrice ? values.unitPrice : 0,
+          adultPrice: parseFloat(values.adultPrice.toString()),
+          childPrice: parseFloat(values.childPrice.toString()),
+          unitPrice: values.unitPrice
+            ? parseFloat(values.unitPrice.toString())
+            : 0,
         }
 
         props.handleAddSubmit(submitValues, actions)

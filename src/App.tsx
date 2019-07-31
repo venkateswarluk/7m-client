@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-import { BrowserRouter, Switch, Route } from 'react-router-dom'
+// import { BrowserRouter, Switch, Route } from 'react-router-dom'
 // import { LoginList } from './Login/LoginPage'
 import { AppRoutes } from './React-router-config/App'
 // import { LogOutList } from './Login/LogOut'
@@ -16,14 +16,15 @@ import { AppRoutes } from './React-router-config/App'
 
 export const App = () => {
   return (
-    <BrowserRouter>
-      <Switch>
-        <Route path="/" exact={true} component={AppRoutes} />
-        {/* <Route path="/" exact={true} component={LoginList} />
-        <Route path="/login" exact={true} component={LoginList} />
-        <Route path="/home" render={otherRoutes} />
-        <Route path="/logout" exact={true} render={LogOutList} /> */}
-      </Switch>
-    </BrowserRouter>
+    <AppRoutes />
+    // <BrowserRouter>
+    //   <Switch>
+    //     <Route path="/" exact={true} component={AppRoutes} />
+    //     {/* <Route path="/" exact={true} component={LoginList} />
+    //     <Route path="/login" exact={true} component={LoginList} />
+    //     <Route path="/home" render={otherRoutes} />
+    //     <Route path="/logout" exact={true} render={LogOutList} /> */}
+    //   </Switch>
+    // </BrowserRouter>
   )
 }

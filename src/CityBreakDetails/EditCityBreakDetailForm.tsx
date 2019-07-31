@@ -80,9 +80,9 @@ export const MyApp = (
             <div className="field">
               <div className="control">
                 <label className="label">TourName</label>
-                <Field className="input" name="tourname" type="text" />
+                <Field className="input" name="tourName" type="text" />
                 <div className="has-text-danger is-size-7">
-                  <ErrorMessage name="tourname" />
+                  <ErrorMessage name="tourName" />
                 </div>
               </div>
             </div>
@@ -143,6 +143,8 @@ export const EditCityBreakDateailInnerForm = (
               (x: any) => x.value === values.cityId,
             ),
           }
+          // tslint:disable-next-line:no-console
+          console.log(props.tourNames)
           props.handleEditSubmit(submitValues, actions)
         }}
         validationSchema={FormSchema}
@@ -185,8 +187,8 @@ export const EditCityBreakDateailInnerForm = (
                     <option>Select TourName</option>
                     {tourNamesByCityId(
                       props.tourNames,
-                      formikBag.values.cityId,
-                      formikBag.values.days,
+                      Number(formikBag.values.cityId),
+                      Number(formikBag.values.days),
                     ).map((d: any) => (
                       <option key={d.value} value={d.value}>
                         {d.label}

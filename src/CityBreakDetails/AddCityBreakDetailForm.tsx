@@ -147,8 +147,8 @@ export const AddCityBreakDateailInnerForm = (
                     <option>Select TourName</option>
                     {tourNamesByCityId(
                       props.tourNames,
-                      formikBag.values.cityId,
-                      formikBag.values.days,
+                      Number(formikBag.values.cityId),
+                      Number(formikBag.values.days),
                     ).map((d: any) => (
                       <option key={d.value} value={d.value}>
                         {d.label}

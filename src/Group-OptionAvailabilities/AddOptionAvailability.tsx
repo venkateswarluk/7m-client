@@ -3,6 +3,7 @@ import { Field, Formik, Form, FormikActions, ErrorMessage } from 'formik'
 import * as yup from 'yup'
 import { AddFormProps } from '../types'
 import { buttonDisableProps } from 'src/Activities/AddActivity'
+// const moment = require('moment')
 
 export interface OptionAvailabilityForm {
   readonly optionAvailabilityId: number
@@ -14,8 +15,8 @@ export interface OptionAvailabilityForm {
   readonly unitPrice?: number
   readonly optionId: number
   readonly activityId: number
-  readonly fromDate: string
-  readonly toDate: string
+  readonly fromDate: Date | string
+  readonly toDate: Date | string
 }
 
 const optionAvailabilitiesValues: OptionAvailabilityForm = {
@@ -122,29 +123,37 @@ export const FormSchema: () => yup.ObjectSchema<
       }),
     fromDate: yup.string().required('Required'),
     toDate: yup.string().required('Required'),
+    // .date()
+    // .required('Required')
+    // .when('fromDate', (st: any) => {
+    //   return yup.date().min(moment(st).format('YYYY-MM-DD'))
+    // }),
   })
 
-const isValidDate = (startDate: Date, endDate: Date) => {
-  const startDay = startDate.getDate()
-  const startMonth = startDate.getMonth()
-  const startYear = startDate.getFullYear()
+// const isValidDate = (startDate: string | Date, endDate: string | Date) => {
+//   const startDate1 = moment(startDate).format('YYYY-MM-DD')
+//   const startDay = startDate1.getDate()
+//   const startMonth = startDate1.getMonth()
+//   const startYear = startDate1.getFullYear()
 
-  const endDay = endDate.getDate()
-  const endMonth = endDate.getMonth()
-  const endYear = endDate.getFullYear()
-  if (startMonth === endMonth && startYear === endYear) {
-    if (startDay < endDay) {
-      return false
-    } else {
-      return true
-    }
-  } else if (startMonth < endMonth && startYear === endYear) {
-    return false
-  } else if (startYear < endYear) {
-    return false
-  }
-  return true
-}
+//   const endDate1 = moment(endDate).format('YYYY-MM-DD')
+//   const endDay = endDate1.getDate()
+//   const endMonth = endDate1.getMonth()
+//   const endYear = endDate1.getFullYear()
+
+//   if (startMonth === endMonth && startYear === endYear) {
+//     if (endDay < startDay) {
+//       return false
+//     } else {
+//       return true
+//     }
+//   } else if (endMonth < startMonth && startYear === endYear) {
+//     return false
+//   } else if (endYear < startYear) {
+//     return false
+//   }
+//   return true
+// }
 
 export const AddOptionAvailabilityInnerForm = (
   props: AddFormProps<OptionAvailabilityForm> & buttonDisableProps,
@@ -247,19 +256,21 @@ export const AddOptionAvailabilityInnerForm = (
           <div className="field">
             <div className="control">
               <label className="label">FromDate</label>
-              <Field
-                className="input"
-                name="fromDate"
-                type="date"
-                err={
-                  !isValidDate(
-                    new Date(optionAvailabilitiesValues.fromDate),
-                    new Date(),
-                  )
-                }
-              />
+              <Field className="input" name="fromDate" type="date" />
               <div className="has-text-danger is-size-7">
-                <ErrorMessage name="fromDate" />
+                <ErrorMessage
+                  name="fromDate"
+                  // render={() =>
+                  //   !isValidDate(
+                  //     new Date().toString(),
+                  //     optionAvailabilitiesValues.fromDate,
+                  //   ) ? (
+                  //     <div>please enter Valid Date</div>
+                  //   ) : (
+                  //     <div>Required</div>
+                  //   )
+                  // }
+                />
               </div>
             </div>
           </div>
@@ -267,30 +278,20 @@ export const AddOptionAvailabilityInnerForm = (
           <div className="field">
             <div className="control">
               <label className="label">ToDate</label>
-              <Field
-                className="input"
-                name="toDate"
-                type="date"
-                err={
-                  !isValidDate(
-                    new Date(optionAvailabilitiesValues.toDate),
-                    new Date(optionAvailabilitiesValues.fromDate),
-                  )
-                }
-              />
+              <Field className="input" name="toDate" type="date" />
               <div className="has-text-danger is-size-7">
                 <ErrorMessage
                   name="toDate"
-                  render={() => {
-                    return !isValidDate(
-                      new Date(optionAvailabilitiesValues.toDate),
-                      new Date(optionAvailabilitiesValues.fromDate),
-                    ) ? (
-                      <div>please enter Valid Date</div>
-                    ) : (
-                      <div>Required</div>
-                    )
-                  }}
+                  // render={() => {
+                  //   return !isValidDate(
+                  //     optionAvailabilitiesValues.fromDate,
+                  //     optionAvailabilitiesValues.toDate,
+                  //   ) ? (
+                  //     <div>please enter Valid Date</div>
+                  //   ) : (
+                  //     <div>Required</div>
+                  //   )
+                  // }}
                 />
               </div>
             </div>

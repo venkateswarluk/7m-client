@@ -89,7 +89,7 @@ export const GroupActivityCategoryList = () => {
   ) => {
     setButtonDisable(true)
     if (values.serviceType !== 'null' && values.categoryName !== 'null') {
-      postItem(url, values)
+      postItem(`${url}/create`, values)
         .then(() => {
           getAllItems(url)
             .then(res => {
@@ -173,7 +173,7 @@ export const GroupActivityCategoryList = () => {
   return (
     <div>
       <div className="has-text-centered has-text-info is-size-3">
-        Activity Category Details
+        Group Activity Category
       </div>
       <div className="field">
         <SearchField
@@ -184,7 +184,7 @@ export const GroupActivityCategoryList = () => {
         />
         <div className="control has-text-right">
           <button className="button is-info " onClick={handleAddMealClick}>
-            Add Activity Category
+            Add Group Activity Category
           </button>
         </div>
       </div>
@@ -192,7 +192,7 @@ export const GroupActivityCategoryList = () => {
       <Modal
         closeModal={handleAddMealClick}
         modalState={addActivityOpen}
-        title=" Activity Category Form"
+        title="Group Activity Category Form"
       >
         {
           <AddActivityCategoryForm
@@ -207,7 +207,7 @@ export const GroupActivityCategoryList = () => {
       <Modal
         closeModal={handleEditActivityCloseClick}
         modalState={editActivityOpen}
-        title=" Activity Category Form"
+        title="Group Activity Category Form"
       >
         {
           <EditActivityCategoryForm

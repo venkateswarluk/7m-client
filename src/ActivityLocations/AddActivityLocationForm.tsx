@@ -53,8 +53,8 @@ export const FormSchema: () => yup.ObjectSchema<
     searchingState: yup.string().required(),
     location: yup.string(),
     address: yup.string().required(),
-    longitude: yup.string().required(),
-    latitude: yup.string().required(),
+    longitude: yup.string().required('Required'),
+    latitude: yup.string().required('Required'),
   })
 
 export const AddActivityLocationInnerForm = (
@@ -74,9 +74,12 @@ export const AddActivityLocationInnerForm = (
       ) => {
         const submitValues = {
           ...values,
+
           locationId: props.count,
           searchingCity: values.city,
           location: values.city,
+          latitude: values.latitude === '' ? '' : values.latitude.toString(),
+          longitude: values.longitude === '' ? '' : values.longitude.toString(),
         }
         props.handleAddSubmit(submitValues, actions)
       }}
@@ -137,7 +140,7 @@ export const AddActivityLocationInnerForm = (
           <div className="field">
             <div className="control">
               <label className="label">Longitude</label>
-              <Field className="input" name="longitude" type="text" />
+              <Field className="input" name="longitude" type="number" />
               <div className="has-text-danger is-size-7">
                 <ErrorMessage name="longitude" />
               </div>
@@ -147,7 +150,7 @@ export const AddActivityLocationInnerForm = (
           <div className="field">
             <div className="control">
               <label className="label">latitude</label>
-              <Field className="input" name="latitude" type="text" />
+              <Field className="input" name="latitude" type="number" />
               <div className="has-text-danger is-size-7">
                 <ErrorMessage name="latitude" />
               </div>

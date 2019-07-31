@@ -22,7 +22,12 @@ export const EditActivityLocationInnerForm = (props: EditFormProps) => (
           locationId: values.locationId,
           searchingCity: values.city,
           location: values.city,
+          latitude: values.latitude === '' ? '' : values.latitude.toString(),
+          longitude: values.longitude === '' ? '' : values.longitude.toString(),
         }
+        // tslint:disable-next-line:no-console
+        console.log(submitValues)
+
         props.handleEditSubmit(submitValues, actions)
       }}
     >
@@ -66,14 +71,14 @@ export const EditActivityLocationInnerForm = (props: EditFormProps) => (
           <div className="field">
             <div className="control">
               <label className="label">Longitude</label>
-              <Field className="input" name="longitude" type="text" />
+              <Field className="input" name="longitude" type="number" />
             </div>
           </div>
 
           <div className="field">
             <div className="control">
               <label className="label">latitude</label>
-              <Field className="input" name="latitude" type="text" />
+              <Field className="input" name="latitude" type="number" />
             </div>
           </div>
 

@@ -181,7 +181,7 @@ export const GroupActivityLocationList = () => {
   return (
     <div>
       <div className="has-text-centered has-text-info is-size-3">
-        Activity Location Details
+        Group Activity Location
       </div>
       <div className="field">
         <SearchField
@@ -192,7 +192,7 @@ export const GroupActivityLocationList = () => {
         />
         <div className="control has-text-right">
           <button className="button is-info " onClick={handleAddMealClick}>
-            Add Activity Location
+            Add Group Activity Location
           </button>
         </div>
       </div>
@@ -200,7 +200,7 @@ export const GroupActivityLocationList = () => {
       <Modal
         closeModal={handleAddMealClick}
         modalState={addActivityOpen}
-        title=" Activity Location Form"
+        title="Group Activity Location Form"
       >
         {
           <AddActivityLocationForm
@@ -215,7 +215,7 @@ export const GroupActivityLocationList = () => {
       <Modal
         closeModal={handleEditActivityCloseClick}
         modalState={editActivityOpen}
-        title=" Activity Location Form"
+        title="Group Activity Location Form"
       >
         {
           <EditActivityLocationForm

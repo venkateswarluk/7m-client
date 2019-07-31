@@ -138,7 +138,7 @@ export const AppRoutes = () => {
   return (
     <BrowserRouter>
       <div className="main-content columns ">
-        <aside className="column is-2 ">
+        <aside className="column is-2" style={{ backgroundColor: 'gainsboro' }}>
           <div className="has-text-info is-size-5">Activities</div>
           <ul className="menu-list">
             <li>

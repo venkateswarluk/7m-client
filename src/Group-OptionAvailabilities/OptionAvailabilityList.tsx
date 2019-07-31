@@ -171,7 +171,7 @@ export const GroupOptionAvailabilityList = () => {
   return (
     <div>
       <div className="has-text-centered has-text-info is-size-3">
-        Option Availabilities
+        Group Option Availabilities
       </div>
       <div className="field">
         <SearchField
@@ -182,7 +182,7 @@ export const GroupOptionAvailabilityList = () => {
         />
         <div className="control has-text-right">
           <button className="button is-info " onClick={handleAddMealClick}>
-            Add Availability
+            Add Group Availability
           </button>
         </div>
       </div>
@@ -190,7 +190,7 @@ export const GroupOptionAvailabilityList = () => {
       <Modal
         closeModal={handleAddMealClick}
         modalState={addActivityOpen}
-        title=" Option Availability Form"
+        title="Group Option Availability Form"
       >
         {
           <AddOptionAvailabilityForm
@@ -204,7 +204,7 @@ export const GroupOptionAvailabilityList = () => {
       <Modal
         closeModal={handleEditActivityCloseClick}
         modalState={editActivityOpen}
-        title=" Option Availability Form"
+        title="Group Option Availability Form"
       >
         {
           <EditOptionAvailabilityForm

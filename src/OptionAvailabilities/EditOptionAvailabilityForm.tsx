@@ -1,5 +1,12 @@
 import * as React from 'react'
-import { Field, Formik, Form, FormikActions, ErrorMessage } from 'formik'
+import {
+  Field,
+  Formik,
+  Form,
+  FormikActions,
+  ErrorMessage,
+  FormikProps,
+} from 'formik'
 import { FormSchema, OptionAvailabilityForm } from './AddOptionAvailability'
 
 interface EditFormProps {
@@ -28,135 +35,147 @@ export const EditOptionAvailabilityInnerForm = (props: EditFormProps) => (
         props.handleEditSubmit(submitValues, actions)
       }}
       validationSchema={FormSchema}
-    >
-      <div>
-        <Form>
-          <div className="field">
-            <div className="control">
-              <label className="label">OptionavailabilityId</label>
-              <Field
-                className="input"
-                name="optionAvailabilityId"
-                type="number"
-              />
-              <div className="has-text-danger is-size-7">
-                <ErrorMessage name="optionAvailabilityId" />
+      render={(formikBag: FormikProps<OptionAvailabilityForm>) => {
+        return (
+          <div>
+            <Form>
+              <div className="field">
+                <div className="control">
+                  <label className="label">OptionavailabilityId</label>
+                  <Field
+                    className="input"
+                    name="optionAvailabilityId"
+                    type="number"
+                  />
+                  <div className="has-text-danger is-size-7">
+                    <ErrorMessage name="optionAvailabilityId" />
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
 
-          <div className="field">
-            <div className="control">
-              <label className="label">MaxAdults </label>
-              <Field className="input" name="maxAdults" type="number" />
-              <div className="has-text-danger is-size-7">
-                <ErrorMessage name="maxAdults" />
+              <div className="field">
+                <div className="control">
+                  <label className="label">MaxAdults </label>
+                  <Field className="input" name="maxAdults" type="number" />
+                  <div className="has-text-danger is-size-7">
+                    <ErrorMessage name="maxAdults" />
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
 
-          <div className="field">
-            <div className="control">
-              <label className="label">MaxChilds</label>
-              <Field className="input" name="maxChilds" type="number" />
-              <div className="has-text-danger is-size-7">
-                <ErrorMessage name="maxChilds" />
+              <div className="field">
+                <div className="control">
+                  <label className="label">MaxChilds</label>
+                  <Field className="input" name="maxChilds" type="number" />
+                  <div className="has-text-danger is-size-7">
+                    <ErrorMessage name="maxChilds" />
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
 
-          <div className="field">
-            <div className="control">
-              <label className="label">MaxUnits</label>
-              <Field className="input" name="maxUnits" type="number" />
-              <div className="has-text-danger is-size-7">
-                <ErrorMessage name="maxUnits" />
+              <div className="field">
+                <div className="control">
+                  <label className="label">MaxUnits</label>
+                  <Field className="input" name="maxUnits" type="number" />
+                  <div className="has-text-danger is-size-7">
+                    <ErrorMessage name="maxUnits" />
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
 
-          <div className="field">
-            <div className="control">
-              <label className="label">AdultPrice</label>
-              <Field className="input" name="adultPrice" type="number" />
-              <div className="has-text-danger is-size-7">
-                <ErrorMessage name="adultPrice" />
+              <div className="field">
+                <div className="control">
+                  <label className="label">AdultPrice</label>
+                  <Field className="input" name="adultPrice" type="number" />
+                  <div className="has-text-danger is-size-7">
+                    <ErrorMessage name="adultPrice" />
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
 
-          <div className="field">
-            <div className="control">
-              <label className="label">ChildPrice</label>
-              <Field className="input" name="childPrice" type="number" />
-              <div className="has-text-danger is-size-7">
-                <ErrorMessage name="childPrice" />
+              <div className="field">
+                <div className="control">
+                  <label className="label">ChildPrice</label>
+                  <Field className="input" name="childPrice" type="number" />
+                  <div className="has-text-danger is-size-7">
+                    <ErrorMessage name="childPrice" />
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-          <div className="field">
-            <div className="control">
-              <label className="label">UnitPrice</label>
-              <Field className="input" name="unitPrice" type="number" />
-              <div className="has-text-danger is-size-7">
-                <ErrorMessage name="unitPrice" />
+              <div className="field">
+                <div className="control">
+                  <label className="label">UnitPrice</label>
+                  <Field className="input" name="unitPrice" type="number" />
+                  <div className="has-text-danger is-size-7">
+                    <ErrorMessage name="unitPrice" />
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
 
-          <div className="field">
-            <div className="control">
-              <label className="label">FromDate</label>
-              <Field className="input" name="fromDate" type="date" />
-              <div className="has-text-danger is-size-7">
-                <ErrorMessage name="fromDate" />
+              <div className="field">
+                <div className="control">
+                  <label className="label">FromDate</label>
+                  <Field className="input" name="fromDate" type="date" />
+                  <div className="has-text-danger is-size-7">
+                    <ErrorMessage name="fromDate" />
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
 
-          <div className="field">
-            <div className="control">
-              <label className="label">ToDate</label>
-              <Field className="input" name="toDate" type="date" />
-              <div className="has-text-danger is-size-7">
-                <ErrorMessage name="toDate" />
+              <div className="field">
+                <div className="control">
+                  <label className="label">ToDate</label>
+                  <Field className="input" name="toDate" type="date" />
+                  <div className="has-text-danger is-size-7">
+                    <ErrorMessage
+                      name="toDate"
+                      render={() =>
+                        formikBag.values.toDate < formikBag.values.fromDate ? (
+                          <div>Please Select Date Greater than FromDate</div>
+                        ) : (
+                          <div>Required</div>
+                        )
+                      }
+                    />
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
 
-          <div className="field">
-            <div className="control">
-              <label className="label">ActivityId</label>
-              <Field className="input" name="activityId" type="number" />
-              <div className="has-text-danger is-size-7">
-                <ErrorMessage name="activityId" />
+              <div className="field">
+                <div className="control">
+                  <label className="label">ActivityId</label>
+                  <Field className="input" name="activityId" type="number" />
+                  <div className="has-text-danger is-size-7">
+                    <ErrorMessage name="activityId" />
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
 
-          <div className="field">
-            <div className="control">
-              <label className="label">OptionId</label>
-              <Field className="input" name="optionId" type="number" />
-              <div className="has-text-danger is-size-7">
-                <ErrorMessage name="optionId" />
+              <div className="field">
+                <div className="control">
+                  <label className="label">OptionId</label>
+                  <Field className="input" name="optionId" type="number" />
+                  <div className="has-text-danger is-size-7">
+                    <ErrorMessage name="optionId" />
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
 
-          <button className="button is-link" type="submit">
-            Submit
-          </button>
-          <button
-            className="button is-danger"
-            type="button"
-            onClick={() => props.handleCloseClick()}
-          >
-            Close
-          </button>
-        </Form>
-      </div>
-    </Formik>
+              <button className="button is-link" type="submit">
+                Submit
+              </button>
+              <button
+                className="button is-danger"
+                type="button"
+                onClick={() => props.handleCloseClick()}
+              >
+                Close
+              </button>
+            </Form>
+          </div>
+        )
+      }}
+    />
   </div>
 )
 

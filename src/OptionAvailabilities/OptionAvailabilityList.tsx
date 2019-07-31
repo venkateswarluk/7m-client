@@ -35,8 +35,8 @@ export interface OptionAvailability {
   readonly unitPrice: number
   readonly optionId: number
   readonly activityId: number
-  readonly fromDate: string
-  readonly toDate: string
+  readonly fromDate: Date
+  readonly toDate: Date
 }
 
 const currentActivityOption: OptionAvailability = {
@@ -50,8 +50,8 @@ const currentActivityOption: OptionAvailability = {
   unitPrice: 0.0,
   optionId: 0,
   activityId: 0,
-  fromDate: '',
-  toDate: '',
+  fromDate: new Date(),
+  toDate: new Date(),
 }
 
 export const OptionAvailabilityList = () => {

@@ -25,8 +25,18 @@ export const EditOptionAvailabilityInnerForm = (props: EditFormProps) => (
       onSubmit={(values: OptionAvailabilityForm, actions: any) => {
         const submitValues = {
           ...values,
-          adultPrice: parseFloat(values.adultPrice.toString()),
-          childPrice: parseFloat(values.childPrice.toString()),
+          maxAdults: values.maxAdults
+            ? parseFloat(values.maxAdults.toString())
+            : 0,
+          maxChilds: values.maxChilds
+            ? parseFloat(values.maxChilds.toString())
+            : 0,
+          adultPrice: values.adultPrice
+            ? parseFloat(values.adultPrice.toString())
+            : 0,
+          childPrice: values.childPrice
+            ? parseFloat(values.childPrice.toString())
+            : 0,
           unitPrice: values.unitPrice
             ? parseFloat(values.unitPrice.toString())
             : 0,

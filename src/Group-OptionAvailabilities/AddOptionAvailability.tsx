@@ -65,7 +65,7 @@ export const FormSchema: () => yup.ObjectSchema<
         is: val => Number(val) === 0,
         then: yup
           .number()
-          .min(1, 'MaxAdults Required')
+          .min(9, 'MaxAdults should be greater than 9')
           .required('MaxAdults Required'),
         // tslint:disable-next-line:object-literal-sort-keys
         otherwise: yup.number().notRequired(),
@@ -83,12 +83,12 @@ export const FormSchema: () => yup.ObjectSchema<
         otherwise: yup.number().notRequired(),
       }),
     maxUnits: yup.number().notRequired(),
-    // .when('maxChilds', {
-    //   is: val => val === 0,
+    // .when('maxAdults', {
+    //   is: val => Number(val) === 0,
     //   then: yup
     //     .number()
-    //     .min(1, 'MaxUnits Required')
-    //     .required('MaxUnits Required'),
+    //     .min(9, 'maxAdults Required')
+    //     .required('maxAdults Required'),
     //   // tslint:disable-next-line:object-literal-sort-keys
     //   otherwise: yup.number().notRequired(),
     // }),
@@ -134,12 +134,10 @@ export const FormSchema: () => yup.ObjectSchema<
       .required('Required'),
     toDate: yup
       .date()
-      .min(new Date(), 'Please Select from Current Date')
-      .required('Required')
       .when('fromDate', (st: Date) => {
         return yup
           .date()
-          .min(st)
+          .min(st, 'Please Select Date Greater than fromDate')
           .required('Please Select Date Greater than fromDate')
       })
       .required('Required'),
@@ -234,6 +232,7 @@ export const AddOptionAvailabilityInnerForm = (
                 <div className="control">
                   <label className="label">MaxUnits</label>
                   <Field className="input" name="maxUnits" type="number" />
+                  <label>hint:maxUnits should be greater than 9</label>
                   <div className="has-text-danger is-size-7">
                     <ErrorMessage name="maxUnits" />
                   </div>

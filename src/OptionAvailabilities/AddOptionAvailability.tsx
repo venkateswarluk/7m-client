@@ -132,7 +132,7 @@ export const FormSchema: () => yup.ObjectSchema<
       }),
     fromDate: yup
       .date()
-      .min(new Date(), 'Please Select from Current Date')
+      .min(new Date(), 'Please Select from above Current Date')
       .required('Required'),
     toDate: yup
       .date()

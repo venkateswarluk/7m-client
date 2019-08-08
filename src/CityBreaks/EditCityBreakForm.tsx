@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Field, Formik, Form, FormikActions } from 'formik'
+import { Field, Formik, Form, FormikActions, ErrorMessage } from 'formik'
 import { CityBreakFormValues, FormSchema } from './AddCityBreakForm'
 import { OptionValues } from 'src/CityBreakDetails/CityBreakDetailList'
 import { EditFormProps, DestinationProps } from '../types'
@@ -47,6 +47,9 @@ export const EditCityBreakInnerForm = (
                     </option>
                   ))}
                 </Field>
+                <div className="has-text-danger is-size-7">
+                  <ErrorMessage name="cityId" />
+                </div>
               </div>
             </div>
           </div>
@@ -55,6 +58,9 @@ export const EditCityBreakInnerForm = (
             <div className="control">
               <label className="label">Days </label>
               <Field className="input" name="days" type="number" />
+              <div className="has-text-danger is-size-7">
+                <ErrorMessage name="days" />
+              </div>
             </div>
           </div>
 
@@ -62,6 +68,9 @@ export const EditCityBreakInnerForm = (
             <div className="control">
               <label className="label">TourName</label>
               <Field className="input" name="tourName" type="text" />
+              <div className="has-text-danger is-size-7">
+                <ErrorMessage name="tourName" />
+              </div>
             </div>
           </div>
 
@@ -69,6 +78,9 @@ export const EditCityBreakInnerForm = (
             <div className="control">
               <label className="label">Description</label>
               <Field className="input" name="description" type="text" />
+              <div className="has-text-danger is-size-7">
+                <ErrorMessage name="description" />
+              </div>
             </div>
           </div>
 
@@ -76,6 +88,9 @@ export const EditCityBreakInnerForm = (
             <div className="control">
               <label className="label">Price</label>
               <Field className="input" name="price" type="number" />
+              <div className="has-text-danger is-size-7">
+                <ErrorMessage name="price" />
+              </div>
             </div>
           </div>
 
@@ -83,6 +98,9 @@ export const EditCityBreakInnerForm = (
             <div className="control">
               <label className="label">ImageUrl</label>
               <Field className="input" name="imageUrl" type="url" />
+              <div className="has-text-danger is-size-7">
+                <ErrorMessage name="imageUrl" />
+              </div>
             </div>
           </div>
 
@@ -90,6 +108,9 @@ export const EditCityBreakInnerForm = (
             <div className="control">
               <label className="label">Phone</label>
               <Field className="input" name="phone" type="text" />
+              <div className="has-text-danger is-size-7">
+                <ErrorMessage name="phone" />
+              </div>
             </div>
           </div>
 
@@ -97,6 +118,9 @@ export const EditCityBreakInnerForm = (
             <div className="control">
               <label className="label">StarRating</label>
               <Field className="input" name="starRating" type="number" />
+              <div className="has-text-danger is-size-7">
+                <ErrorMessage name="starRating" />
+              </div>
             </div>
           </div>
 

@@ -88,40 +88,53 @@ export const GroupActivityCategoryList = () => {
     actions: FormikActions<ActivityCategoryForm>,
   ) => {
     setButtonDisable(true)
-    if (values.serviceType !== 'null' && values.categoryName !== 'null') {
-      postItem(`${url}/create`, values)
-        .then(() => {
-          getAllItems(url)
-            .then(res => {
-              setActivities(res)
-              setAddActivityOpen(!addActivityOpen)
-              setButtonDisable(false)
+    if (
+      activities.filter(
+        (y: ActivityCategory) =>
+          y.categoryName.toLowerCase() === values.categoryName.toLowerCase(),
+      ).length === 0
+    ) {
+      if (values.serviceType !== 'null' && values.categoryName !== 'null') {
+        postItem(`${url}/create`, values)
+          .then(() => {
+            getAllItems(url)
+              .then(res => {
+                setActivities(res)
+                setAddActivityOpen(!addActivityOpen)
+                setButtonDisable(false)
 
-              actions.setSubmitting(false)
-            })
-            .catch(err => {
-              setButtonDisable(false)
+                actions.setSubmitting(false)
+              })
+              .catch(err => {
+                setButtonDisable(false)
 
-              throw Error(err)
-            })
-        })
-        .catch(err => {
+                throw Error(err)
+              })
+          })
+          .catch(err => {
+            setButtonDisable(false)
+            throw Error(err)
+          })
+      } else {
+        if (values.serviceType === 'null') {
           setButtonDisable(false)
 
-          throw Error(err)
-        })
-    } else {
-      if (values.serviceType === 'null') {
-        setButtonDisable(false)
-
-        actions.setFieldError('serviceType', 'Please Give a Valid ServiceType')
-      } else if (values.categoryName === 'null') {
-        setButtonDisable(false)
-        actions.setFieldError(
-          'categoryName',
-          'Please Give a Valid CategoryName',
-        )
+          actions.setFieldError(
+            'serviceType',
+            'Please Give a Valid ServiceType',
+          )
+        } else if (values.categoryName === 'null') {
+          setButtonDisable(false)
+          actions.setFieldError(
+            'categoryName',
+            'Please Give a Valid CategoryName',
+          )
+        }
       }
+    } else {
+      setButtonDisable(false)
+      actions.setFieldError('categoryName', 'categoryName Already Exists')
+      setButtonDisable(false)
     }
   }
 

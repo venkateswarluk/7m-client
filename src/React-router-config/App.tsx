@@ -26,6 +26,7 @@ import { GroupActivityOptionList } from '../Group-ActivityOptions/ActivityOption
 import { GroupOptionAvailabilityList } from '../Group-OptionAvailabilities/OptionAvailabilityList'
 import { GroupActivityCategoryList } from '../Group-ActivityCategories/ActivityCategoryList'
 import { LoginList } from 'src/Login/LoginPage'
+import { SevenmShuttleList } from 'src/SevenmShuttles/SevenmShuttleList'
 const Root = ({ route }: RouteConfigComponentProps) => (
   <div>{renderRoutes(route && route.routes)}</div>
 )
@@ -38,6 +39,11 @@ const routes: ReadonlyArray<RouteConfig> = [
         path: '/login',
         exact: true,
         component: LoginList,
+      },
+      {
+        path: '/sevenmshuttles',
+        exact: true,
+        component: SevenmShuttleList,
       },
       {
         path: '/activity',
@@ -139,6 +145,14 @@ export const AppRoutes = () => {
     <BrowserRouter>
       <div className="main-content columns ">
         <aside className="column is-2" style={{ backgroundColor: 'gainsboro' }}>
+          <div className="has-text-info is-size-5">Sevenm Shuttles</div>
+          <ul className="menu-list">
+            <li>
+              <NavLink activeClassName="active" to="/sevenmshuttles">
+                SevenmShuttles
+              </NavLink>
+            </li>
+          </ul>
           <div className="has-text-info is-size-5">Activities</div>
           <ul className="menu-list">
             <li>

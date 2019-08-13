@@ -64,7 +64,7 @@ export const FormSchema: () => yup.ObjectSchema<
         is: val => Number(val) === 0,
         then: yup
           .number()
-          .min(1, 'MaxAdults Required')
+          .min(9, 'MaxAdults should be greater than 9')
           .required('MaxAdults Required'),
         // tslint:disable-next-line:object-literal-sort-keys
         otherwise: yup.number().notRequired(),
@@ -210,6 +210,18 @@ export const AddOptionAvailabilityInnerForm = (
                 <div className="control">
                   <label className="label">MaxUnits</label>
                   <Field className="input" name="maxUnits" type="number" />
+                  {formikBag.values.maxUnits !== 0 ? (
+                    <div />
+                  ) : formikBag.values.maxAdults === 0 ||
+                  formikBag.values.maxAdults === undefined ||
+                  formikBag.values.maxChilds === 0 ||
+                  formikBag.values.maxChilds === undefined ? (
+                    <div className="has-text-danger is-size-7">
+                      MaxUnits should be greater than 9
+                    </div>
+                  ) : (
+                    <div />
+                  )}
                   <div className="has-text-danger is-size-7">
                     <ErrorMessage name="maxUnits" />
                   </div>

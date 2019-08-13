@@ -40,6 +40,9 @@ export const EditOptionAvailabilityInnerForm = (props: EditFormProps) => (
           unitPrice: values.unitPrice
             ? parseFloat(values.unitPrice.toString())
             : 0,
+          maxUnits: values.maxUnits
+            ? parseFloat(values.maxUnits.toString())
+            : 0,
         }
 
         props.handleEditSubmit(submitValues, actions)

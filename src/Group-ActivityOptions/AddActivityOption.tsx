@@ -55,7 +55,7 @@ export const AddActivityOptionInnerForm = (
         <Form>
           <div className="field">
             <div className="control">
-              <label className="label">Activity Option Id</label>
+              <label className="label">Option Id</label>
               <Field className="input" name="activityOptionId" type="number" />
               <div className="has-text-danger is-size-7">
                 <ErrorMessage name="activityOptionId" />

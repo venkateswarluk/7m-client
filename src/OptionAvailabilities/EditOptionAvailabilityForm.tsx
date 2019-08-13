@@ -87,6 +87,18 @@ export const EditOptionAvailabilityInnerForm = (props: EditFormProps) => (
                 <div className="control">
                   <label className="label">MaxUnits</label>
                   <Field className="input" name="maxUnits" type="number" />
+                  {formikBag.values.maxUnits !== 0 ? (
+                    <div />
+                  ) : formikBag.values.maxAdults === 0 ||
+                  formikBag.values.maxAdults === undefined ||
+                  formikBag.values.maxChilds === 0 ||
+                  formikBag.values.maxChilds === undefined ? (
+                    <div className="has-text-danger is-size-7">
+                      MaxUnits should be greater than 9
+                    </div>
+                  ) : (
+                    <div />
+                  )}
                   <div className="has-text-danger is-size-7">
                     <ErrorMessage name="maxUnits" />
                   </div>

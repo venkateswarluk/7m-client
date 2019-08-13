@@ -104,18 +104,23 @@ export const GroupOptionAvailabilityList = () => {
   ) => {
     setButtonDisable(true)
     postItem(url, values)
-      .then(() => {
-        getAllItems(url)
-          .then(res => {
-            setOptionAvailabilities(res)
-            setAddActivityOpen(!addActivityOpen)
-            setButtonDisable(false)
-            actions.setSubmitting(false)
-          })
-          .catch(err => {
-            setButtonDisable(false)
-            throw Error(err)
-          })
+      .then(res1 => {
+        if (res1 === null) {
+          getAllItems(url)
+            .then(res => {
+              setOptionAvailabilities(res)
+              setAddActivityOpen(!addActivityOpen)
+              setButtonDisable(false)
+              actions.setSubmitting(false)
+            })
+            .catch(err => {
+              setButtonDisable(false)
+              throw Error(err)
+            })
+        } else {
+          setButtonDisable(false)
+          actions.setFieldError('optionId', `Please fill the required fields`)
+        }
       })
       .catch(err => {
         setButtonDisable(false)

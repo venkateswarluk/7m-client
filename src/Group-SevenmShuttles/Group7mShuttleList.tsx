@@ -18,7 +18,7 @@ import { Pagination } from 'src/Pagination'
 import { SearchField } from 'src/Activities/search'
 import { HandleSearch } from 'src/Activities/SearchHandler'
 
-const url = `${mainUrl}/sevenmshuttles`
+const url = `${mainUrl}/group7mshuttles`
 
 export interface Sevenmshuttles {
   readonly id: string
@@ -51,7 +51,7 @@ const currentActivity: Sevenmshuttles = {
   price: 0,
 }
 
-export const SevenmShuttleList = () => {
+export const Group7mShuttleList = () => {
   const [activities, setActivities] = React.useState<
     ReadonlyArray<Sevenmshuttles>
   >([])
@@ -214,7 +214,7 @@ export const SevenmShuttleList = () => {
   return (
     <div>
       <div className="has-text-centered has-text-info is-size-3">
-        7m-Shuttles
+        7m Group-Shuttles
       </div>
       <div className="field">
         <SearchField
@@ -226,7 +226,7 @@ export const SevenmShuttleList = () => {
 
         <div className="control has-text-right">
           <button className="button is-info " onClick={handleAddMealClick}>
-            Add 7m-Shuttle
+            Add 7m Group-Shuttle
           </button>
         </div>
       </div>
@@ -234,7 +234,7 @@ export const SevenmShuttleList = () => {
       <Modal
         closeModal={handleAddMealClick}
         modalState={addActivityOpen}
-        title="Add 7m-Shuttles Form"
+        title="Add 7m Group-Shuttles Form"
       >
         {
           <AddSevenmShuttleForm
@@ -248,7 +248,7 @@ export const SevenmShuttleList = () => {
       <Modal
         closeModal={handleEditActivityCloseClick}
         modalState={editActivityOpen}
-        title="Edit 7m-Shuttle Form"
+        title="Edit 7m Group-Shuttle Form"
       >
         {
           <EditSevenmShuttleForm

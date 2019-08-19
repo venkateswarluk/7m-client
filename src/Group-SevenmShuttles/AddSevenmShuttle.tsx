@@ -47,8 +47,7 @@ export const ActivityFormSchema: () => yup.ObjectSchema<
       .number()
       .integer()
       .positive()
-      .min(1, 'MaxQuantity Required')
-      .max(9, 'MaxQuantity should be less than 10 ')
+      .min(10, 'MaxQuantity shoul be greater than or equal to 10')
       .required('MaxQuantity Required'),
     imageUrl: yup.string().required('ImageUrl Required'),
     price: yup

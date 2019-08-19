@@ -8,6 +8,7 @@ import {
   FormikProps,
 } from 'formik'
 import { FormSchema, OptionAvailabilityForm } from './AddOptionAvailability'
+import { CFIntegerField } from 'src/CFIntegerField'
 
 interface EditFormProps {
   readonly currentItem: OptionAvailabilityForm
@@ -25,11 +26,11 @@ export const EditOptionAvailabilityInnerForm = (props: EditFormProps) => (
       onSubmit={(values: OptionAvailabilityForm, actions: any) => {
         const submitValues = {
           ...values,
+          maxUnits: values.maxUnits
+            ? parseFloat(values.maxUnits.toString())
+            : 0,
           maxAdults: values.maxAdults
             ? parseFloat(values.maxAdults.toString())
-            : 0,
-          maxChilds: values.maxChilds
-            ? parseFloat(values.maxChilds.toString())
             : 0,
           adultPrice: values.adultPrice
             ? parseFloat(values.adultPrice.toString())
@@ -40,8 +41,8 @@ export const EditOptionAvailabilityInnerForm = (props: EditFormProps) => (
           unitPrice: values.unitPrice
             ? parseFloat(values.unitPrice.toString())
             : 0,
-          maxUnits: values.maxUnits
-            ? parseFloat(values.maxUnits.toString())
+          maxChilds: values.maxChilds
+            ? parseFloat(values.maxChilds.toString())
             : 0,
         }
 
@@ -69,59 +70,71 @@ export const EditOptionAvailabilityInnerForm = (props: EditFormProps) => (
               <div className="field">
                 <div className="control">
                   <label className="label">MaxAdults </label>
-                  <Field className="input" name="maxAdults" type="number" />
+                  <CFIntegerField className="input" name="maxAdults" />
+
+                  {/* <Field className="input" name="maxAdults" type="number" />
                   <div className="has-text-danger is-size-7">
                     <ErrorMessage name="maxAdults" />
-                  </div>
+                  </div> */}
                 </div>
               </div>
 
               <div className="field">
                 <div className="control">
                   <label className="label">MaxChilds</label>
-                  <Field className="input" name="maxChilds" type="number" />
+                  <CFIntegerField className="input" name="maxChilds" />
+
+                  {/* <Field className="input" name="maxChilds" type="number" />
                   <div className="has-text-danger is-size-7">
                     <ErrorMessage name="maxChilds" />
-                  </div>
+                  </div> */}
                 </div>
               </div>
 
               <div className="field">
                 <div className="control">
                   <label className="label">MaxUnits</label>
-                  <Field className="input" name="maxUnits" type="number" />
+                  <CFIntegerField className="input" name="maxUnits" />
+
+                  {/* <Field className="input" name="maxUnits" type="number" />
                   <div className="has-text-danger is-size-7">
                     <ErrorMessage name="maxUnits" />
-                  </div>
+                  </div> */}
                 </div>
               </div>
 
               <div className="field">
                 <div className="control">
                   <label className="label">AdultPrice</label>
-                  <Field className="input" name="adultPrice" type="number" />
+                  <CFIntegerField className="input" name="adultPrice" />
+
+                  {/* <Field className="input" name="adultPrice" type="number" />
                   <div className="has-text-danger is-size-7">
                     <ErrorMessage name="adultPrice" />
-                  </div>
+                  </div> */}
                 </div>
               </div>
 
               <div className="field">
                 <div className="control">
                   <label className="label">ChildPrice</label>
+                  <CFIntegerField className="input" name="childPrice" />
+                  {/* 
                   <Field className="input" name="childPrice" type="number" />
                   <div className="has-text-danger is-size-7">
                     <ErrorMessage name="childPrice" />
-                  </div>
+                  </div> */}
                 </div>
               </div>
               <div className="field">
                 <div className="control">
                   <label className="label">UnitPrice</label>
-                  <Field className="input" name="unitPrice" type="number" />
+                  <CFIntegerField className="input" name="unitPrice" />
+
+                  {/* <Field className="input" name="unitPrice" type="number" />
                   <div className="has-text-danger is-size-7">
                     <ErrorMessage name="unitPrice" />
-                  </div>
+                  </div> */}
                 </div>
               </div>
 

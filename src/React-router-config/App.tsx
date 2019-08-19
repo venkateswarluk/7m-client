@@ -27,6 +27,7 @@ import { GroupOptionAvailabilityList } from '../Group-OptionAvailabilities/Optio
 import { GroupActivityCategoryList } from '../Group-ActivityCategories/ActivityCategoryList'
 import { LoginList } from 'src/Login/LoginPage'
 import { SevenmShuttleList } from 'src/SevenmShuttles/SevenmShuttleList'
+import { Group7mShuttleList } from 'src/Group-SevenmShuttles/Group7mShuttleList'
 const Root = ({ route }: RouteConfigComponentProps) => (
   <div>{renderRoutes(route && route.routes)}</div>
 )
@@ -41,7 +42,7 @@ const routes: ReadonlyArray<RouteConfig> = [
         component: LoginList,
       },
       {
-        path: '/sevenmshuttles',
+        path: '/7mshuttles',
         exact: true,
         component: SevenmShuttleList,
       },
@@ -136,6 +137,11 @@ const routes: ReadonlyArray<RouteConfig> = [
         exact: true,
         component: GroupActivityCategoryList,
       },
+      {
+        path: '/7m-group-shuttles',
+        exact: true,
+        component: Group7mShuttleList,
+      },
     ],
   },
 ]
@@ -145,11 +151,11 @@ export const AppRoutes = () => {
     <BrowserRouter>
       <div className="main-content columns ">
         <aside className="column is-2" style={{ backgroundColor: 'gainsboro' }}>
-          <div className="has-text-info is-size-5">Sevenm Shuttles</div>
+          <div className="has-text-info is-size-5">7m Shuttles</div>
           <ul className="menu-list">
             <li>
-              <NavLink activeClassName="active" to="/sevenmshuttles">
-                SevenmShuttles
+              <NavLink activeClassName="active" to="/7mshuttles">
+                7m-Shuttles
               </NavLink>
             </li>
           </ul>
@@ -272,6 +278,14 @@ export const AppRoutes = () => {
             <li>
               <NavLink activeClassName="active" to="/group-activity-category">
                 GroupActivityCategory
+              </NavLink>
+            </li>
+          </ul>
+          <div className="has-text-info is-size-5">7m Group-Shuttles</div>
+          <ul className="menu-list">
+            <li>
+              <NavLink activeClassName="active" to="/7m-group-shuttles">
+                7m-Group-Shuttles
               </NavLink>
             </li>
           </ul>

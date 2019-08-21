@@ -53,10 +53,8 @@ export const ActivityFormSchema: () => yup.ObjectSchema<
     imageUrl: yup.string().required('ImageUrl Required'),
     price: yup
       .number()
-      .integer()
       .positive()
       .min(1, 'Price Required')
-
       .required('Price Required'),
   })
 
@@ -126,7 +124,10 @@ export const AddSevenmShuttleInnerForm = (
           <div className="field">
             <div className="control">
               <label className="label">Price</label>
-              <CFIntegerField className="input" name="price" />
+              <Field className="input" name="price" type="number" />
+              <div className="has-text-danger is-size-7">
+                <ErrorMessage name="price" />
+              </div>
             </div>
           </div>
 

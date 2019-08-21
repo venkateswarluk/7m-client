@@ -114,7 +114,6 @@ export const OptionAvailabilityList = () => {
           })
           .catch(err => {
             setButtonDisable(false)
-
             throw Error(err)
           })
       })

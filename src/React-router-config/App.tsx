@@ -155,7 +155,7 @@ export const AppRoutes = () => {
           <ul className="menu-list">
             <li>
               <NavLink activeClassName="active" to="/7mshuttles">
-                7m-Shuttles
+                7mShuttles
               </NavLink>
             </li>
           </ul>
@@ -285,7 +285,7 @@ export const AppRoutes = () => {
           <ul className="menu-list">
             <li>
               <NavLink activeClassName="active" to="/7m-group-shuttles">
-                7m-Group-Shuttles
+                7mGroupShuttles
               </NavLink>
             </li>
           </ul>

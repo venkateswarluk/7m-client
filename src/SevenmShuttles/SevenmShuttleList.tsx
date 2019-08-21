@@ -72,35 +72,6 @@ export const SevenmShuttleList = () => {
     setActivities(result.data)
   }
 
-  // const fetchDestinations = async () => {
-  //   const result = await axios(`${mainUrl}/activityLocations`)
-  //   const meals = result.data
-  //     .map((x: any) => ({
-  //       value: x.locationId,
-  //       label: x.city,
-  //     }))
-  //     .reduce((result: any, elem: any) => {
-  //       if (!result.some((e: any) => e.label === elem.label)) {
-  //         result.push(elem)
-  //       }
-  //       return result
-  //     }, [])
-
-  //   // tslint:disable-next-line:no-console
-  //   console.log(meals)
-
-  //   setDestinations(meals)
-  // }
-
-  // const fetchCategories = async () => {
-  //   const result = await axios(`${mainUrl}/categories`)
-  //   const meals = result.data.map((x: any) => ({
-  //     value: x.categoryId,
-  //     label: x.categoryName,
-  //   }))
-  //   setCategories(meals)
-  // }
-
   const handleNext = (page: number) => {
     setPage(page + 1)
   }
@@ -116,11 +87,6 @@ export const SevenmShuttleList = () => {
     }
   }
 
-  // const handleSearch = (activitySearch: string) => {
-  //   setActivitySearch(activitySearch)
-  //   setPage(0)
-  // }
-
   const handleRowsPerPage = (event: any) => {
     setRowsPerPage(event)
   }
@@ -134,24 +100,32 @@ export const SevenmShuttleList = () => {
     actions: FormikActions<Sevenmshuttles>,
   ) => {
     setButtonDisable(true)
-    postItem(url, values)
-      .then(() => {
-        getAllItems(url)
-          .then((res: any) => {
-            setActivities(res)
-            setAddActivityOpen(!addActivityOpen)
-            setButtonDisable(false)
-            actions.setSubmitting(false)
-          })
-          .catch((err: string) => {
-            setButtonDisable(false)
-            throw Error(err)
-          })
-      })
-      .catch(err => {
-        setButtonDisable(false)
-        return Error(err)
-      })
+    if (
+      activities.filter((y: Sevenmshuttles) => y.shuttleId === values.shuttleId)
+        .length === 0
+    ) {
+      postItem(url, values)
+        .then(() => {
+          getAllItems(url)
+            .then((res: any) => {
+              setActivities(res)
+              setAddActivityOpen(!addActivityOpen)
+              setButtonDisable(false)
+              actions.setSubmitting(false)
+            })
+            .catch((err: string) => {
+              setButtonDisable(false)
+              throw Error(err)
+            })
+        })
+        .catch(err => {
+          setButtonDisable(false)
+          return Error(err)
+        })
+    } else {
+      setButtonDisable(false)
+      actions.setFieldError('shuttleId', 'ShuttleId already Exist,')
+    }
   }
 
   const handleEditActivityClick = async (id: string) => {
@@ -203,14 +177,6 @@ export const SevenmShuttleList = () => {
     fetchMealTypeData()
   }, [])
 
-  // React.useEffect(() => {
-  //   fetchDestinations()
-  // }, [])
-
-  // React.useEffect(() => {
-  //   fetchCategories()
-  // }, [])
-
   return (
     <div>
       <div className="has-text-centered has-text-info is-size-3">
@@ -261,7 +227,10 @@ export const SevenmShuttleList = () => {
 
       <div style={{ overflowX: 'auto' }} className="box">
         {activities && activities.length > 0 ? (
-          <table className="table is-bordered is-striped is-narrow is-hoverable  is-responsive">
+          <table
+            style={{ width: '100%' }}
+            className="table is-bordered is-striped is-narrow is-hoverable  is-responsive"
+          >
             <thead>
               <tr>
                 <th>ShuttleId</th>
@@ -313,12 +282,17 @@ export const SevenmShuttleList = () => {
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 
                 .map((activity: Sevenmshuttles) => (
-                  <tr key={activity.id}>
+                  <tr
+                    key={activity.id}
+                    style={{
+                      height: '50px',
+                    }}
+                  >
                     <td>{activity.shuttleId}</td>
                     <td>{activity.shuttleType}</td>
                     <td>{activity.maxQuantity}</td>
-                    <td>{activity.imageUrl}</td>
-                    <td>{activity.description}</td>
+                    <td>{activity.imageUrl.substring(0, 35)}</td>
+                    <td>{activity.description.substring(0, 45)}</td>
                     <td>{activity.price}</td>
 
                     <td>
@@ -342,7 +316,7 @@ export const SevenmShuttleList = () => {
           </table>
         ) : (
           <div className=" has-text-info is-size-3 has-text-centered">
-            No SevenmShuttles Exist
+            No 7m Shuttles Exist
           </div>
         )}
       </div>

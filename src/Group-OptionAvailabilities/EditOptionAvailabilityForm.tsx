@@ -129,12 +129,12 @@ export const EditOptionAvailabilityInnerForm = (props: EditFormProps) => (
               <div className="field">
                 <div className="control">
                   <label className="label">UnitPrice</label>
-                  <CFIntegerField className="input" name="unitPrice" />
+                  {/* <CFIntegerField className="input" name="unitPrice" /> */}
 
-                  {/* <Field className="input" name="unitPrice" type="number" />
+                  <Field className="input" name="unitPrice" type="number" />
                   <div className="has-text-danger is-size-7">
                     <ErrorMessage name="unitPrice" />
-                  </div> */}
+                  </div>
                 </div>
               </div>
 

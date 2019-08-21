@@ -66,6 +66,8 @@ export const FormSchema: () => yup.ObjectSchema<
         is: val => Number(val) === 0,
         then: yup
           .number()
+          .positive()
+
           .min(9, 'MaxAdults should be greater than 9')
           .required('MaxAdults Required'),
         // tslint:disable-next-line:object-literal-sort-keys
@@ -78,6 +80,7 @@ export const FormSchema: () => yup.ObjectSchema<
         is: val => Number(val) === 0,
         then: yup
           .number()
+          .positive()
           .min(1, 'MaxChilds Required')
           .required('MaxChilds Required'),
         // tslint:disable-next-line:object-literal-sort-keys
@@ -100,6 +103,7 @@ export const FormSchema: () => yup.ObjectSchema<
         is: val => Number(val) === 0,
         then: yup
           .number()
+          .positive()
           .min(1, 'AdultPrice Required')
           .required('adultPrice Required'),
         // tslint:disable-next-line:object-literal-sort-keys
@@ -112,6 +116,7 @@ export const FormSchema: () => yup.ObjectSchema<
         is: val => Number(val) === 0,
         then: yup
           .number()
+          .positive()
           .min(1, 'ChildPrice Required')
           .required('ChildPrice Required'),
         // tslint:disable-next-line:object-literal-sort-keys
@@ -124,6 +129,7 @@ export const FormSchema: () => yup.ObjectSchema<
         is: val => val === 0,
         then: yup
           .number()
+          .positive()
           .min(1, 'UnitPrice Required')
           .required('UnitPrice Required'),
         // tslint:disable-next-line:object-literal-sort-keys
@@ -296,12 +302,12 @@ export const AddOptionAvailabilityInnerForm = (
               <div className="field">
                 <div className="control">
                   <label className="label">UnitPrice</label>
-                  <CFIntegerField className="input" name="unitPrice" />
+                  {/* <CFIntegerField className="input" name="unitPrice" /> */}
 
-                  {/* <Field className="input" name="unitPrice" type="number" />
+                  <Field className="input" name="unitPrice" type="number" />
                   <div className="has-text-danger is-size-7">
                     <ErrorMessage name="unitPrice" />
-                  </div> */}
+                  </div>
                 </div>
               </div>
 
